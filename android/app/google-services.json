@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "259010923168",
+    "firebase_url": "https://tum-kenya-default-rtdb.firebaseio.com",
+    "project_id": "tum-kenya",
+    "storage_bucket": "tum-kenya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259010923168:android:331000eade6b1062edd7c5",
+        "android_client_info": {
+          "package_name": "com.tum.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259010923168-2bh3lb8643hv65jova40kqgmsggaf6pa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tum.app",
+            "certificate_hash": "fb0cd925438a613b89a8643f6d83f306c68eb146"
+          }
+        },
+        {
+          "client_id": "259010923168-73jicoveim3qm5bu84cu9g9dpqamsmna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH6p2QwhqvM033wgUCPwVp1y5S-ctQoy0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259010923168-73jicoveim3qm5bu84cu9g9dpqamsmna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "259010923168-2beina25a5ufog42mafse0lnev7385i1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tum.app.tum"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
