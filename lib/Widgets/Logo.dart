@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
 
     return Image.asset(
       themeProvider.isDarkMode ? Assets.logoDark : Assets.logoLight,
-      width: 130,
+      width: 200,
     );
   }
 }

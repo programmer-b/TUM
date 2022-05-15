@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,12 @@ part './Widgets/my_button.dart.dart';
 part './UI/auth/register_screen.dart';
 part './Widgets/Logo.dart';
 part './Widgets/back_button.dart';
+part './UI/auth/forgot_password_screen.dart';
+part './Firebase/firebase_helper.dart';
+part './Firebase/firebase_auth_provider.dart';
+part './Utils/dialogs.dart';
+
+final Dialog dialog = Dialog();
 
 class TUM extends StatefulWidget {
   const TUM({Key? key}) : super(key: key);
@@ -27,23 +34,32 @@ class TUM extends StatefulWidget {
 class _TUMState extends State<TUM> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider(),
-      builder: (context, _) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Technical University of Mombasa',
-          themeMode: themeProvider.themeMode,
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          routes: {
-            '/login' : (context) => const LoginScreen(),
-            '/register' : (context) => const RegisterScreen(),
-          },
-          home: const LoginScreen(),
-        );
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<FirebaseAuthProvider>(
+            create: (_) => FirebaseAuthProvider())
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, provider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Technical University of Mombasa',
+            themeMode: provider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            routes: {
+              '/login': (context) => const LoginScreen(),
+              '/register': (context) => const RegisterScreen(),
+              '/forgotPassword': (context) => const ForgotPasswordScreen(),
+              '/dashboard' : (context) => const DashBoard(title: 'TUM demo'),
+            },
+            home: const LoginScreen(),
+          );
+        },
+      ),
     );
   }
 }

@@ -44,12 +44,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             text: 'Sign up'
                 '',
             upperCaseFirst: true,
-            fontSize: 38,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
           Dimens.titleTextFieldGap(),
           const MyTextField(
-              label: 'Student\'s email address',
+              label: 'Your email address',
               hint: 'Email address',
               prefixIcon: Icons.alternate_email),
           Dimens.textFieldGap(),

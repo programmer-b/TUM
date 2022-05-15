@@ -14,6 +14,8 @@ class MyTextField extends StatelessWidget {
     this.suffixIcon,
     this.autoCorrect = true,
     this.obscureText = false,
+    this.controller,
+    this.onChanged,
   }) : super(key: key);
   final bool isPassword;
   final bool enableSuggestions;
@@ -26,16 +28,20 @@ class MyTextField extends StatelessWidget {
   final Color? fillColor;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
+  final TextEditingController? controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return TextFormField(
+        onChanged: onChanged,
         keyboardType: TextInputType.text,
         enableSuggestions: enableSuggestions,
         autocorrect: autoCorrect,
         validator: validator,
         onSaved: onSaved,
+        controller: controller,
         obscureText: obscureText,
         cursorColor: themeProvider.isDarkMode ? Colors.white : Colors.black,
         decoration: InputDecoration(
@@ -54,7 +60,8 @@ class MyTextField extends StatelessWidget {
                 color:
                     themeProvider.isDarkMode ? Colors.white70 : Colors.black54),
             labelStyle: TextStyle(
-                color:
-                    themeProvider.isDarkMode ? Colors.white70 : Colors.black54)));
+                color: themeProvider.isDarkMode
+                    ? Colors.white70
+                    : Colors.black54)));
   }
 }
