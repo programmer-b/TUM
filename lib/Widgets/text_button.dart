@@ -21,7 +21,6 @@ class TxtButton extends StatelessWidget {
             child: Txt(
                 fontWeight: FontWeight.bold,
                 text: text,
-                upperCaseFirst: true,
                 color: themeProvider.isDarkMode
                     ? Colors.white
                     : Colorz.primaryGreen)));

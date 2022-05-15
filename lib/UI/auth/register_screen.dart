@@ -18,11 +18,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 20),
+              const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
           child: Center(
             child: Column(
               children: [
-                const BackButton(),
+                //const BackButton(),
                 const Logo(),
                 Dimens.titleBodyGap(),
                 _registerForm()
@@ -94,13 +94,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           Dimens.textFieldButtonGap(),
           MyButton(
-              text: 'continue',
+              text: 'Continue',
               onPressed: null,
               textUpperCase: true,
               width: MediaQuery.of(context).size.width),
           Dimens.buttonButtonGap(),
           TxtButton(
-            text: 'joined us before? login',
+            text: 'Joined us before? Login',
             alignment: Alignment.center,
             onPressed: () {
               Navigator.of(context).pop();

@@ -11,7 +11,7 @@ class Dimens{
     return const SizedBox(height: 20,);
   }
   static  Widget textFieldButtonGap(){
-    return const SizedBox(height: 40,);
+    return const SizedBox(height: 60,);
   }
 
   static  Widget buttonButtonGap(){

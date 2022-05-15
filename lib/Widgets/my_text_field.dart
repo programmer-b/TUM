@@ -55,6 +55,6 @@ class MyTextField extends StatelessWidget {
                     themeProvider.isDarkMode ? Colors.white70 : Colors.black54),
             labelStyle: TextStyle(
                 color:
-                    themeProvider.isDarkMode ? Colors.white : Colors.black)));
+                    themeProvider.isDarkMode ? Colors.white70 : Colors.black54)));
   }
 }
