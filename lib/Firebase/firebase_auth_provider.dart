@@ -71,7 +71,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
         break;
       case 'user-not-found':
         _emailError =
-            'Couldn\'t find your email account. Please register first.';
+            'Couldn\'t find your email account.';
         break;
       case 'wrong-password':
         _passwordError = 'Incorrect email or password.';

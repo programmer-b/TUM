@@ -141,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
         text: 'Continue',
         onPressed: validEmail && validPassword
             ? () async {
+                FocusScope.of(context).unfocus();
                 dialog.progress(context, 'Authenticating', 'Please wait ...');
                 debugPrint("email:$email password:$password");
                 provider.init();
@@ -149,7 +150,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 if (provider.success) {
                   debugPrint('Hello');
-                  Navigator.pushNamed(context, '/dashboard');
+                  Future.delayed(Duration.zero, () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DashBoard(title: 'TUM demo')));
+                  });
                 }
                 Navigator.of(context).pop();
               }
