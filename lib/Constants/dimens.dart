@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Constants/constants.dart';
 
 class Dimens{
   static  Widget titleBodyGap(){

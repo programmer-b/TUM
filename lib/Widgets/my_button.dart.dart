@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Widgets/widgets.dart';
 
 class MyButton extends StatelessWidget {
   const MyButton(

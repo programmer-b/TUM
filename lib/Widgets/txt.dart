@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Widgets/widgets.dart';
 
 class Txt extends StatefulWidget {
   final FontStyle? fontStyle;

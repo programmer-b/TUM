@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/UI/auth/auth.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);

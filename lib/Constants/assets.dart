@@ -1,5 +1,4 @@
-part of 'package:tum/tum.dart';
-
+part of 'package:tum/Constants/constants.dart';
 
 class Assets{
   static const String logoLight = 'assets/images/favicon_light.png';

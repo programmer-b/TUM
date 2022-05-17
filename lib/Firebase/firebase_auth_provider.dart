@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Firebase/firebase.dart';
 
 class FirebaseAuthProvider extends ChangeNotifier {
   final auth = FirebaseAuth.instance;

@@ -1,4 +1,8 @@
-part of 'package:tum/tum.dart';
+
+
+import 'package:flutter/material.dart';
+
+import '../Widgets/widgets.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key, required this.title}) : super(key: key);

@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/UI/auth/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -123,12 +123,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (provider.success) {
                     debugPrint('Hello');
                     Future.delayed(Duration.zero, () {
-                      Navigator.push(
+                      Navigator.pushNamedAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                              const DashBoard(
-                                  title: 'TUM demo')));
+                          '/dashboard',
+                          ModalRoute.withName('/'));
                     });
                   }
                 }

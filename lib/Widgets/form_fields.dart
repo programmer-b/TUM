@@ -1,6 +1,6 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Widgets/widgets.dart';
 
-class FormField {
+class FieldForm {
   emailField(TextEditingController email, FirebaseAuthProvider provider,
       {dynamic Function(String)? onChanged}) {
     return MyTextField(
@@ -40,8 +40,8 @@ class FormField {
       controller: password,
       autoCorrect: false,
       isPassword: hidePassword,
-      label: 'Password',
-      hint: 'Password',
+      label: confirm ? 'Confirm password' : 'Password',
+      hint: confirm ? 'Confirm password' : 'Password',
       prefixIcon: Icons.lock,
       suffixIcon: suffixIcon,
     );

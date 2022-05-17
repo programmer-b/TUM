@@ -1,6 +1,6 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Utils/utils.dart';
 
-class Dialog {
+class PageDialog {
   void progress(BuildContext context, String title, String subTitle) {
     showDialog(
       context: context,

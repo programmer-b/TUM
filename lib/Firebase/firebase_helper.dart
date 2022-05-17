@@ -1,1 +1,1 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/Firebase/firebase.dart';

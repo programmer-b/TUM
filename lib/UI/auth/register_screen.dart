@@ -1,4 +1,4 @@
-part of 'package:tum/tum.dart';
+part of 'package:tum/UI/auth/auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -14,6 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController confirmPassword = TextEditingController();
 
   bool hidePassword = true;
+  bool hideConfirmPassword = true;
   bool validPassword = false;
   bool validConfirmPassword = false;
   bool validEmail = false;
@@ -82,8 +83,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               )),
                           Dimens.textFieldGap(),
                           formField.passwordField(
-                              context, confirmPassword, provider, hidePassword,
-                              onChanged: (value) {
+                              context,
+                              confirmPassword,
+                              provider,
+                              hideConfirmPassword, onChanged: (value) {
                             if (value.length > 2) {
                               setState(() {
                                 validConfirmPassword = true;
@@ -93,11 +96,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    hidePassword = !hidePassword;
+                                    hideConfirmPassword = !hideConfirmPassword;
                                   });
                                 },
                                 icon: Icon(
-                                  hidePassword
+                                  hideConfirmPassword
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                   color: Colors.grey,
@@ -112,7 +115,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       validPassword &&
                                       validConfirmPassword
                                   ? () async {
-
                                       debugPrint("Hello");
                                       FocusScope.of(context).unfocus();
                                       dialog.progress(context, 'Authenticating',
@@ -122,21 +124,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       provider.init();
                                       await provider.signUp(
                                           email.text, password.text);
-                                      if(registerForm.currentState!.validate()){
+                                      if (registerForm.currentState!
+                                          .validate()) {
                                         if (provider.success) {
                                           debugPrint('Hello');
                                           Future.delayed(Duration.zero, () {
-                                            Navigator.push(
+                                            Navigator.pushNamedAndRemoveUntil(
                                                 context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                    const DashBoard(
-                                                        title: 'TUM demo')));
+                                                '/dashboard',
+                                                ModalRoute.withName('/'));
                                           });
                                         }
                                       }
-
-
                                       Navigator.of(context).pop();
                                     }
                                   : null,
