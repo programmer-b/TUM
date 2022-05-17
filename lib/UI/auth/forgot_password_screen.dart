@@ -10,6 +10,8 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> forgotPasswordForm = GlobalKey<FormState>();
   bool hidePassword = true;
+  TextEditingController email = TextEditingController();
+  bool validEmail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-          const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
+              const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
           child: Center(
             child: Column(
               children: [const Logo(), Dimens.titleBodyGap(), _loginForm()],
@@ -45,28 +47,31 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Dimens.textToTextGap(),
               const Txt(
                 text:
-                'Don\'t worry! It happens. Please enter the\naddress associated with that account',
+                    'Don\'t worry! It happens. Please enter the\naddress associated with that account',
                 fontSize: 18,
                 fontWeight: FontWeight.w300,
               ),
               Dimens.titleTextFieldGap(),
-              const MyTextField(
-                  label: 'Email address',
-                  hint: 'Email address',
-                  prefixIcon: Icons.alternate_email),
+              formField.emailField(
+                email,
+                provider,
+                onChanged: (value) {
+                  if (value.length > 2) {
+                    setState(() {
+                      validEmail = true;
+                    });
+                  }
+                },
+              ),
               Dimens.textFieldGap(),
               const SizedBox(
                 height: 10,
               ),
-
               MyButton(
                   text: 'Submit',
                   onPressed: () {},
                   textUpperCase: true,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width),
+                  width: MediaQuery.of(context).size.width),
               Dimens.buttonButtonGap(),
               TxtButton(
                 text: 'Back to Login',

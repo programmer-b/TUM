@@ -42,9 +42,40 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                           Dimens.titleTextFieldGap(),
-                          _emailField(email, provider),
+                          formField.emailField(
+                            email,
+                            provider,
+                            onChanged: (value) {
+                              if (value.length > 2) {
+                                setState(() {
+                                  validEmail = true;
+                                });
+                              }
+                            },
+                          ),
                           Dimens.textFieldGap(),
-                          _passwordField(context, password, provider),
+                          formField.passwordField(
+                              context, password, provider, hidePassword,
+                              onChanged: (value) {
+                            if (value.length > 2) {
+                              setState(() {
+                                validPassword = true;
+                              });
+                            }
+                          },
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    hidePassword = !hidePassword;
+                                  });
+                                },
+                                icon: Icon(
+                                  hidePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                              )),
                           const SizedBox(
                             height: 10,
                           ),
@@ -78,64 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _emailField(TextEditingController email, FirebaseAuthProvider provider) {
-    return MyTextField(
-        validator: (value) {
-          if (provider.dataError && provider.emailError != '') {
-            return provider.emailError;
-          }
-          return null;
-        },
-        onChanged: (value) {
-          if (value.length > 2) {
-            setState(() {
-              validEmail = true;
-            });
-          }
-        },
-        controller: email,
-        label: 'Your email address',
-        hint: 'Email address',
-        prefixIcon: Icons.alternate_email);
-  }
-
-  _passwordField(BuildContext context, TextEditingController password,
-      FirebaseAuthProvider provider) {
-    return MyTextField(
-      validator: (value) {
-        if (provider.dataError && provider.passwordError != '') {
-          return provider.passwordError;
-        }
-        return null;
-      },
-      onChanged: (value) {
-        if (value.length > 2) {
-          setState(() {
-            validPassword = true;
-          });
-        }
-      },
-      obscureText: hidePassword,
-      controller: password,
-      autoCorrect: false,
-      isPassword: hidePassword,
-      label: 'Password',
-      hint: 'Password',
-      prefixIcon: Icons.lock,
-      suffixIcon: IconButton(
-        onPressed: () {
-          setState(() {
-            hidePassword = !hidePassword;
-          });
-        },
-        icon: Icon(
-          hidePassword ? Icons.visibility : Icons.visibility_off,
-          color: Colors.grey,
-        ),
-      ),
-    );
-  }
-
   _loginButton(String email, String password, FirebaseAuthProvider provider) {
     return MyButton(
         text: 'Continue',
@@ -146,17 +119,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 debugPrint("email:$email password:$password");
                 provider.init();
                 await provider.login(email, password);
-                loginForm.currentState!.validate();
-
-                if (provider.success) {
-                  debugPrint('Hello');
-                  Future.delayed(Duration.zero, () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const DashBoard(title: 'TUM demo')));
-                  });
+                if(loginForm.currentState!.validate()){
+                  if (provider.success) {
+                    debugPrint('Hello');
+                    Future.delayed(Duration.zero, () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const DashBoard(
+                                  title: 'TUM demo')));
+                    });
+                  }
                 }
                 Navigator.of(context).pop();
               }

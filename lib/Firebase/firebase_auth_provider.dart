@@ -74,10 +74,10 @@ class FirebaseAuthProvider extends ChangeNotifier {
             'Couldn\'t find your email account.';
         break;
       case 'wrong-password':
-        _passwordError = 'Incorrect email or password.';
+        _passwordError = 'Wrong password. Try again or click Forgot password \nto reset it.';
         break;
       case 'email-already-in-use':
-        _emailError = 'This email already exists. Try to login';
+        _emailError = 'This email already exists.';
         break;
       case 'account-exists-with-different-credential':
       case 'invalid-credential':

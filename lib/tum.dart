@@ -21,8 +21,10 @@ part './UI/auth/forgot_password_screen.dart';
 part './Firebase/firebase_helper.dart';
 part './Firebase/firebase_auth_provider.dart';
 part './Utils/dialogs.dart';
+part './Widgets/form_fields.dart';
 
 final Dialog dialog = Dialog();
+final FormField formField = FormField();
 
 class TUM extends StatefulWidget {
   const TUM({Key? key}) : super(key: key);
