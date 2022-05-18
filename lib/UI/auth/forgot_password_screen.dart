@@ -22,7 +22,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
           child: Center(
             child: Column(
-              children: [const Logo(), Dimens.titleBodyGap(), _loginForm()],
+              children: [
+                const AuthHeader(),
+                Dimens.titleBodyGap(),
+                _loginForm()
+              ],
             ),
           ),
         ),

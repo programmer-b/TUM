@@ -87,7 +87,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           Dimens.buttonButtonGap(),
-                          _loginButton(email.text, password.text, provider),
+                          MyButton(
+                              text: 'Continue',
+                              onPressed: validEmail && validPassword
+                                  ? () async {
+                                      FocusScope.of(context).unfocus();
+                                      dialog.progress(context, 'Authenticating',
+                                          'Please wait ...');
+                                      debugPrint(
+                                          "email:$email password:$password");
+                                      provider.init();
+                                      await provider.login(
+                                          email.text, password.text);
+                                      if (loginForm.currentState!.validate()) {
+                                        if (provider.success) {
+                                          debugPrint('Hello');
+                                          Future.delayed(Duration.zero, () {
+                                            Navigator.pushReplacementNamed(
+                                              context,
+                                              '/dashboard',
+                                            );
+                                          });
+                                        }
+                                      }
+                                      Navigator.of(context).pop();
+                                    }
+                                  : null,
+                              textUpperCase: true,
+                              width: MediaQuery.of(context).size.width),
                           Dimens.buttonButtonGap(),
                           TxtButton(
                             text: 'New student? Register',
@@ -107,33 +134,5 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
-  }
-
-  _loginButton(String email, String password, FirebaseAuthProvider provider) {
-    return MyButton(
-        text: 'Continue',
-        onPressed: validEmail && validPassword
-            ? () async {
-                FocusScope.of(context).unfocus();
-                dialog.progress(context, 'Authenticating', 'Please wait ...');
-                debugPrint("email:$email password:$password");
-                provider.init();
-                await provider.login(email, password);
-                if(loginForm.currentState!.validate()){
-                  if (provider.success) {
-                    debugPrint('Hello');
-                    Future.delayed(Duration.zero, () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/dashboard',
-                          ModalRoute.withName('/'));
-                    });
-                  }
-                }
-                Navigator.of(context).pop();
-              }
-            : null,
-        textUpperCase: true,
-        width: MediaQuery.of(context).size.width);
   }
 }

@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     //const BackButton(),
-                    const Logo(),
+                    const AuthHeader(),
                     Dimens.titleBodyGap(),
                     Form(
                       key: registerForm,
@@ -129,10 +129,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         if (provider.success) {
                                           debugPrint('Hello');
                                           Future.delayed(Duration.zero, () {
-                                            Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                '/dashboard',
-                                                ModalRoute.withName('/'));
+                                            Navigator.pushReplacementNamed(
+                                              context,
+                                              '/dashboard',
+                                            );
                                           });
                                         }
                                       }
@@ -146,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             text: 'Joined us before? Login',
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.pushNamed(context, '/login');
                             },
                           ),
                         ],

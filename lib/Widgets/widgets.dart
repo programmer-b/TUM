@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/Constants/constants.dart';
 
@@ -14,3 +15,4 @@ part './text_button.dart';
 part './my_button.dart.dart';
 part './Logo.dart';
 part './form_fields.dart';
+part './auth_header.dart';
