@@ -99,6 +99,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                       provider.init();
                                       await provider.login(
                                           email.text, password.text);
+                                      if (provider.catchError) {
+                                        Future.delayed(Duration.zero, () {
+                                          ArtSweetAlert.show(
+                                              context: context,
+                                              artDialogArgs: ArtDialogArgs(
+                                                  type:
+                                                      ArtSweetAlertType.danger,
+                                                  title:
+                                                      provider.errorMessage));
+                                          provider.init();
+                                        });
+                                      }
                                       if (loginForm.currentState!.validate()) {
                                         if (provider.success) {
                                           debugPrint('Hello');

@@ -39,6 +39,7 @@ dependencies:
   firebase_database: ^9.0.13
   provider: ^6.0.2
   font_awesome_flutter: ^10.1.0
+  art_sweetalert: ^0.0.5
 
 
 dev_dependencies:

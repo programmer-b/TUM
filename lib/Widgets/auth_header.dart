@@ -12,16 +12,10 @@ class AuthHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(right: 18),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              icon: const Icon(FontAwesomeIcons.angleLeft),
-              color: Colorz.primaryGreen,
-              splashColor: Colors.grey,
-            ),
-          ),
+              margin: const EdgeInsets.only(right: 18),
+              child: const BackButton(
+                route: '/login',
+              )),
           const Logo(),
         ],
       ),

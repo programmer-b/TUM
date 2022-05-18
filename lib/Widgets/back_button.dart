@@ -1,26 +1,20 @@
 part of 'package:tum/Widgets/widgets.dart';
 
 
-class BackButton extends StatefulWidget {
-  const BackButton({Key? key}) : super(key: key);
-
-  @override
-  State<BackButton> createState() => _BackButtonState();
-}
-
-class _BackButtonState extends State<BackButton> {
+class BackButton extends StatelessWidget {
+  const BackButton({Key? key, required this.route}) : super(key: key);
+  final String route;
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    return Container(
-      width: double.infinity,
-      alignment: Alignment.topLeft,
-      child: IconButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-
-        icon: const Icon(Icons.arrow_back), color: themeProvider.isDarkMode ? Colors.white : Colors.black),
+    return IconButton(
+      onPressed: () {
+        Navigator.pushNamed(context, '/login');
+      },
+      icon: const Icon(FontAwesomeIcons.angleLeft),
+      color: themeProvider.isDarkMode ? Colors.white70 : Colors.black54,
+      splashColor: themeProvider.isDarkMode ? Colors.white70 : Colors.grey,
     );
   }
 }
+
