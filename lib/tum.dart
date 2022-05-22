@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tum/UI/setup/setup.dart';
 import 'package:tum/provider/provider.dart';
 
 import 'Firebase/firebase.dart';
@@ -39,7 +41,13 @@ class _TUMState extends State<TUM> {
               '/dashboard': (context) => const DashBoard(title: 'TUM demo'),
               '/checkEmail' : (context) => const CheckEmail(),
             },
-            home: const LoginScreen(),
+            home: StreamBuilder<User?>(
+              stream: Auth.instance.authStateChange(),
+              builder: (context, snapshot) {
+                // return const LoginScreen();
+                return const SetupScreen();
+              }
+            ),
           );
         },
       ),

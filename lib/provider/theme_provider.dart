@@ -21,17 +21,16 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   static final darkTheme = ThemeData(
-
-    scaffoldBackgroundColor: Colors.grey.shade900,
-    primaryColor: Colors.black,
-    colorScheme: const ColorScheme.dark(),
-    iconTheme: const IconThemeData(color: Colors.white)
-  );
+      fontFamily: 'Raleway',
+      scaffoldBackgroundColor: Colors.grey.shade900,
+      primaryColor: Colors.black,
+      colorScheme: const ColorScheme.dark(),
+      iconTheme: const IconThemeData(color: Colors.white));
 
   static final lightTheme = ThemeData(
+      fontFamily: 'Raleway',
       scaffoldBackgroundColor: Colors.grey[50],
       primaryColor: Colors.white,
       colorScheme: const ColorScheme.light(),
-      iconTheme: const IconThemeData(color: Colors.grey)
-  );
+      iconTheme: const IconThemeData(color: Colors.grey));
 }

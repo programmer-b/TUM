@@ -17,3 +17,4 @@ part './Logo.dart';
 part './form_fields.dart';
 part './auth_header.dart';
 part './icon_widget.dart';
+part './profile_avatar.dart';

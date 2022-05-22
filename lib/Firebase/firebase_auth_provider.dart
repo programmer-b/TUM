@@ -34,9 +34,8 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     try {
-      final userCredential = await auth.signInWithEmailAndPassword(
+      await Auth.instance.signIn(
           email: email, password: password);
-      _credential = userCredential;
       _success = true;
     } on FirebaseAuthException catch (exception) {
       debugPrint(exception.toString());
@@ -115,4 +114,19 @@ class FirebaseAuthProvider extends ChangeNotifier {
         }
     }
   }
+}
+
+class Auth {
+  static final instance = Auth._();
+  Auth._();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool get isSignedIn => _auth.currentUser != null;
+
+  Stream<User?> authStateChange() => _auth.authStateChanges();
+
+  Future<void> signIn({required String email, required String password}) =>
+      _auth.signInWithEmailAndPassword(email: email, password: password);
+
+  Future<void> signOut() => _auth.signOut();
 }

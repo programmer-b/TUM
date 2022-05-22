@@ -1,24 +1,49 @@
 part of 'package:tum/Constants/constants.dart';
 
-class Dimens{
-  static  Widget titleBodyGap(){
-    return const SizedBox(height: 20,);
-  }
-  static  Widget textFieldGap(){
-    return const SizedBox(height: 15,);
-  }
-  static  Widget titleTextFieldGap(){
-    return const SizedBox(height: 20,);
-  }
-  static  Widget textFieldButtonGap(){
-    return const SizedBox(height: 30,);
+class Dimens {
+  static Widget titleBodyGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 20 * scale,
+    );
   }
 
-  static  Widget buttonButtonGap(){
-    return const SizedBox(height: 20,);
+  static Widget textFieldGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 15 * scale,
+    );
   }
 
-  static  Widget textToTextGap(){
-    return const SizedBox(height: 15,);
+  static Widget titleTextFieldGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 20 * scale,
+    );
+  }
+
+  static Widget textFieldButtonGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 30 * scale,
+    );
+  }
+
+  static Widget buttonButtonGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 20 * scale,
+    );
+  }
+
+  static Widget textToTextGap({double scale = 1.0}) {
+    return SizedBox(
+      height: 15 * scale,
+    );
+
+
+  }
+
+  static Widget pushCentered({double scale = 1.0}) {
+    return SizedBox(
+      height: 50 * scale,
+    );
+
+
   }
 }

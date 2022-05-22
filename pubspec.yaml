@@ -41,6 +41,8 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   art_sweetalert: ^0.0.5
   android_intent: ^2.0.2
+  google_fonts: ^3.0.0
+  image_picker: ^0.8.5+3
 
 
 dev_dependencies:
@@ -92,6 +94,9 @@ flutter:
     - family: MontSerrat
       fonts:
         - asset: assets/fonts/MontSerrat/Montserrat-Regular.ttf
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway/Raleway-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
