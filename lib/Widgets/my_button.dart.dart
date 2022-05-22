@@ -3,14 +3,14 @@ part of 'package:tum/Widgets/widgets.dart';
 class MyButton extends StatelessWidget {
   const MyButton(
       {Key? key,
-      this.width,
+      this.width = double.infinity,
       this.alignment,
       this.onPressed,
       required this.text,
       this.textUpperCase = false})
       : super(key: key);
 
-  final double? width;
+  final double width;
   final AlignmentGeometry? alignment;
   final Function()? onPressed;
   final String text;
@@ -20,17 +20,14 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: width,
       alignment: alignment,
-      child: SizedBox(
-        width: width,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colorz.primaryGreen),
-          onPressed: onPressed,
-          child: Txt(
-            text: text,
-            fullUpperCase: textUpperCase,
-          ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Colorz.primaryGreen),
+        onPressed: onPressed,
+        child: Txt(
+          text: text,
+          fullUpperCase: textUpperCase,
         ),
       ),
     );

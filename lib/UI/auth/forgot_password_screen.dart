@@ -24,7 +24,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    const AuthHeader(),
+                    const Logo(),
                     Dimens.titleBodyGap(),
                     Form(
                       key: forgotPasswordForm,
@@ -40,7 +40,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           Dimens.textToTextGap(),
                           const Txt(
                             text:
-                                'Don\'t worry! It happens. Please enter the\naddress associated with that account',
+                                'Enter the email associated with your account and we\'ll send an email with instructions to reset your password',
                             fontSize: 18,
                             fontWeight: FontWeight.w300,
                           ),
@@ -66,18 +66,32 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   ? () async {
                                       dialog.progress(context, 'Submitting',
                                           'please wait ...');
-                                      await FirebaseAuth.instance
-                                          .sendPasswordResetEmail(
-                                              email: email.text);
+
+                                      provider.init();
+                                      await provider
+                                          .resetPassword(email.text.trim());
                                       Navigator.pop(context);
-                                      Navigator.pushNamed(context, '/login');
-                                      ArtSweetAlert.show(
-                                          context: context,
-                                          artDialogArgs: ArtDialogArgs(
-                                            type: ArtSweetAlertType.success,
-                                            title:
+                                      if (forgotPasswordForm.currentState!
+                                          .validate()) {
+                                        if (provider.success) {
+                                          Navigator.pushNamed(context, '/login');
+                                          ArtSweetAlert.show(
+                                              context: context,
+                                              artDialogArgs: ArtDialogArgs(
+                                                type: ArtSweetAlertType.success,
+                                                title:
                                                 "A password reset email has been sent to ${email.text}",
-                                          ));
+                                              ));
+                                        }
+                                      }
+                                      if (provider.catchError) {
+                                        ArtSweetAlert.show(
+                                            context: context,
+                                            artDialogArgs: ArtDialogArgs(
+                                              type: ArtSweetAlertType.danger,
+                                              title: provider.errorMessage,
+                                            ));
+                                      }
                                     }
                                   : null,
                               textUpperCase: true,

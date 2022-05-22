@@ -37,6 +37,7 @@ class _TUMState extends State<TUM> {
               '/register': (context) => const RegisterScreen(),
               '/forgotPassword': (context) => const ForgotPasswordScreen(),
               '/dashboard': (context) => const DashBoard(title: 'TUM demo'),
+              '/checkEmail' : (context) => const CheckEmail(),
             },
             home: const LoginScreen(),
           );

@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     //const BackButton(),
-                    const AuthHeader(),
+                    const Logo(),
                     Dimens.titleBodyGap(),
                     Form(
                       key: registerForm,

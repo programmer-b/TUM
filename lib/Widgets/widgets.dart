@@ -16,3 +16,4 @@ part './my_button.dart.dart';
 part './Logo.dart';
 part './form_fields.dart';
 part './auth_header.dart';
+part './icon_widget.dart';

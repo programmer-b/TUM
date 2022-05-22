@@ -111,7 +111,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
       default:
         {
           _catchError = true;
-          _errorMessage = 'Oops! Check your connection and try again';
+          _errorMessage = 'Oops... Check your connection and try again';
         }
     }
   }
