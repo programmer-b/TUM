@@ -4,7 +4,7 @@ class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({Key? key, this.onPressed, this.image}) : super(key: key);
 
   final Function()? onPressed;
-  final File? image;
+  final XFile? image;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -19,7 +19,7 @@ class ProfileAvatar extends StatelessWidget {
             CircleAvatar(
               backgroundImage:
                   image == null ? const NetworkImage(Urls.avatar1) : null,
-              child: image == null ? null : Image.file(image!),
+              child: image == null ? null : Image.file(File(image!.path)),
             ),
             Positioned(
                 bottom: 0,

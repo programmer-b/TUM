@@ -8,8 +8,15 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
-  var _image;
-  void showImagePicker(BuildContext context) {
+  final ImagePicker _picker = ImagePicker();
+  String? _retrieveDataError;
+  XFile? _imageFile;
+
+  void _setImageFileFromFile(XFile? value) {
+    _imageFile = value;
+  }
+
+  showImagePicker(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -40,87 +47,84 @@ class _SetupScreenState extends State<SetupScreen> {
   Future pickImage(ImageSource source) async {
     debugPrint('Picking file...');
     try {
-      XFile? image = await ImagePicker().pickImage(source: source);
+      XFile? image = await ImagePicker().pickImage(
+        source: source,
+        maxWidth: 600,
+        maxHeight: 600,
+        imageQuality: 75,
+      );
       if (image == null) return;
       debugPrint('image file: $image');
 
-      final imageTemporary = File(image.path);
       setState(() {
         debugPrint('Image picked : ${image.path}');
-        _image = File(image.path);
+        _imageFile = image;
       });
     } on PlatformException catch (e) {
       debugPrint('Failed to pick image $e');
     }
   }
 
+  Future<void> retrieveLostData() async {
+    final LostDataResponse response = await _picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        if (response.file == null) {
+          _setImageFileFromFile(response.file);
+        } else {
+          _imageFile = response.file;
+        }
+      });
+    } else {
+      _retrieveDataError = response.exception!.code;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Dimens.pushCentered(scale: 1.2),
-              GestureDetector(
-                onTap: () async {
-
-                  XFile? image = await ImagePicker().pickImage(
-                      source: ImageSource.gallery, imageQuality: 50, preferredCameraDevice: CameraDevice.front);
-                  setState(() {
-                    _image = File(image!.path);
-                  });
-                },
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: Colors.red[200]),
-                  child: _image != null
-                      ? Image.file(
-                    _image,
-                    width: 200.0,
-                    height: 200.0,
-                    fit: BoxFit.fitHeight,
-                  )
-                      : Container(
-                    decoration: BoxDecoration(
-                        color: Colors.red[200]),
-                    width: 200,
-                    height: 200,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey[800],
+    return FutureBuilder<void>(
+        future: retrieveLostData(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          return Scaffold(
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Dimens.pushCentered(scale: 1.2),
+                    ProfileAvatar(
+                      image: _imageFile,
+                      onPressed: showImagePicker(context),
                     ),
-                  ),
+                    Dimens.titleBodyGap(scale: 3),
+                    const MyTextField(
+                      hint: 'Full name',
+                      prefixIcon: FontAwesomeIcons.user,
+                      label: 'Full name',
+                    ),
+                    Dimens.textFieldGap(),
+                    const MyTextField(
+                      hint: 'Registration number',
+                      prefixIcon: Icons.app_registration,
+                      label: 'Registration number',
+                    ),
+                    Dimens.textFieldGap(),
+                    const MyTextField(
+                      hint: 'Phone number',
+                      prefixIcon: Icons.phone_enabled_outlined,
+                      label: 'Phone number',
+                    ),
+                    Dimens.textFieldButtonGap(scale: 2),
+                    const MyButton(text: 'Finish')
+                  ],
                 ),
               ),
-              Dimens.titleBodyGap(scale: 3),
-              const MyTextField(
-                hint: 'Full name',
-                prefixIcon: FontAwesomeIcons.user,
-                label: 'Full name',
-              ),
-              Dimens.textFieldGap(),
-              const MyTextField(
-                hint: 'Registration number',
-                prefixIcon: Icons.app_registration,
-                label: 'Registration number',
-              ),
-              Dimens.textFieldGap(),
-              const MyTextField(
-                hint: 'Phone number',
-                prefixIcon: Icons.phone_enabled_outlined,
-                label: 'Phone number',
-              ),
-              Dimens.textFieldButtonGap(scale: 2),
-              const MyButton(text: 'Finish')
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }
