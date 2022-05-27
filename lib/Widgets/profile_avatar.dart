@@ -18,8 +18,7 @@ class ProfileAvatar extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage:
-                  image == null ? const NetworkImage(Urls.avatar1) : null,
-              child: image == null ? null : Image.file(File(image!.path)),
+                  image == null ? null : FileImage(File(image!.path)),
             ),
             Positioned(
                 bottom: 0,

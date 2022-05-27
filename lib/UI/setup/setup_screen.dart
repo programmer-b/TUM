@@ -16,7 +16,7 @@ class _SetupScreenState extends State<SetupScreen> {
     _imageFile = value;
   }
 
-  showImagePicker(BuildContext context) {
+  void showImagePicker(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -49,9 +49,6 @@ class _SetupScreenState extends State<SetupScreen> {
     try {
       XFile? image = await ImagePicker().pickImage(
         source: source,
-        maxWidth: 600,
-        maxHeight: 600,
-        imageQuality: 75,
       );
       if (image == null) return;
       debugPrint('image file: $image');
@@ -85,7 +82,7 @@ class _SetupScreenState extends State<SetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
+    return FutureBuilder(
         future: retrieveLostData(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           return Scaffold(
@@ -98,7 +95,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     Dimens.pushCentered(scale: 1.2),
                     ProfileAvatar(
                       image: _imageFile,
-                      onPressed: showImagePicker(context),
+                      onPressed: () => showImagePicker(context),
                     ),
                     Dimens.titleBodyGap(scale: 3),
                     const MyTextField(
