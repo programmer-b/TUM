@@ -19,6 +19,12 @@ class ProfileAvatar extends StatelessWidget {
             CircleAvatar(
               backgroundImage:
                   image == null ? null : FileImage(File(image!.path)),
+              child: image == null
+                  ? Icon(
+                      FontAwesomeIcons.user,
+                      size: Dimens.profileIconSize,
+                    )
+                  : null,
             ),
             Positioned(
                 bottom: 0,

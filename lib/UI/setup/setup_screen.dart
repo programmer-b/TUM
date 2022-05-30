@@ -20,26 +20,23 @@ class _SetupScreenState extends State<SetupScreen> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 45),
-            child: Wrap(
-              children: [
-                ListTile(
-                  onTap: () => pickImage(ImageSource.gallery),
-                  leading: const Icon(FontAwesomeIcons.images),
-                  title: const Txt(
-                    text: 'Gallery',
-                  ),
+          return Wrap(
+            children: [
+              ListTile(
+                onTap: () => pickImage(ImageSource.gallery),
+                leading: const Icon(FontAwesomeIcons.images),
+                title: const Txt(
+                  text: 'Gallery',
                 ),
-                ListTile(
-                  onTap: () => pickImage(ImageSource.camera),
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Txt(
-                    text: 'Camera',
-                  ),
-                )
-              ],
-            ),
+              ),
+              ListTile(
+                onTap: () => pickImage(ImageSource.camera),
+                leading: const Icon(Icons.camera_alt),
+                title: const Txt(
+                  text: 'Camera',
+                ),
+              )
+            ],
           );
         });
   }
@@ -76,48 +73,76 @@ class _SetupScreenState extends State<SetupScreen> {
         }
       });
     } else {
-      _retrieveDataError = response.exception!.code;
+      messenger.showToast(response.exception!.code);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return FutureBuilder(
         future: retrieveLostData(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           return Scaffold(
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Dimens.pushCentered(scale: 1.2),
-                    ProfileAvatar(
-                      image: _imageFile,
-                      onPressed: () => showImagePicker(context),
+            body: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ProfileAvatar(
+                          image: _imageFile,
+                          onPressed: () => showImagePicker(context),
+                        ),
+                        Dimens.titleBodyGap(scale: 3),
+                        MyTextField(
+                          validator: (val) {
+                            if (val == '') {
+                              return 'Full name cannot be blank.';
+                            }
+                            return null;
+                          },
+                          hint: 'Your full name',
+                          prefixIcon: FontAwesomeIcons.user,
+                          label: 'Full name',
+                        ),
+                        Dimens.textFieldGap(),
+                        MyTextField(
+                          validator: (val) {
+                            if (val == '') {
+                              return 'Registration number cannot be blank.';
+                            }
+                            return null;
+                          },
+                          hint: 'Your registration number',
+                          prefixIcon: Icons.app_registration,
+                          label: 'Registration number',
+                        ),
+                        Dimens.textFieldGap(),
+                        MyTextField(
+                          validator: (val) {
+                            if (val == '') {
+                              return 'Phone number cannot be blank.';
+                            }
+                            return null;
+                          },
+                          hint: 'Your phone number',
+                          prefixIcon: Icons.phone_enabled_outlined,
+                          label: 'Phone number',
+                        ),
+                        Dimens.textFieldButtonGap(scale: 2),
+                        MyButton(
+                          text: 'Finish',
+                          onPressed: () {
+                            formKey.currentState!.validate();
+                          },
+                        )
+                      ],
                     ),
-                    Dimens.titleBodyGap(scale: 3),
-                    const MyTextField(
-                      hint: 'Full name',
-                      prefixIcon: FontAwesomeIcons.user,
-                      label: 'Full name',
-                    ),
-                    Dimens.textFieldGap(),
-                    const MyTextField(
-                      hint: 'Registration number',
-                      prefixIcon: Icons.app_registration,
-                      label: 'Registration number',
-                    ),
-                    Dimens.textFieldGap(),
-                    const MyTextField(
-                      hint: 'Phone number',
-                      prefixIcon: Icons.phone_enabled_outlined,
-                      label: 'Phone number',
-                    ),
-                    Dimens.textFieldButtonGap(scale: 2),
-                    const MyButton(text: 'Finish')
-                  ],
+                  ),
                 ),
               ),
             ),

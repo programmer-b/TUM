@@ -1,6 +1,7 @@
 part of 'package:tum/Constants/constants.dart';
 
 class Dimens {
+  static double profileIconSize = 40;
   static Widget titleBodyGap({double scale = 1.0}) {
     return SizedBox(
       height: 20 * scale,
