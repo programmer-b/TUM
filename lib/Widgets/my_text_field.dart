@@ -16,6 +16,8 @@ class MyTextField extends StatelessWidget {
     this.obscureText = false,
     this.controller,
     this.onChanged,
+    this.textCapitalization = TextCapitalization.none,
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
   final bool isPassword;
   final bool enableSuggestions;
@@ -28,15 +30,18 @@ class MyTextField extends StatelessWidget {
   final Color? fillColor;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
+  final TextCapitalization textCapitalization;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final TextInputType keyboardType;
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return TextFormField(
         onChanged: onChanged,
-        keyboardType: TextInputType.text,
+        keyboardType: keyboardType,
+        textCapitalization: textCapitalization,
         enableSuggestions: enableSuggestions,
         autocorrect: autoCorrect,
         validator: validator,

@@ -9,7 +9,7 @@ class SetupScreen extends StatefulWidget {
 
 class _SetupScreenState extends State<SetupScreen> {
   final ImagePicker _picker = ImagePicker();
-  String? _retrieveDataError;
+
   XFile? _imageFile;
 
   void _setImageFileFromFile(XFile? value) {
@@ -100,8 +100,11 @@ class _SetupScreenState extends State<SetupScreen> {
                         Dimens.titleBodyGap(scale: 3),
                         MyTextField(
                           validator: (val) {
+                            final List<dynamic>? l = val?.split(' ');
                             if (val == '') {
                               return 'Full name cannot be blank.';
+                            } else if (operations.countWords(val!) < 2) {
+                              return 'Please enter your full name';
                             }
                             return null;
                           },
@@ -111,9 +114,13 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.textFieldGap(),
                         MyTextField(
+                          textCapitalization: TextCapitalization.characters,
                           validator: (val) {
                             if (val == '') {
                               return 'Registration number cannot be blank.';
+                            } else if (!operations.validRegistrationNumber(
+                                val: val!)) {
+                              return 'Please enter a valid registration number';
                             }
                             return null;
                           },
@@ -123,9 +130,12 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.textFieldGap(),
                         MyTextField(
+                          keyboardType: TextInputType.number,
                           validator: (val) {
                             if (val == '') {
                               return 'Phone number cannot be blank.';
+                            } else if (!operations.isPhoneNoValid(val)) {
+                              return 'Please enter a valid phone number';
                             }
                             return null;
                           },
