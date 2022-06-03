@@ -10,6 +10,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool _success = false;
   bool _error = false;
   String _errorMessage = '';
+  String _userId = '';
   UserCredential? _credential;
 
   String get emailError => _emailError;
@@ -19,7 +20,19 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool get success => _success;
   bool get error => _error;
   String get errorMessage => _errorMessage;
+  String get userId => _userId;
   UserCredential? get credential => _credential;
+
+  user() {
+    User? user = FirebaseAuth.instance.currentUser;
+    _userId = user!.uid.toString();
+    notifyListeners();
+  }
+
+  uid() {
+    user();
+    return _userId;
+  }
 
   void init() {
     _emailError = '';
@@ -34,8 +47,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     try {
-      await Auth.instance.signIn(
-          email: email, password: password);
+      await Auth.instance.signIn(email: email, password: password);
       _success = true;
     } on FirebaseAuthException catch (exception) {
       debugPrint(exception.toString());

@@ -8,8 +8,8 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final GlobalKey<FormState> forgotPasswordForm = GlobalKey<FormState>();
-  TextEditingController email = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final email = TextEditingController();
   bool validEmail = false;
 
   @override
@@ -27,7 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     const Logo(),
                     Dimens.titleBodyGap(),
                     Form(
-                      key: forgotPasswordForm,
+                      key: formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -71,7 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       await provider
                                           .resetPassword(email.text.trim());
                                       Navigator.pop(context);
-                                      if (forgotPasswordForm.currentState!
+                                      if (formKey.currentState!
                                           .validate()) {
                                         if (provider.success) {
                                           Navigator.pushNamed(context, '/login');
@@ -101,7 +101,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             text: 'Back to Login',
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/login');
+                              Navigator.pushReplacementNamed(context, '/login');
                             },
                           ),
                         ],
