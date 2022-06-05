@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import '../Widgets/widgets.dart';
 
 class DashBoard extends StatefulWidget {
-  const DashBoard({Key? key, required this.title}) : super(key: key);
+  const DashBoard({Key? key}) : super(key: key);
 
-  final String title;
 
   @override
   State<DashBoard> createState() => _DashBoardState();
@@ -27,7 +26,7 @@ class _DashBoardState extends State<DashBoard> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Dashboard'),
         actions: const <Widget>[ChangeThemeButtonWidget()],
       ),
       body: Center(

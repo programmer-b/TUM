@@ -16,6 +16,7 @@ class TUM extends StatefulWidget {
 }
 
 class _TUMState extends State<TUM> {
+  final FirebaseHelper helper = FirebaseHelper();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -24,7 +25,8 @@ class _TUMState extends State<TUM> {
           create: (_) => ThemeProvider(),
         ),
         ChangeNotifierProvider<FirebaseAuthProvider>(
-            create: (_) => FirebaseAuthProvider())
+            create: (_) => FirebaseAuthProvider()),
+        ChangeNotifierProvider<FirebaseHelper>(create: (_) => FirebaseHelper()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, provider, child) {
@@ -38,18 +40,47 @@ class _TUMState extends State<TUM> {
               '/login': (context) => const LoginScreen(),
               '/register': (context) => const RegisterScreen(),
               '/forgotPassword': (context) => const ForgotPasswordScreen(),
-              '/dashboard': (context) => const DashBoard(title: 'TUM demo'),
-              '/checkEmail' : (context) => const CheckEmail(),
+              '/dashboard': (context) => const DashBoard(),
+              '/checkEmail': (context) => const CheckEmail(),
+              '/setup': (context) => const SetupScreen(),
             },
             home: StreamBuilder<User?>(
-              stream: Auth.instance.authStateChange(),
-              builder: (context, snapshot) {
-                // return const LoginScreen();
-                return const SetupScreen();
-              }
-            ),
+                stream: Auth.instance.authStateChange(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    return FutureBuilder(
+                        future: helper.rootFirebaseIsExists(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.data == true &&
+                              snapshot.connectionState ==
+                                  ConnectionState.done) {
+                            return const DashBoard();
+                          } else if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return _indicator();
+                          } else {
+                            return const SetupScreen();
+                          }
+                        });
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return _indicator();
+                  } else {
+                    return const LoginScreen();
+                  }
+                }),
           );
         },
+      ),
+    );
+  }
+
+  Widget _indicator() {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

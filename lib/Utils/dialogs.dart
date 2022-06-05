@@ -20,4 +20,13 @@ class PageDialog {
       },
     );
   }
+
+  void alert(BuildContext context, var message, {ArtSweetAlertType? type}) {
+    ArtSweetAlert.show(
+        context: context,
+        artDialogArgs: ArtDialogArgs(
+          type: type ?? ArtSweetAlertType.info,
+          title: message,
+        ));
+  }
 }

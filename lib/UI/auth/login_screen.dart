@@ -91,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               text: 'Continue',
                               onPressed: validEmail && validPassword
                                   ? () async {
-                                      FocusScope.of(context).unfocus();
                                       dialog.progress(context, 'Authenticating',
                                           'Please wait ...');
                                       debugPrint(
@@ -99,30 +98,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                       provider.init();
                                       await provider.login(
                                           email.text, password.text);
-                                      if (provider.catchError) {
-                                        Future.delayed(Duration.zero, () {
-                                          ArtSweetAlert.show(
-                                              context: context,
-                                              artDialogArgs: ArtDialogArgs(
-                                                  type:
-                                                      ArtSweetAlertType.danger,
-                                                  title:
-                                                      provider.errorMessage));
-                                          provider.init();
-                                        });
-                                      }
+                                      Navigator.of(context).pop();
+
                                       if (loginForm.currentState!.validate()) {
                                         if (provider.success) {
                                           debugPrint('Hello');
-                                          Future.delayed(Duration.zero, () {
+                                          bool userExists = await helper
+                                              .rootFirebaseIsExists();
+                                          if (userExists) {
                                             Navigator.pushReplacementNamed(
-                                              context,
-                                              '/dashboard',
-                                            );
-                                          });
+                                                context, '/dashboard');
+                                          } else {
+                                            Navigator.pushReplacementNamed(
+                                                context, '/setup');
+                                          }
                                         }
                                       }
-                                      Navigator.of(context).pop();
+                                      if (provider.catchError) {
+                                        dialog.alert(
+                                            context, provider.errorMessage,
+                                            type: ArtSweetAlertType.danger);
+                                      }
                                     }
                                   : null,
                               textUpperCase: true,

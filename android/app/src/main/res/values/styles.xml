@@ -22,12 +22,13 @@
         <item name="android:windowBackground">?android:colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:navigationBarColor">#097B3E</item>
+        <item name="android:navigationBarColor">#E3E9F7</item>
     </style>
     <style name="SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#097B3E</item>
         <item name="android:windowTranslucentNavigation">true</item>
+
         <item name="android:navigationBarColor">#097B3E</item>
     </style>
 </resources>

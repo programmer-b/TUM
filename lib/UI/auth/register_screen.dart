@@ -115,8 +115,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       validPassword &&
                                       validConfirmPassword
                                   ? () async {
-                                      debugPrint("Hello");
-                                      FocusScope.of(context).unfocus();
                                       dialog.progress(context, 'Authenticating',
                                           'Please wait ...');
                                       debugPrint(
@@ -124,19 +122,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       provider.init();
                                       await provider.signUp(
                                           email.text, password.text);
+                                      Navigator.of(context).pop();
                                       if (registerForm.currentState!
                                           .validate()) {
                                         if (provider.success) {
-                                          debugPrint('Hello');
-                                          Future.delayed(Duration.zero, () {
-                                            Navigator.pushReplacementNamed(
-                                              context,
-                                              '/dashboard',
-                                            );
-                                          });
+                                          debugPrint('success registration');
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            '/setup',
+                                          );
                                         }
                                       }
-                                      Navigator.of(context).pop();
+                                      if (provider.catchError) {
+                                        dialog.alert(
+                                            context, provider.errorMessage,
+                                            type: ArtSweetAlertType.danger);
+                                      }
                                     }
                                   : null,
                               textUpperCase: true,

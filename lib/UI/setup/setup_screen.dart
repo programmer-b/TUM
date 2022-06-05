@@ -11,7 +11,6 @@ class _SetupScreenState extends State<SetupScreen> {
   final ImagePicker _picker = ImagePicker();
   UploadTask? task;
   XFile? _imageFile;
-  File? _image;
   String urlDownload = '';
 
   void _setImageFileFromFile(XFile? value) {
@@ -52,10 +51,9 @@ class _SetupScreenState extends State<SetupScreen> {
       if (image == null) return;
       debugPrint('image file: $image');
 
-      final imageTemp = File(image.path);
       setState(() {
         debugPrint('Image picked : ${image.path}');
-        _image = imageTemp;
+
         _imageFile = image;
       });
     } on PlatformException catch (e) {
@@ -88,7 +86,7 @@ class _SetupScreenState extends State<SetupScreen> {
     }
     final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
     final destination = 'images/$fileName';
-    task = FirebaseApi.uploadFile(destination, _image!);
+    task = FirebaseApi.uploadFile(destination, File(_imageFile!.path));
 
     if (task == null) {
       messenger.showToast('Failed to upload image');
@@ -110,6 +108,11 @@ class _SetupScreenState extends State<SetupScreen> {
     final _fullName = TextEditingController();
     final _regNo = TextEditingController();
     final _phoneNo = TextEditingController();
+
+    final provider = Provider.of<FirebaseHelper>(context);
+
+    DateTime now = DateTime.now();
+    DateTime dateOnly = now.getDateOnly();
 
     return FutureBuilder(
         future: retrieveLostData(),
@@ -185,12 +188,24 @@ class _SetupScreenState extends State<SetupScreen> {
                               dialog.progress(
                                   context, 'Submitting', 'Please wait...');
                               await uploadFile();
-                              await helper.update({
-                                'profile/fullName': _fullName.text,
-                                'profile/regNo': _regNo.text,
-                                'profile/phoneNo': _phoneNo.text,
-                                'profile/image': urlDownload,
+                              provider.init();
+                              await provider.updateUser({
+                                '/profile/fullName': _fullName.text,
+                                '/profile/regNo': _regNo.text,
+                                '/profile/phoneNo': _phoneNo.text,
+                                '/profile/image': urlDownload,
                               });
+                              await provider.updateAdmin(
+                                  {'userId': userId(), 'date': dateOnly});
+                              if (provider.error) {
+                                dialog.alert(context,
+                                    'Oops! Something went wrong. Please try again',
+                                    type: ArtSweetAlertType.danger);
+                              }
+                              if (provider.success) {
+                                Navigator.pushReplacementNamed(
+                                    context, '/dashboard');
+                              }
                             }
                           },
                         )

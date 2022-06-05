@@ -71,26 +71,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       await provider
                                           .resetPassword(email.text.trim());
                                       Navigator.pop(context);
-                                      if (formKey.currentState!
-                                          .validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         if (provider.success) {
-                                          Navigator.pushNamed(context, '/login');
-                                          ArtSweetAlert.show(
-                                              context: context,
-                                              artDialogArgs: ArtDialogArgs(
-                                                type: ArtSweetAlertType.success,
-                                                title:
-                                                "A password reset email has been sent to ${email.text}",
-                                              ));
+                                          Navigator.pushNamed(
+                                              context, '/login');
+                                          dialog.alert(context,
+                                              "A password reset email has been sent to ${email.text}",
+                                              type: ArtSweetAlertType.success);
                                         }
                                       }
                                       if (provider.catchError) {
-                                        ArtSweetAlert.show(
-                                            context: context,
-                                            artDialogArgs: ArtDialogArgs(
-                                              type: ArtSweetAlertType.danger,
-                                              title: provider.errorMessage,
-                                            ));
+                                        dialog.alert(
+                                            context, provider.errorMessage,
+                                            type: ArtSweetAlertType.danger);
+                                       
                                       }
                                     }
                                   : null,
