@@ -111,8 +111,8 @@ class _SetupScreenState extends State<SetupScreen> {
 
     final provider = Provider.of<FirebaseHelper>(context);
 
-    DateTime now = DateTime.now();
-    DateTime dateOnly = now.getDateOnly();
+    // DateTime now = DateTime.now();
+    // DateTime dateOnly = now.getDateOnly();
 
     return FutureBuilder(
         future: retrieveLostData(),
@@ -195,8 +195,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                 '/profile/phoneNo': _phoneNo.text,
                                 '/profile/image': urlDownload,
                               });
-                              await provider.updateAdmin(
-                                  {'userId': userId(), 'date': dateOnly});
+                              Navigator.pop(context);
                               if (provider.error) {
                                 dialog.alert(context,
                                     'Oops! Something went wrong. Please try again',

@@ -1,14 +1,16 @@
 part of 'package:tum/Utils/utils.dart';
 
 class PageDialog {
-  void progress(BuildContext context, String title, String subTitle) {
+  void progress(BuildContext context, String title, String subTitle,
+      {bool dismissable = false}) {
     FocusScope.of(context).unfocus();
     showDialog(
       context: context,
+      barrierDismissible: dismissable,
       builder: (BuildContext context) {
         return AlertDialog(
           content: ListTile(
-            leading: const CircularProgressIndicator(),
+            leading: const MyProgressIndicator(),
             title: Txt(
               text: title,
             ),

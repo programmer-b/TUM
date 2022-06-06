@@ -73,7 +73,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       Navigator.pop(context);
                                       if (formKey.currentState!.validate()) {
                                         if (provider.success) {
-                                          Navigator.pushNamed(
+                                          Navigator.pushReplacementNamed(
                                               context, '/login');
                                           dialog.alert(context,
                                               "A password reset email has been sent to ${email.text}",

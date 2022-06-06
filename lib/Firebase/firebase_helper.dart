@@ -3,8 +3,7 @@ part of 'package:tum/Firebase/firebase.dart';
 class FirebaseHelper with ChangeNotifier {
   DatabaseReference userRef =
       FirebaseDatabase.instance.ref('Users/Students/${userId()}');
-  DatabaseReference adminRef =
-      FirebaseDatabase.instance.ref('Data/Admin');
+  DatabaseReference adminRef = FirebaseDatabase.instance.ref('Data/Admin');
 
   bool _success = false;
   bool _error = false;
@@ -39,10 +38,11 @@ class FirebaseHelper with ChangeNotifier {
   }
 
   Future<bool> rootFirebaseIsExists() async {
-    DatabaseEvent event = await userRef.once();
+    final User? user = FirebaseAuth.instance.currentUser;
+    final uid = user!.uid;
+    DatabaseEvent event =
+        await FirebaseDatabase.instance.ref('Users/Students/$uid').once();
 
     return event.snapshot.value != null;
   }
 }
-
-

@@ -22,3 +22,4 @@ part './form_fields.dart';
 part './auth_header.dart';
 part './icon_widget.dart';
 part './profile_avatar.dart';
+part './progress_indicator.dart';

@@ -11,7 +11,11 @@ part './firebase_auth_provider.dart';
 
 User? user = FirebaseAuth.instance.currentUser;
 
-String userId() {
+userId() {
   User? user = FirebaseAuth.instance.currentUser;
-  return user!.uid.toString();
+  if (user == null) {
+    return null;
+  } else {
+    return user.uid;
+  }
 }

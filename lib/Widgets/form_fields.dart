@@ -14,7 +14,7 @@ class FieldForm {
         controller: email,
         label: 'Your email address',
         hint: 'Email address',
-        prefixIcon: Icons.alternate_email);
+        prefixIcon: Icons.email);
   }
 
   passwordField(BuildContext context, TextEditingController password,

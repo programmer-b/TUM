@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tum/Constants/constants.dart';
 import 'package:tum/UI/setup/setup.dart';
+import 'package:tum/Widgets/widgets.dart';
 import 'package:tum/provider/provider.dart';
 
 import 'Firebase/firebase.dart';
@@ -44,33 +47,32 @@ class _TUMState extends State<TUM> {
               '/checkEmail': (context) => const CheckEmail(),
               '/setup': (context) => const SetupScreen(),
             },
-            home: StreamBuilder<User?>(
-                stream: Auth.instance.authStateChange(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.connectionState == ConnectionState.done) {
-                    return FutureBuilder(
-                        future: helper.rootFirebaseIsExists(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData &&
-                              snapshot.data == true &&
-                              snapshot.connectionState ==
-                                  ConnectionState.done) {
-                            return const DashBoard();
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return _indicator();
-                          } else {
-                            return const SetupScreen();
-                          }
-                        });
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return _indicator();
-                  } else {
-                    return const LoginScreen();
-                  }
-                }),
+            home: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: Styles.value(provider),
+              child: StreamBuilder<User?>(
+                  stream: Auth.instance.authStateChange(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return FutureBuilder(
+                          future: helper.rootFirebaseIsExists(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data == true) {
+                              return const DashBoard();
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return _indicator();
+                            } else {
+                              return const SetupScreen();
+                            }
+                          });
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return _indicator();
+                    } else {
+                      return const LoginScreen();
+                    }
+                  }),
+            ),
           );
         },
       ),
@@ -79,9 +81,7 @@ class _TUMState extends State<TUM> {
 
   Widget _indicator() {
     return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: Center(child: MyProgressIndicator()),
     );
   }
 }

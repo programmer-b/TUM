@@ -8,13 +8,22 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> loginForm = GlobalKey<FormState>();
+  final loginForm = GlobalKey<FormState>();
   bool hidePassword = true;
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
 
   bool validPassword = false;
   bool validEmail = false;
+
+  // ignore: unused_field
+  late NavigatorState _navigator;
+
+  @override
+  void didChangeDependencies() {
+    _navigator = Navigator.of(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,22 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       provider.init();
                                       await provider.login(
                                           email.text, password.text);
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                      loginForm.currentState!.validate();
 
-                                      if (loginForm.currentState!.validate()) {
-                                        if (provider.success) {
-                                          debugPrint('Hello');
-                                          bool userExists = await helper
-                                              .rootFirebaseIsExists();
-                                          if (userExists) {
-                                            Navigator.pushReplacementNamed(
-                                                context, '/dashboard');
-                                          } else {
-                                            Navigator.pushReplacementNamed(
-                                                context, '/setup');
-                                          }
-                                        }
-                                      }
                                       if (provider.catchError) {
                                         dialog.alert(
                                             context, provider.errorMessage,

@@ -11,7 +11,6 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool _error = false;
   String _errorMessage = '';
   String _userId = '';
-  UserCredential? _credential;
 
   String get emailError => _emailError;
   String get passwordError => _passwordError;
@@ -21,7 +20,6 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool get error => _error;
   String get errorMessage => _errorMessage;
   String get userId => _userId;
-  UserCredential? get credential => _credential;
 
   user() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -64,9 +62,8 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
   Future<void> signUp(String email, String password) async {
     try {
-      final userCredential = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      _credential = userCredential;
+      await Auth.instance.signUp(email: email, password: password);
+
       _success = true;
     } on FirebaseAuthException catch (exception) {
       _dataError = true;
@@ -103,14 +100,14 @@ class FirebaseAuthProvider extends ChangeNotifier {
         _passwordError = 'Your user account has been disabled';
         break;
       case 'user-not-found':
-        _emailError = 'Couldn\'t find your email account.';
+        _emailError = 'Couldn\'t find your email account. Try registering.';
         break;
       case 'wrong-password':
         _passwordError =
             'Wrong password. Try again or click Forgot password \nto reset it.';
         break;
       case 'email-already-in-use':
-        _emailError = 'This email already exists.';
+        _emailError = 'This email already exists. Try logging in.';
         break;
       case 'account-exists-with-different-credential':
       case 'invalid-credential':
@@ -139,6 +136,9 @@ class Auth {
 
   Future<void> signIn({required String email, required String password}) =>
       _auth.signInWithEmailAndPassword(email: email, password: password);
+
+  Future<void> signUp({required String email, required String password}) =>
+      _auth.createUserWithEmailAndPassword(email: email, password: password);
 
   Future<void> signOut() => _auth.signOut();
 }

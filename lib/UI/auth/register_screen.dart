@@ -122,7 +122,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       provider.init();
                                       await provider.signUp(
                                           email.text, password.text);
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+
                                       if (registerForm.currentState!
                                           .validate()) {
                                         if (provider.success) {
