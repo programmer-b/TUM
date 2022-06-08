@@ -30,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Consumer<FirebaseAuthProvider>(
       builder: (context, provider, child) {
         return Scaffold(
+          appBar: appBar(context),
+          extendBodyBehindAppBar: true,
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -107,15 +109,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                       provider.init();
                                       await provider.login(
                                           email.text, password.text);
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop();
-                                      loginForm.currentState!.validate();
+
+                                      if (provider.dataError) {
+                                        loginForm.currentState!.validate();
+                                      }
 
                                       if (provider.catchError) {
                                         dialog.alert(
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);
                                       }
+
+                                     
                                     }
                                   : null,
                               textUpperCase: true,

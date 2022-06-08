@@ -118,6 +118,8 @@ class _SetupScreenState extends State<SetupScreen> {
         future: retrieveLostData(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           return Scaffold(
+            appBar: appBar(context),
+            extendBodyBehindAppBar: true,
             body: Center(
               child: SingleChildScrollView(
                 child: Form(

@@ -7,6 +7,7 @@ class PageDialog {
     showDialog(
       context: context,
       barrierDismissible: dismissable,
+      useRootNavigator: true,
       builder: (BuildContext context) {
         return AlertDialog(
           content: ListTile(

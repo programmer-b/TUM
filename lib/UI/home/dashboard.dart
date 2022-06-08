@@ -1,12 +1,7 @@
-
-
-import 'package:flutter/material.dart';
-
-import '../Widgets/widgets.dart';
+part of 'package:tum/UI/home/home.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
-
 
   @override
   State<DashBoard> createState() => _DashBoardState();
@@ -25,10 +20,7 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-        actions: const <Widget>[ChangeThemeButtonWidget()],
-      ),
+      appBar: appBar(context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

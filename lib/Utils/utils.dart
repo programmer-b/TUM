@@ -1,6 +1,8 @@
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:tum/Firebase/firebase.dart';
 import '../Widgets/widgets.dart';
 
 part './dialogs.dart';

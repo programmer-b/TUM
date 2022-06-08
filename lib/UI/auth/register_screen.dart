@@ -24,6 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Consumer<FirebaseAuthProvider>(
       builder: (context, provider, child) {
         return Scaffold(
+          appBar: appBar(context),
+          extendBodyBehindAppBar: true,
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(

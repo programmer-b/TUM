@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/Constants/constants.dart';
+import 'package:tum/UI/home/home.dart';
 import 'package:tum/UI/setup/setup.dart';
 import 'package:tum/Widgets/widgets.dart';
 import 'package:tum/provider/provider.dart';
 
 import 'Firebase/firebase.dart';
 import 'UI/auth/auth.dart';
-import 'UI/dashboard.dart';
 
 class TUM extends StatefulWidget {
   const TUM({Key? key}) : super(key: key);
@@ -57,6 +57,7 @@ class _TUMState extends State<TUM> {
                           future: helper.rootFirebaseIsExists(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data == true) {
+                              
                               return const DashBoard();
                             } else if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
