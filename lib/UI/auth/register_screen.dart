@@ -112,20 +112,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               confirm: true),
                           Dimens.textFieldButtonGap(),
                           MyButton(
-                              text: 'Continue',
+                              text: 'Register',
                               onPressed: validEmail &&
                                       validPassword &&
                                       validConfirmPassword
                                   ? () async {
-                                      dialog.progress(context, 'Authenticating',
-                                          'Please wait ...');
+                                      
                                       debugPrint(
                                           "email:$email password:$password");
                                       provider.init();
                                       await provider.signUp(
                                           email.text, password.text);
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop();
+                                      
 
                                       if (registerForm.currentState!
                                           .validate()) {
@@ -144,7 +142,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       }
                                     }
                                   : null,
-                              textUpperCase: true,
                               width: MediaQuery.of(context).size.width),
                           Dimens.buttonButtonGap(),
                           TxtButton(

@@ -24,10 +24,12 @@ class MyButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: Colorz.primaryGreen),
         onPressed: onPressed,
-        child: Txt(
-          text: text,
-          fullUpperCase: textUpperCase,
-        ),
+        child: context.read<FirebaseAuthProvider>().loading
+            ? const MyIndicator()
+            : Txt(
+                text: text,
+                fullUpperCase: textUpperCase,
+              ),
       ),
     );
   }

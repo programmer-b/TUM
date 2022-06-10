@@ -9,6 +9,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool _catchError = false;
   bool _success = false;
   bool _error = false;
+  bool _loading = false;
   String _errorMessage = '';
   String _userId = '';
 
@@ -18,6 +19,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   bool get catchError => _catchError;
   bool get success => _success;
   bool get error => _error;
+  bool get loading => _loading;
   String get errorMessage => _errorMessage;
   String get userId => _userId;
 
@@ -32,6 +34,11 @@ class FirebaseAuthProvider extends ChangeNotifier {
     return _userId;
   }
 
+  _load() {
+    _loading = true;
+    notifyListeners();
+  }
+
   void init() {
     _emailError = '';
     _passwordError = '';
@@ -44,6 +51,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
+    _load();
     try {
       await Auth.instance.signIn(email: email, password: password);
       _success = true;
@@ -57,10 +65,12 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
       _catchError = true;
     }
+    _loading = false;
     notifyListeners();
   }
 
   Future<void> signUp(String email, String password) async {
+    _load();
     try {
       await Auth.instance.signUp(email: email, password: password);
 
@@ -72,10 +82,12 @@ class FirebaseAuthProvider extends ChangeNotifier {
     } catch (exception) {
       _catchError = true;
     }
+    _loading = false;
     notifyListeners();
   }
 
   Future<void> resetPassword(String email) async {
+    _load();
     try {
       debugPrint('start');
       await auth.sendPasswordResetEmail(email: email);
@@ -88,6 +100,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
     } catch (exception) {
       _catchError = true;
     }
+    _loading = false;
     notifyListeners();
   }
 

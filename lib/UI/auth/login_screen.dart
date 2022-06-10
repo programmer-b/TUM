@@ -99,11 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Dimens.buttonButtonGap(),
                           MyButton(
-                              text: 'Continue',
+                              text: 'Login',
                               onPressed: validEmail && validPassword
                                   ? () async {
-                                      dialog.progress(context, 'Authenticating',
-                                          'Please wait ...');
+                                      
                                       debugPrint(
                                           "email:$email password:$password");
                                       provider.init();
@@ -119,11 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);
                                       }
-
-                                     
+                                      
                                     }
                                   : null,
-                              textUpperCase: true,
                               width: MediaQuery.of(context).size.width),
                           Dimens.buttonButtonGap(),
                           TxtButton(

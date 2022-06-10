@@ -14,3 +14,16 @@ class MyProgressIndicator extends StatelessWidget {
     );
   }
 }
+
+Widget circularProgressIndicator({Color indicatorColor = Colors.white, double scale = 0.38, double width = 50}){
+  
+  return Transform.scale(
+    scale: scale,
+    child: SizedBox(
+      width: width,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(indicatorColor),
+      ),
+    ),
+  );
+}

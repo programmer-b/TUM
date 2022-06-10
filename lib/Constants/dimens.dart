@@ -36,15 +36,17 @@ class Dimens {
     return SizedBox(
       height: 15 * scale,
     );
-
-
   }
 
   static Widget pushCentered({double scale = 1.0}) {
     return SizedBox(
       height: 50 * scale,
     );
+  }
 
-
+  static Widget progressToText({double scale = 1.0}) {
+    return SizedBox(
+      height: 10 * scale,
+    );
   }
 }
