@@ -1,7 +1,7 @@
-
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,5 +22,9 @@ part './form_fields.dart';
 part './auth_header.dart';
 part './icon_widget.dart';
 part './profile_avatar.dart';
-part './progress_indicator.dart';
+part 'Indicators/progress_indicator.dart';
 part './Indicators/button_indicator.dart';
+part './Buttons/my_icon_button.dart';
+part './Drawer/my_drawer.dart';
+part './Drawer/drawer_header.dart';
+

@@ -8,14 +8,26 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
- final _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    context.read<FirebaseHelper>().read();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: appBar(context),
-      body: Center()
-    );
+    _readDatabase();
+    final provider = Provider.of<FirebaseHelper>(context);
+    return provider.event == null
+        ? scaffoldIndicator()
+        : Scaffold(
+            appBar: appBar(context, actions: []),
+            drawer: const MyDrawer(),
+            body: Center(
+                child: Text(
+              provider.event!.snapshot.child('fullName').value.toString(),
+              style: const TextStyle(fontSize: 21),
+            )),
+          );
   }
 }

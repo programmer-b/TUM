@@ -27,3 +27,9 @@ Widget circularProgressIndicator({Color indicatorColor = Colors.white, double sc
     ),
   );
 }
+
+Widget scaffoldIndicator(){
+    return const Scaffold(
+      body: Center(child: MyProgressIndicator()),
+    );
+}

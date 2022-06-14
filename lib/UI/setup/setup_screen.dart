@@ -191,7 +191,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                   context, 'Submitting', 'Please wait...');
                               await uploadFile();
                               provider.init();
-                              await provider.updateUser({
+                              await provider.write({
                                 '/profile/fullName': _fullName.text,
                                 '/profile/regNo': _regNo.text,
                                 '/profile/phoneNo': _phoneNo.text,

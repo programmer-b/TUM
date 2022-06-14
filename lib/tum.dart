@@ -57,18 +57,17 @@ class _TUMState extends State<TUM> {
                           future: helper.rootFirebaseIsExists(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data == true) {
-                              
                               return const DashBoard();
                             } else if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return _indicator();
+                              return scaffoldIndicator();
                             } else {
                               return const SetupScreen();
                             }
                           });
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return _indicator();
+                      return scaffoldIndicator();
                     } else {
                       return const LoginScreen();
                     }
@@ -77,12 +76,6 @@ class _TUMState extends State<TUM> {
           );
         },
       ),
-    );
-  }
-
-  Widget _indicator() {
-    return const Scaffold(
-      body: Center(child: MyProgressIndicator()),
     );
   }
 }
