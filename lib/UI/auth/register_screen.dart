@@ -129,9 +129,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           .validate()) {
                                         if (provider.success) {
                                           debugPrint('success registration');
-                                          Navigator.pushReplacementNamed(
+                                          Navigator.pushNamedAndRemoveUntil(
                                             context,
                                             '/setup',
+                                            ModalRoute.withName('/')
                                           );
                                         }
                                       }

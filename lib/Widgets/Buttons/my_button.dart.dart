@@ -24,7 +24,7 @@ class MyButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: Colorz.primaryGreen),
         onPressed: onPressed,
-        child: context.read<FirebaseAuthProvider>().loading
+        child: context.read<FirebaseAuthProvider>().loading || context.read<FirebaseHelper>().loading
             ? const MyIndicator()
             : Txt(
                 text: text,

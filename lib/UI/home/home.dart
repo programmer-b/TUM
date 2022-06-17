@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -28,14 +25,4 @@ PreferredSizeWidget appBar(BuildContext context,
       systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: statusBarColor,
           statusBarIconBrightness: Brightness.light));
-}
-
-DatabaseEvent? _event;
-final ref = FirebaseDatabase.instance.ref();
-
-_readDatabase() {
-  ref.child('Users/Students/${userId()}').onValue.listen((event) {
-    _event = event;
-    
-  });
 }

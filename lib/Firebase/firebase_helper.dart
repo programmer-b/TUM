@@ -1,14 +1,25 @@
 part of 'package:tum/Firebase/firebase.dart';
 
 class FirebaseHelper with ChangeNotifier {
+  // static DatabaseReference userRef =
+  //     FirebaseDatabase.instance.ref('Users/Students/${userId()}');
+
   static DatabaseReference userRef =
-      FirebaseDatabase.instance.ref('Users/Students/${userId()}');
+      FirebaseDatabase.instance.ref('users/${userId()}');
 
   bool _success = false;
   bool _error = false;
 
   bool get success => _success;
   bool get error => _error;
+
+  bool _loading = false;
+  bool get loading => _loading;
+
+  _load() {
+    _loading = true;
+    notifyListeners();
+  }
 
   void init() {
     _success = false;
@@ -18,11 +29,13 @@ class FirebaseHelper with ChangeNotifier {
 
   Future<void> write(Map<String, Object?> map) async {
     try {
+      _load();
       await userRef.update(map);
       _success = true;
     } on FirebaseException catch (_) {
       _error = true;
     }
+    _loading = false;
     notifyListeners();
   }
 

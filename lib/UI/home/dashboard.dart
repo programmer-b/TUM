@@ -16,7 +16,6 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    _readDatabase();
     final provider = Provider.of<FirebaseHelper>(context);
     return provider.event == null
         ? scaffoldIndicator()
@@ -25,7 +24,7 @@ class _DashBoardState extends State<DashBoard> {
             drawer: const MyDrawer(),
             body: Center(
                 child: Text(
-              provider.event!.snapshot.child('fullName').value.toString(),
+              provider.event!.snapshot.child('profileImage').value.toString(),
               style: const TextStyle(fontSize: 21),
             )),
           );

@@ -9,4 +9,11 @@ class FirebaseApi {
       return null;
     }
   }
+
+  static Future downloadFile(Reference ref) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/${ref.name}');
+
+    await ref.writeToFile(file);
+  }
 }

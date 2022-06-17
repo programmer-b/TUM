@@ -20,6 +20,7 @@ final FieldForm formField = FieldForm();
 PreferredSizeWidget appBar(BuildContext context) {
   return AppBar(
       backgroundColor: Colors.transparent,
+      automaticallyImplyLeading: false,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.grey[200],
         statusBarIconBrightness: context.read<ThemeProvider>().isDarkMode

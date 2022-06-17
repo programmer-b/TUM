@@ -12,6 +12,7 @@ class _SetupScreenState extends State<SetupScreen> {
   UploadTask? task;
   XFile? _imageFile;
   String urlDownload = '';
+  String _base64Image = '';
 
   void _setImageFileFromFile(XFile? value) {
     _imageFile = value;
@@ -49,6 +50,9 @@ class _SetupScreenState extends State<SetupScreen> {
         source: source,
       );
       if (image == null) return;
+
+      final bytes = File(image.path).readAsBytesSync();
+      setState((() => _base64Image = base64Encode(bytes)));
       debugPrint('image file: $image');
 
       setState(() {
@@ -84,7 +88,7 @@ class _SetupScreenState extends State<SetupScreen> {
       messenger.showToast('No image selected');
       return;
     }
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final fileName = '${userId()}.jpg';
     final destination = 'images/$fileName';
     task = FirebaseApi.uploadFile(destination, File(_imageFile!.path));
 
@@ -129,7 +133,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ProfileAvatar(
+                        SetupAvatar(
                           image: _imageFile,
                           onPressed: () => showImagePicker(context),
                         ),
@@ -187,17 +191,16 @@ class _SetupScreenState extends State<SetupScreen> {
                           text: 'Finish',
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              dialog.progress(
-                                  context, 'Submitting', 'Please wait...');
                               await uploadFile();
                               provider.init();
                               await provider.write({
-                                '/profile/fullName': _fullName.text,
-                                '/profile/regNo': _regNo.text,
-                                '/profile/phoneNo': _phoneNo.text,
-                                '/profile/image': urlDownload,
+                                '/fullName': _fullName.text,
+                                '/regNo': _regNo.text,
+                                '/phoneNo': _phoneNo.text,
+                                '/profileImage': urlDownload,
+                                '/createdAt': DateTime.now().toIso8601String(),
+                                '/base64Image': _base64Image,
                               });
-                              Navigator.pop(context);
                               if (provider.error) {
                                 dialog.alert(context,
                                     'Oops! Something went wrong. Please try again',
