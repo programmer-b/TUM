@@ -17,6 +17,15 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context);
+    if (provider.event == null) {
+    } else {
+      if (provider.event!.snapshot.hasChild('fullName')) {
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/migrateToFlutter', (route) => false);
+        });
+      }
+    }
     return provider.event == null
         ? scaffoldIndicator()
         : Scaffold(

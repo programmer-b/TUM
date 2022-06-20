@@ -17,11 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
   bool validEmail = false;
 
   // ignore: unused_field
-  late NavigatorState _navigator;
 
   @override
   void didChangeDependencies() {
-    _navigator = Navigator.of(context);
     super.didChangeDependencies();
   }
 

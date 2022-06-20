@@ -6,8 +6,7 @@ class MyDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final provider = Provider.of<FirebaseHelper>(context);
-    bool _imageError = false;
+
     return DrawerHeader(
         decoration: BoxDecoration(
           color: themeProvider.isDarkMode
@@ -15,34 +14,7 @@ class MyDrawerHeader extends StatelessWidget {
               : Colorz.primaryGreen,
         ),
         child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: provider.event!.snapshot.child('profileImage').value !=
-                      null
-                  ? CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                      provider.event!.snapshot.child('profileImage').value.toString(),
-                    ),
-                    onBackgroundImageError: (_,__) {
-                      _imageError = true;
-                    },
-
-                  )
-                  : const CircleAvatar(
-                      radius: 45,
-                      backgroundImage: AssetImage(Assets.defaultAvatar)),
-              // child: CachedNetworkImage(
-              //   imageUrl: provider.event!.snapshot
-              //       .child('profileImage')
-              //       .value
-              //       .toString(),
-              //   placeholder: (context, url) =>
-              //       const MyProgressIndicator(customColor: true),
-              //   errorWidget: (context, url, error) => Icon(Icons.error),
-              // ),
-            ),
-          ],
+          children: const <Widget>[UserAvatar()],
         ));
   }
 }

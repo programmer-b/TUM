@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_image/firebase_image.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/Constants/constants.dart';
+import 'package:tum/Utils/utils.dart';
 
 import '../Firebase/firebase.dart';
 import '../provider/provider.dart';
@@ -31,3 +31,5 @@ part './Drawer/my_drawer.dart';
 part './Drawer/drawer_header.dart';
 
 part './Avatars/user_avatar.dart';
+
+final CounterStorage counterStorage = CounterStorage();

@@ -30,6 +30,9 @@ class _TUMState extends State<TUM> {
         ChangeNotifierProvider<FirebaseAuthProvider>(
             create: (_) => FirebaseAuthProvider()),
         ChangeNotifierProvider<FirebaseHelper>(create: (_) => FirebaseHelper()),
+        ChangeNotifierProvider<FirebaseApi>(
+          create: (_) => FirebaseApi(),
+        )
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, provider, child) {
@@ -46,6 +49,7 @@ class _TUMState extends State<TUM> {
               '/dashboard': (context) => const DashBoard(),
               '/checkEmail': (context) => const CheckEmail(),
               '/setup': (context) => const SetupScreen(),
+              '/migrateToFlutter': (context) => const MigrateToFlutter(),
             },
             home: AnnotatedRegion<SystemUiOverlayStyle>(
               value: Styles.value(provider),

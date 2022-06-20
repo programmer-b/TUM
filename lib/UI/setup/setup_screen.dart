@@ -89,8 +89,8 @@ class _SetupScreenState extends State<SetupScreen> {
       return;
     }
     final fileName = '${userId()}.jpg';
-    final destination = 'images/$fileName';
-    task = FirebaseApi.uploadFile(destination, File(_imageFile!.path));
+    final destination = 'profileImages/$fileName';
+    task = context.read<FirebaseApi>().uploadFile(destination, File(_imageFile!.path));
 
     if (task == null) {
       messenger.showToast('Failed to upload image');
@@ -194,12 +194,13 @@ class _SetupScreenState extends State<SetupScreen> {
                               await uploadFile();
                               provider.init();
                               await provider.write({
-                                '/fullName': _fullName.text,
-                                '/regNo': _regNo.text,
-                                '/phoneNo': _phoneNo.text,
-                                '/profileImage': urlDownload,
+                                '/profile/fullName': _fullName.text,
+                                '/profile/regNo': _regNo.text,
+                                '/profile/phoneNo': _phoneNo.text,
+                                '/profile/images/profileImage': urlDownload,
                                 '/createdAt': DateTime.now().toIso8601String(),
-                                '/base64Image': _base64Image,
+                                '/profile/images/base64Image': _base64Image,
+                                '/settings/themeMode' : 'light', 
                               });
                               if (provider.error) {
                                 dialog.alert(context,

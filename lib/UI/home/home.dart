@@ -26,3 +26,5 @@ PreferredSizeWidget appBar(BuildContext context,
           statusBarColor: statusBarColor,
           statusBarIconBrightness: Brightness.light));
 }
+
+

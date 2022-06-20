@@ -1,11 +1,8 @@
 part of 'package:tum/Firebase/firebase.dart';
 
 class FirebaseHelper with ChangeNotifier {
-  // static DatabaseReference userRef =
-  //     FirebaseDatabase.instance.ref('Users/Students/${userId()}');
-
   static DatabaseReference userRef =
-      FirebaseDatabase.instance.ref('users/${userId()}');
+      FirebaseDatabase.instance.ref('Users/Students/${userId()}');
 
   bool _success = false;
   bool _error = false;
