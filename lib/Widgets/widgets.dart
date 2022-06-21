@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +27,7 @@ part './Indicators/button_indicator.dart';
 part './Buttons/my_icon_button.dart';
 part './Drawer/my_drawer.dart';
 part './Drawer/drawer_header.dart';
-
+part './Errors/error_retry.dart';
 part './Avatars/user_avatar.dart';
 
 final CounterStorage counterStorage = CounterStorage();

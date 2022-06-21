@@ -12,34 +12,49 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   final refPath = '/Users/Students/${userId()}';
 
-  Future<OldData> migrateToFlutter() async {
+  Future<DataSnapshot> migrateToFlutter() async {
     final snapshot = await ref.child(refPath).get();
-    return OldData.fromJson(json.decode(snapshot.value.toString()));
+    return snapshot;
   }
 
-  Future<bool> migrateData(AsyncSnapshot<OldData> oldData) async {
-    Map<String, Object?> newData = {};
+  Future migrateData(FirebaseHelper provider) async {
+    final snapshot = await ref.child(refPath).get();
 
-    newData['/profile/fullName'] = oldData.data!.fullName;
-    newData['/profile/phoneNo'] = oldData.data!.phoneNo;
-    newData['/profile/images/profileImage'] = oldData.data!.profileImage;
-    newData['/elearning/password'] = oldData.data!.elearningPassword;
-    newData['/elearning/username'] = '';
-    newData['/eregister/password'] = oldData.data!.eregisterPassword;
-    newData['/eregister/username'] = '';
-    newData['/settings/themeMode'] = 'light';
+    provider.init();
 
-    try {
-      await ref.child(refPath).set(newData);
-      return true;
-    } catch (_) {
-      return false;
+    Map<String, Object?> _map = {
+      "profile": {
+        "fullName": snapshot.child("fullName").value,
+        "registrationNumber": snapshot.child("regNo").value,
+        "phoneNumber": snapshot.child("phoneNo").value,
+        "profileImage": {
+          "url": snapshot.child("profileImage").value,
+          "id": "",
+          "name": ""
+        }
+      },
+      "elearning": {
+        "username": "",
+        "password": snapshot.child("elearningPassword").value,
+      },
+      "eregister": {
+        "username": "",
+        "password": snapshot.child("eregisterPassword").value
+      },
+      "settings": {
+        "darkMode": false,
+        "notification": true,
+        "language": "en",
+        "theme": "light"
+      }
+    };
+    log(jsonEncode(_map));
+
+    await provider.write(_map);
+
+    if (provider.success) {
+      _goToDashboard(context);
     }
-  }
-
-  Future<bool> shouldMigrate() async {
-    final snapshot = await ref.child(refPath).get();
-    return snapshot.hasChild('fullName');
   }
 
   void _goToDashboard(BuildContext context) {
@@ -47,63 +62,25 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
         context, '/dashboard', ModalRoute.withName('/'));
   }
 
+  void _restart(FirebaseHelper provider) {
+    migrateData(provider);
+  }
+
   @override
   void initState() {
+    _restart(context.read<FirebaseHelper>());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-        future: shouldMigrate(),
-        builder: (BuildContext _, AsyncSnapshot<bool> shouldMigrate) {
-          if (shouldMigrate.connectionState == ConnectionState.done &&
-              shouldMigrate.hasData) {
-            if (shouldMigrate.data!) {
-              return FutureBuilder<OldData>(
-                  future: migrateToFlutter(),
-                  builder: (BuildContext _, AsyncSnapshot<OldData> oldData) {
-                    if (oldData.connectionState == ConnectionState.done &&
-                        oldData.hasData) {
-                      return FutureBuilder(
-                        future: migrateData(oldData),
-                        builder:
-                            (BuildContext _, AsyncSnapshot<bool> dataMigrated) {
-                          if (dataMigrated.connectionState ==
-                                  ConnectionState.done &&
-                              dataMigrated.hasData) {
-                            if (dataMigrated.data!) {
-                              _goToDashboard(context);
-                            } else {
-                              return Scaffold(
-                                body: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Txt(
-                                      text: 'Oops! Something went wrong',
-                                    ),
-                                    SizedBox(height: Dimens.defaultPadding * 2),
-                                    MyButton(
-                                      text: 'Retry',
-                                      width: 150,
-                                      onPressed: () => initState(),
-                                    )
-                                  ],
-                                ),
-                              );
-                            }
-                          }
-                          return scaffoldIndicator();
-                        },
-                      );
-                    }
-                    return scaffoldIndicator();
-                  });
-            } else {
-              _goToDashboard(context);
-            }
-          }
-          return scaffoldIndicator();
-        });
+    final provider = Provider.of<FirebaseHelper>(context);
+    return provider.error
+        ? ErrorRetry(
+            onPressed: () => _restart(provider),
+          )
+        : Scaffold(
+            appBar: appBar(context),
+            body: const Center(child: MyProgressIndicator()));
   }
 }

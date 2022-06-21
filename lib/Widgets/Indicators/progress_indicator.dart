@@ -40,6 +40,12 @@ Widget circularProgressIndicator(
   );
 }
 
+Widget normalCircularIndicator({Color? indicatorColor}) {
+  return CircularProgressIndicator(
+    valueColor: AlwaysStoppedAnimation<Color>(indicatorColor!),
+  );
+}
+
 Widget scaffoldIndicator() {
   return const Scaffold(
     body: Center(child: MyProgressIndicator()),

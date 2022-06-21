@@ -61,7 +61,19 @@ class _TUMState extends State<TUM> {
                           future: helper.rootFirebaseIsExists(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data == true) {
-                              return const DashBoard();
+                              return FutureBuilder(
+                                  future: helper.shouldMigrate(),
+                                  builder: (context, shouldMigrate) {
+                                    if (shouldMigrate.hasData &&
+                                        shouldMigrate.data == true) {
+                                      return const MigrateToFlutter();
+                                    } else if (shouldMigrate.hasData &&
+                                        shouldMigrate.data == false) {
+                                      return const DashBoard();
+                                    } else {
+                                      return scaffoldIndicator();
+                                    }
+                                  });
                             } else if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return scaffoldIndicator();

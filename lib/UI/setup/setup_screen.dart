@@ -90,7 +90,9 @@ class _SetupScreenState extends State<SetupScreen> {
     }
     final fileName = '${userId()}.jpg';
     final destination = 'profileImages/$fileName';
-    task = context.read<FirebaseApi>().uploadFile(destination, File(_imageFile!.path));
+    task = context
+        .read<FirebaseApi>()
+        .uploadFile(destination, File(_imageFile!.path));
 
     if (task == null) {
       messenger.showToast('Failed to upload image');
@@ -193,14 +195,25 @@ class _SetupScreenState extends State<SetupScreen> {
                             if (formKey.currentState!.validate()) {
                               await uploadFile();
                               provider.init();
-                              await provider.write({
-                                '/profile/fullName': _fullName.text,
-                                '/profile/regNo': _regNo.text,
-                                '/profile/phoneNo': _phoneNo.text,
-                                '/profile/images/profileImage': urlDownload,
-                                '/createdAt': DateTime.now().toIso8601String(),
-                                '/profile/images/base64Image': _base64Image,
-                                '/settings/themeMode' : 'light', 
+                              await provider.update({
+                                "profile": {
+                                  "fullName": _fullName.text,
+                                  "registrationNumber": _regNo.text,
+                                  "phoneNumber": _phoneNo.text,
+                                  "profileImage": {
+                                    "url": urlDownload,
+                                    "id": "",
+                                    "name": ""
+                                  }
+                                },
+                                "elearning": {"username": "", "password": ""},
+                                "eregister": {"username": "", "password": ""},
+                                "settings": {
+                                  "darkMode": false,
+                                  "notification": true,
+                                  "language": "en",
+                                  "theme": "light"
+                                }
                               });
                               if (provider.error) {
                                 dialog.alert(context,

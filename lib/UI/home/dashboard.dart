@@ -17,25 +17,42 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context);
-    if (provider.event == null) {
-    } else {
-      if (provider.event!.snapshot.hasChild('fullName')) {
-        Future.delayed(const Duration(seconds: 1), () {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/migrateToFlutter', (route) => false);
-        });
-      }
-    }
+    final _controller = TextEditingController();
     return provider.event == null
         ? scaffoldIndicator()
         : Scaffold(
             appBar: appBar(context, actions: []),
             drawer: const MyDrawer(),
-            body: Center(
-                child: Text(
-              provider.event!.snapshot.child('profileImage').value.toString(),
-              style: const TextStyle(fontSize: 21),
-            )),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    provider.event!.snapshot
+                        .child('profile/fullName')
+                        .value
+                        .toString(),
+                    style: const TextStyle(fontSize: 21),
+                  ),
+                  SizedBox(height: Dimens.defaultPadding * 2),
+                  TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      labelText: 'Full name',
+                    ),
+                  ),
+                  SizedBox(height: Dimens.defaultPadding * 2),
+                  MyButton(
+                    text: 'Update',
+                    onPressed: () {
+                      provider.update({'profile/fullName': _controller.text});
+                    },
+                  )
+                ],
+              )),
+            ),
           );
   }
 }
