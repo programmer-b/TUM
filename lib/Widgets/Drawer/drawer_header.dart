@@ -6,15 +6,48 @@ class MyDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final provider = Provider.of<FirebaseHelper>(context);
 
-    return DrawerHeader(
+    String value(String path) {
+      return provider.event!.snapshot.child(path).value.toString();
+    }
+
+    return Container(
+        padding: const EdgeInsets.only(
+          left: 8,
+          top: 28,
+        ),
+        alignment: Alignment.topLeft,
+        width: double.infinity,
+        height: 160,
         decoration: BoxDecoration(
           color: themeProvider.isDarkMode
-              ? Colorz.appBarColorDark
+              ? Colors.black54
               : Colorz.primaryGreen,
         ),
-        child: ListView(
-          children: const <Widget>[UserAvatar()],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const <Widget>[UserAvatar(), ChangeThemeButtonWidget()],
+            ),
+            SizedBox(
+              height: Dimens.defaultPadding * 2,
+            ),
+            Txt(
+              text: Operations.firstAndLastName(value('profile/fullName')),
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+            ),
+            SizedBox(
+              height: Dimens.defaultPadding,
+            ),
+            Txt(
+              text: value('profile/registrationNumber'),
+              color: Colors.white,
+            ),
+          ],
         ));
   }
 }

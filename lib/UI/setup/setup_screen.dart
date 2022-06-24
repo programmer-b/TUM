@@ -12,7 +12,6 @@ class _SetupScreenState extends State<SetupScreen> {
   UploadTask? task;
   XFile? _imageFile;
   String urlDownload = '';
-  String _base64Image = '';
 
   void _setImageFileFromFile(XFile? value) {
     _imageFile = value;
@@ -51,8 +50,8 @@ class _SetupScreenState extends State<SetupScreen> {
       );
       if (image == null) return;
 
-      final bytes = File(image.path).readAsBytesSync();
-      setState((() => _base64Image = base64Encode(bytes)));
+      // final bytes = File(image.path).readAsBytesSync();
+      // setState((() => _base64Image = base64Encode(bytes)));
       debugPrint('image file: $image');
 
       setState(() {
@@ -202,8 +201,8 @@ class _SetupScreenState extends State<SetupScreen> {
                                   "phoneNumber": _phoneNo.text,
                                   "profileImage": {
                                     "url": urlDownload,
-                                    "id": "",
-                                    "name": ""
+                                    "timeStamp": DateTime.now().millisecondsSinceEpoch,
+                                    "name": "${userId()}.jpg",
                                   }
                                 },
                                 "elearning": {"username": "", "password": ""},

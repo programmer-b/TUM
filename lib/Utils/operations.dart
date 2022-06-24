@@ -30,4 +30,41 @@ class Operations {
     }
     return false;
   }
+
+  static String getFirstWord(String inputString) {
+    List<String> wordList = inputString.split(" ");
+    if (wordList.isNotEmpty) {
+      return wordList[0];
+    } else {
+      return ' ';
+    }
+  }
+
+  static String getLastWord(String inputString) {
+    List<String> wordList = inputString.split(' ');
+    if (wordList.isNotEmpty) {
+      log(wordList.toString() + " " + wordList.length.toString());
+      return wordList.last;
+    } else {
+      return ' ';
+    }
+  }
+
+  static String firstAndLastName(String inputString) {
+    inputString = getWithoutSpaces(inputString);
+    log('Input String : $inputString');
+    return getFirstWord(inputString) + ' ' + getLastWord(inputString);
+  }
+
+  static String getWithoutSpaces(String s) {
+    String tmp = s.substring(0, s.length - 0);
+    while (tmp.startsWith(' ')) {
+      tmp = tmp.substring(1);
+    }
+    while (tmp.endsWith(' ')) {
+      tmp = tmp.substring(0, tmp.length -1);
+    }
+
+    return tmp;
+  }
 }

@@ -61,19 +61,16 @@ class FirebaseHelper with ChangeNotifier {
   }
 
   Future<bool> rootFirebaseIsExists() async {
-    final uid = user!.uid;
-
-    DatabaseEvent event =
-        await FirebaseDatabase.instance.ref('Users/Students/$uid').once();
+    DatabaseEvent event = await FirebaseDatabase.instance
+        .ref('Users/Students/${userId()}')
+        .once();
 
     return event.snapshot.value != null;
   }
 
   Future<bool> shouldMigrate() async {
-    final uid = user!.uid;
-
     DatabaseEvent event = await FirebaseDatabase.instance
-        .ref('Users/Students/$uid')
+        .ref('Users/Students/${userId()}')
         .child('fullName')
         .once();
 

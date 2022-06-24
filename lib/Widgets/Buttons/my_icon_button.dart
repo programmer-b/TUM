@@ -7,7 +7,8 @@ class MyIconButton extends StatelessWidget {
       this.onPressed,
       this.icon,
       this.iconColor = Colors.white,
-      this.iconSize})
+      this.iconSize,
+      this.toolTip})
       : super(key: key);
 
   final Color backgroundColor;
@@ -15,20 +16,16 @@ class MyIconButton extends StatelessWidget {
   final IconData? icon;
   final Color iconColor;
   final double? iconSize;
+  final String? toolTip;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(Dimens.iconButtonPadding),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: backgroundColor,
-        ),
-        child: IconButton(
-          icon: Icon(icon),
-          onPressed: onPressed,
-          color: iconColor,
-          iconSize: iconSize,
-        ));
+    return IconButton(
+      icon: Icon(icon),
+      onPressed: onPressed,
+      color: iconColor,
+      iconSize: iconSize,
+      tooltip: toolTip,
+    );
   }
 }

@@ -10,15 +10,21 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.67,
-      child: Drawer(
-        child: SingleChildScrollView(
-          child: Column(
-            children: const <Widget>[MyDrawerHeader()],
-          ),
-        ),
+    return Drawer(
+        child: Scaffold(
+      body: Column(
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const MyDrawerHeader(),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: ((context, index) {
+                return const ListTile();
+              }),
+            ),
+          )
+        ],
       ),
-    );
+    ));
   }
 }

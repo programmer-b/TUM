@@ -29,8 +29,8 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
         "phoneNumber": snapshot.child("phoneNo").value,
         "profileImage": {
           "url": snapshot.child("profileImage").value,
-          "id": "",
-          "name": ""
+          "timeStamp": DateTime.now().millisecondsSinceEpoch,
+          "name": "${userId()}.jpg",
         }
       },
       "elearning": {
@@ -42,7 +42,6 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
         "password": snapshot.child("eregisterPassword").value
       },
       "settings": {
-        "darkMode": false,
         "notification": true,
         "language": "en",
         "theme": "light"
@@ -74,6 +73,7 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
 
   @override
   Widget build(BuildContext context) {
+    log('Migrating to flutter: ');
     final provider = Provider.of<FirebaseHelper>(context);
     return provider.error
         ? ErrorRetry(

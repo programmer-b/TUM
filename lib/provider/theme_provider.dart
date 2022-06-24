@@ -1,7 +1,7 @@
 part of 'package:tum/provider/provider.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode? themeMode;
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
@@ -12,10 +12,34 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  void toggleTheme(bool isOn) {
-    themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+  // void toggleTheme({required bool isDarkMode}) {
+  //   themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-    notifyListeners();
+  //   notifyListeners();
+  // }
+
+  ThemeMode? getTheme(FirebaseHelper provider) {
+    if (provider.event != null) {
+      final String theme =
+          provider.event!.snapshot.child("settings/theme").value.toString();
+
+      if (theme == "systemDefault") {
+        themeMode = ThemeMode.system;
+        return ThemeMode.system;
+      }
+      if (theme == "light") {
+        themeMode = ThemeMode.light;
+        return ThemeMode.light;
+      }
+      if (theme == "dark") {
+        themeMode = ThemeMode.dark;
+        return ThemeMode.dark;
+      }
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.light;
+    }
+    
   }
 }
 
@@ -38,7 +62,9 @@ class MyThemes {
         color: Colorz.primaryGreen,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
-        systemOverlayStyle: SystemUiOverlayStyle(systemNavigationBarColor: Colors.blue,),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.blue,
+        ),
       ),
       fontFamily: 'Raleway',
       scaffoldBackgroundColor: Colors.grey[200],

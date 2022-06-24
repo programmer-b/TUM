@@ -17,42 +17,33 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context);
-    final _controller = TextEditingController();
     return provider.event == null
         ? scaffoldIndicator()
         : Scaffold(
-            appBar: appBar(context, actions: []),
+            appBar: _appBar(context),
             drawer: const MyDrawer(),
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    provider.event!.snapshot
-                        .child('profile/fullName')
-                        .value
-                        .toString(),
-                    style: const TextStyle(fontSize: 21),
-                  ),
-                  SizedBox(height: Dimens.defaultPadding * 2),
-                  TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: 'Full name',
-                    ),
-                  ),
-                  SizedBox(height: Dimens.defaultPadding * 2),
-                  MyButton(
-                    text: 'Update',
-                    onPressed: () {
-                      provider.update({'profile/fullName': _controller.text});
-                    },
-                  )
-                ],
-              )),
-            ),
-          );
+            body: const Center());
+  }
+
+  PreferredSizeWidget _appBar(BuildContext context) {
+    return appBar(context,
+        actions: [
+          MyIconButton(
+            icon: Icons.search,
+            onPressed: () {},
+            toolTip: "Search",
+          ),
+          MyIconButton(
+            icon: Icons.notifications_outlined,
+            onPressed: () {},
+            toolTip: "Notifications",
+          ),
+          MyIconButton(
+            icon: Icons.more_vert,
+            onPressed: () {},
+            toolTip: "More options",
+          )
+        ],
+        title: const Txt(text: "Home"));
   }
 }

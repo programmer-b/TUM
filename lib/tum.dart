@@ -34,12 +34,13 @@ class _TUMState extends State<TUM> {
           create: (_) => FirebaseApi(),
         )
       ],
-      child: Consumer<ThemeProvider>(
+      child: Consumer<FirebaseHelper>(
         builder: (context, provider, child) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Technical University of Mombasa',
-            themeMode: provider.themeMode,
+            themeMode: themeProvider.getTheme(provider),
             theme: MyThemes.lightTheme,
             darkTheme: MyThemes.darkTheme,
             routes: {
@@ -52,7 +53,7 @@ class _TUMState extends State<TUM> {
               '/migrateToFlutter': (context) => const MigrateToFlutter(),
             },
             home: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: Styles.value(provider),
+              value: Styles.value(themeProvider),
               child: StreamBuilder<User?>(
                   stream: Auth.instance.authStateChange(),
                   builder: (context, snapshot) {

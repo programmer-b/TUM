@@ -1,7 +1,9 @@
 part of 'package:tum/Widgets/widgets.dart';
 
 class UserAvatar extends StatelessWidget {
-  const UserAvatar({Key? key}) : super(key: key);
+  const UserAvatar({Key? key, this.radius = 30}) : super(key: key);
+
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +17,9 @@ class UserAvatar extends StatelessWidget {
         const AssetImage(Assets.defaultAvatar),
   }) {
     return CircleAvatar(
-      radius: 37,
+      radius: radius,
       child: CircleAvatar(
-        radius: 37,
+        radius: radius,
         backgroundImage: backgroundImage,
       ),
     );
