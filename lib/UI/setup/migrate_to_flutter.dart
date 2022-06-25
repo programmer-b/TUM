@@ -18,9 +18,10 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
   }
 
   Future migrateData(FirebaseHelper provider) async {
+    provider.init();
     final snapshot = await ref.child(refPath).get();
 
-    provider.init();
+    
 
     Map<String, Object?> _map = {
       "profile": {

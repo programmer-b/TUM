@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:tum/Constants/constants.dart';
 import 'package:tum/Widgets/widgets.dart';
 
 import '../../Firebase/firebase.dart';

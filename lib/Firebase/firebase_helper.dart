@@ -76,4 +76,16 @@ class FirebaseHelper with ChangeNotifier {
 
     return event.snapshot.value != null;
   }
+
+  List _apps = [];
+  List get apps => _apps;
+
+  void readMenu() {
+    final applications = FirebaseDatabase.instance.ref('/Data/Applications');
+
+    applications.onValue.listen((DatabaseEvent event) {
+      _apps = jsonDecode(jsonEncode(event.snapshot.value));
+      notifyListeners();
+    });
+  }
 }

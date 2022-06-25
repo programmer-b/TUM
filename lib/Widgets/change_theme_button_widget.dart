@@ -12,6 +12,7 @@ class ChangeThemeButtonWidget extends StatelessWidget {
       tooltip: "Toggle theme",
       icon: Icon(
         themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+        color: Colors.white,
       ),
       onPressed: () async {
         if (themeProvider.isDarkMode) {

@@ -1,0 +1,42 @@
+[
+    {
+        "name": "home",
+        "icon": "home",
+        "url": ""
+    },
+    {
+        "name": "news",
+        "icon": "newspaper",
+        "url": ""
+    },
+    {
+        "name": "eregister",
+        "icon": "school_rounded",
+        "url": ""
+    },
+    {
+        "name": "elearning",
+        "icon": "laptop_chromebook",
+        "url": ""
+    },
+    {
+        "name": "exam papers",
+        "icon": "article",
+        "url": ""
+    },
+    {
+        "name": "calender",
+        "icon": "calendar_month",
+        "url": ""
+    },
+    {
+        "name": "Downloads",
+        "icon": "cloud_download",
+        "url": ""
+    },
+    {
+        "name": "Settings",
+        "icon": "settings",
+        "url": ""
+    }
+]

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,5 +24,5 @@ userId() {
 }
 
 final CounterStorage counterStorage = CounterStorage();
-
 final storageRef = FirebaseStorage.instance.ref();
+final String userPath = 'Users/Students/${userId()}/';

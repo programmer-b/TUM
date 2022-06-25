@@ -29,9 +29,14 @@ class _TUMState extends State<TUM> {
         ),
         ChangeNotifierProvider<FirebaseAuthProvider>(
             create: (_) => FirebaseAuthProvider()),
-        ChangeNotifierProvider<FirebaseHelper>(create: (_) => FirebaseHelper()),
         ChangeNotifierProvider<FirebaseApi>(
           create: (_) => FirebaseApi(),
+        ),
+         ChangeNotifierProvider<FirebaseHelper>(
+          create: (_) => FirebaseHelper(),
+        ),
+        ChangeNotifierProvider<TUMState>(
+          create: (_) => TUMState(),
         )
       ],
       child: Consumer<FirebaseHelper>(

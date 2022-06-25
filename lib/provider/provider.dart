@@ -5,3 +5,4 @@ import 'package:tum/Constants/constants.dart';
 import 'package:tum/Firebase/firebase.dart';
 
 part './theme_provider.dart';
+part 'tum_state.dart';
