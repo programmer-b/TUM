@@ -103,6 +103,24 @@ flutter:
     - family: Raleway
       fonts:
         - asset: assets/fonts/Raleway/Raleway-Regular.ttf
+    - family: Gothic
+      fonts:
+        - asset: assets/fonts/gothic/LeagueGothic-Regular-VariableFont_wdth.ttf
+    - family: Roboto
+      fonts: 
+        - asset: assets/fonts/Roboto/Roboto-Black.ttf
+        - asset: assets/fonts/Roboto/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto/Roboto-LightItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+        - asset: assets/fonts/Roboto/Roboto-ThinItalic.ttf
+          weight: 400
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

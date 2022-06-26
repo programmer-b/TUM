@@ -26,12 +26,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return Scaffold(
           appBar: appBar(context),
           extendBodyBehindAppBar: true,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 40, left: 15, right: 15, bottom: 20),
-              child: Center(
+          body: Padding(
+            padding: const EdgeInsets.only(
+                top: 40, left: 15, right: 15, bottom: 20),
+            child: Center(
+              child: SingleChildScrollView(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //const BackButton(),
                     const Logo(),

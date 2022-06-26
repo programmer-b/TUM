@@ -12,6 +12,7 @@ class _SetupScreenState extends State<SetupScreen> {
   UploadTask? task;
   XFile? _imageFile;
   String urlDownload = '';
+  bool loading = false;
 
   void _setImageFileFromFile(XFile? value) {
     _imageFile = value;
@@ -189,9 +190,11 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.textFieldButtonGap(scale: 2),
                         MyButton(
+                          loading: loading,
                           text: 'Finish',
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
+                              setState(() => loading = true);
                               await uploadFile();
                               provider.init();
                               await provider.update({
@@ -201,7 +204,8 @@ class _SetupScreenState extends State<SetupScreen> {
                                   "phoneNumber": _phoneNo.text,
                                   "profileImage": {
                                     "url": urlDownload,
-                                    "timeStamp": DateTime.now().millisecondsSinceEpoch,
+                                    "timeStamp":
+                                        DateTime.now().millisecondsSinceEpoch,
                                     "name": "${userId()}.jpg",
                                   }
                                 },
@@ -214,6 +218,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                   "theme": "light"
                                 }
                               });
+                              setState(() => loading = false);
                               if (provider.error) {
                                 dialog.alert(context,
                                     'Oops! Something went wrong. Please try again',

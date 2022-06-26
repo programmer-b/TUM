@@ -48,6 +48,7 @@ IconData? getFontAwesomeIcon({required String name}) {
 
 /// Icon data map for Material Icons
 const Map<String, IconData> IconsMap = <String, IconData>{
+  'how_to_vote' : Icons.how_to_vote,
   'admin_panel_settings' : Icons.admin_panel_settings,
   'add_a_photo' : Icons.add_a_photo,
   'add_alarm' : Icons.add_alarm,

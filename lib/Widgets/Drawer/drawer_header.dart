@@ -15,7 +15,7 @@ class MyDrawerHeader extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.only(
           left: 8,
-          top: 28,
+          top: 40,
         ),
         alignment: Alignment.topLeft,
         width: double.infinity,
@@ -33,7 +33,7 @@ class MyDrawerHeader extends StatelessWidget {
               children: const <Widget>[UserAvatar(), ChangeThemeButtonWidget()],
             ),
             SizedBox(
-              height: Dimens.defaultPadding * 2,
+              height: Dimens.defaultPadding,
             ),
             Txt(
               text: Operations.firstAndLastName(value('profile/fullName')),

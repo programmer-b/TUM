@@ -7,7 +7,8 @@ class MyButton extends StatelessWidget {
       this.alignment,
       this.onPressed,
       required this.text,
-      this.textUpperCase = false})
+      this.textUpperCase = false,
+      this.loading = false})
       : super(key: key);
 
   final double width;
@@ -15,6 +16,7 @@ class MyButton extends StatelessWidget {
   final Function()? onPressed;
   final String text;
   final bool textUpperCase;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class MyButton extends StatelessWidget {
         onPressed: onPressed,
         child: context.read<FirebaseAuthProvider>().loading ||
                 context.read<FirebaseApi>().uploading ||
-                context.read<FirebaseHelper>().loading
+                context.read<FirebaseHelper>().loading ||
+                loading
             ? const MyIndicator()
             : Txt(
                 text: text,

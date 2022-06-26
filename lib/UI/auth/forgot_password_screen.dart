@@ -17,11 +17,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Consumer<FirebaseAuthProvider>(
       builder: (context, provider, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 40, left: 15, right: 15, bottom: 20),
-              child: Center(
+          body: Padding(
+            padding:  const EdgeInsets.only(
+                    top: 40, left: 15, right: 15, bottom: 20),
+            child: Center(
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     const Logo(),
@@ -64,13 +64,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               text: 'Submit',
                               onPressed: validEmail
                                   ? () async {
-                                      dialog.progress(context, 'Submitting',
-                                          'please wait ...');
+                                     
 
                                       provider.init();
                                       await provider
                                           .resetPassword(email.text.trim());
-                                      Navigator.pop(context);
                                       if (formKey.currentState!.validate()) {
                                         if (provider.success) {
                                           Navigator.pushReplacementNamed(

@@ -53,13 +53,16 @@ class FirebaseAuthProvider extends ChangeNotifier {
   Future<void> login(String email, String password) async {
     _load();
     try {
-      await Auth.instance.signIn(email: email, password: password);
+      await Auth.instance.signIn(email: email.trim(), password: password.trim());
       _success = true;
     } on FirebaseAuthException catch (exception) {
       debugPrint(exception.toString());
       _dataError = true;
 
       _determineError(exception);
+    } on PlatformException catch (exception) {
+      log(exception.toString());
+      _catchError = true;
     } catch (exception) {
       debugPrint(exception.toString());
 
@@ -72,14 +75,17 @@ class FirebaseAuthProvider extends ChangeNotifier {
   Future<void> signUp(String email, String password) async {
     _load();
     try {
-      await Auth.instance.signUp(email: email, password: password);
+      await Auth.instance.signUp(email: email.trim(), password: password.trim());
 
       _success = true;
     } on FirebaseAuthException catch (exception) {
       _dataError = true;
 
       _determineError(exception);
-    } catch (exception) {
+    } on PlatformException catch (exception) {
+      log(exception.toString());
+      _catchError = true;
+    }catch (exception) {
       _catchError = true;
     }
     _loading = false;
@@ -90,9 +96,12 @@ class FirebaseAuthProvider extends ChangeNotifier {
     _load();
     try {
       debugPrint('start');
-      await auth.sendPasswordResetEmail(email: email);
+      await auth.sendPasswordResetEmail(email: email.trim());
       debugPrint('end');
       _success = true;
+    } on PlatformException catch (exception) {
+      log(exception.toString());
+      _catchError = true;
     } on FirebaseAuthException catch (exception) {
       _dataError = true;
 
@@ -106,9 +115,9 @@ class FirebaseAuthProvider extends ChangeNotifier {
 
   _determineError(FirebaseAuthException exception) {
     switch (exception.code) {
-      case 'invalid-email':
-        _emailError = 'Your email is invalid.';
-        break;
+      // case 'invalid-email':
+      //   _emailError = 'Your email is invalid.';
+      //   break;
       case 'user-disabled':
         _passwordError = 'Your user account has been disabled';
         break;
@@ -132,7 +141,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
       default:
         {
           _catchError = true;
-          _errorMessage = 'Oops... Check your connection and try again';
+          _errorMessage = 'Oops... Something went wrong. Please try again';
         }
     }
   }

@@ -30,11 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
         return Scaffold(
           appBar: appBar(context),
           extendBodyBehindAppBar: true,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 40, left: 15, right: 15, bottom: 20),
-              child: Center(
+          body: Padding(
+            padding: const EdgeInsets.only(
+                top: 40, left: 15, right: 15, bottom: 20),
+            child: Center(
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     const Logo(),
@@ -106,11 +106,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       provider.init();
                                       await provider.login(
                                           email.text, password.text);
-
+              
                                       if (provider.dataError) {
                                         loginForm.currentState!.validate();
                                       }
-
+              
                                       if (provider.catchError) {
                                         dialog.alert(
                                             context, provider.errorMessage,
