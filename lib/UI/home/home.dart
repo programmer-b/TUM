@@ -1,7 +1,13 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' show parse;
 import 'package:provider/provider.dart';
 import 'package:tum/Widgets/widgets.dart';
+import 'package:tum/provider/provider.dart';
 
 import '../../Firebase/firebase.dart';
 
@@ -26,5 +32,3 @@ PreferredSizeWidget appBar(BuildContext context,
           statusBarColor: statusBarColor,
           statusBarIconBrightness: Brightness.light));
 }
-
-

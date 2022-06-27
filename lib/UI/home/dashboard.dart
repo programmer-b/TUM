@@ -12,6 +12,7 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     super.initState();
     context.read<FirebaseHelper>().read();
+    context.read<API>().getContent('https://www.tum.ac.ke/');
   }
 
   @override
@@ -45,5 +46,18 @@ class _DashBoardState extends State<DashBoard> {
           )
         ],
         title: const Txt(text: "Home"));
+  }
+
+  List<String?> getImagesFromClass(String className, String body) {
+    List<String?> urls = [];
+    dom.Document document = parse(body);
+    List<dom.Element> tables = document.getElementsByClassName(className);
+    tables.map((e) {
+      int length = e.getElementsByTagName("img").length;
+      for (int i = 0; i < length; i++) {
+        urls.insert(i, e.getElementsByTagName("img")[i].attributes['src']);
+      }
+    }).toList();
+    return urls;
   }
 }
