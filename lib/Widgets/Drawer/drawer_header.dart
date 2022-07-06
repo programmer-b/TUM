@@ -9,7 +9,7 @@ class MyDrawerHeader extends StatelessWidget {
     final provider = Provider.of<FirebaseHelper>(context);
 
     String value(String path) {
-      return provider.event!.snapshot.child(path).value.toString();
+      return provider.home!.snapshot.child(path).value.toString();
     }
 
     return Container(

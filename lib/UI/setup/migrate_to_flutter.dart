@@ -45,7 +45,7 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
       "settings": {
         "notification": true,
         "language": "en",
-        "theme": "light"
+        "theme": "system"
       }
     };
     log(jsonEncode(_map));

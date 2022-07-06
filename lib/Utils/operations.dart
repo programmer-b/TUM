@@ -67,4 +67,18 @@ class Operations {
 
     return tmp;
   }
+
+  List<String?> getImagesFromClass(String body) {
+    List<String?> urls = [];
+    dom.Document document = parse(body);
+    log('$document');
+    List<dom.Element> imageUrls = document.getElementsByClassName("hide");
+    imageUrls.map((element) {
+      int length = element.getElementsByTagName("img").length;
+      for (int i = 0; i < length; i++) {
+        urls.insert(i, element.getElementsByTagName("img")[i].attributes['src']);
+      }
+    }).toList();
+    return urls;
+  }
 }

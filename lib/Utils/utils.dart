@@ -6,8 +6,10 @@ import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:html/parser.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' show parse;
 import '../Widgets/widgets.dart';
 
 part './dialogs.dart';

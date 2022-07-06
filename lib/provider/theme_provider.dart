@@ -5,7 +5,7 @@ class ThemeProvider extends ChangeNotifier {
 
   bool get isDarkMode {
     if (themeMode == ThemeMode.system) {
-      final brightness = SchedulerBinding.instance?.window.platformBrightness;
+      final brightness = SchedulerBinding.instance!.window.platformBrightness;
       return brightness == Brightness.dark;
     } else {
       return themeMode == ThemeMode.dark;
@@ -19,11 +19,11 @@ class ThemeProvider extends ChangeNotifier {
   // }
 
   ThemeMode? getTheme(FirebaseHelper provider) {
-    if (provider.event != null) {
+    if (provider.home != null) {
       final String theme =
-          provider.event!.snapshot.child("settings/theme").value.toString();
+          provider.home!.snapshot.child("settings/theme").value.toString();
 
-      if (theme == "systemDefault") {
+      if (theme == "system") {
         themeMode = ThemeMode.system;
         return ThemeMode.system;
       }
@@ -35,9 +35,9 @@ class ThemeProvider extends ChangeNotifier {
         themeMode = ThemeMode.dark;
         return ThemeMode.dark;
       }
-      return ThemeMode.light;
+      return ThemeMode.system;
     } else {
-      return ThemeMode.light;
+      return ThemeMode.system;
     }
     
   }

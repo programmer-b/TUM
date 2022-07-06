@@ -84,10 +84,10 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Future uploadFile() async {
-    if (_imageFile == null) {
-      messenger.showToast('No image selected');
-      return;
-    }
+    // if (_imageFile == null) {
+    //   messenger.showToast('No image selected');
+    //   return;
+    // }
     final fileName = '${userId()}.jpg';
     final destination = 'profileImages/$fileName';
     task = context
@@ -215,7 +215,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                   "darkMode": false,
                                   "notification": true,
                                   "language": "en",
-                                  "theme": "light"
+                                  "theme": "system"
                                 }
                               });
                               setState(() => loading = false);

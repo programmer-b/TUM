@@ -31,5 +31,7 @@ part './Drawer/drawer_header.dart';
 part './Errors/error_retry.dart';
 part './Avatars/user_avatar.dart';
 part './Buttons/application_button.dart';
+part './scrollable_widget.dart';
+part './Buttons/application_icon_button.dart';
 
 final CounterStorage counterStorage = CounterStorage();

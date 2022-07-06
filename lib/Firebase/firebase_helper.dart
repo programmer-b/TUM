@@ -3,7 +3,8 @@ part of 'package:tum/Firebase/firebase.dart';
 class FirebaseHelper with ChangeNotifier {
   static DatabaseReference userRef =
       FirebaseDatabase.instance.ref('Users/Students/${userId()}');
-  final User? user = FirebaseAuth.instance.currentUser;
+  static DatabaseReference rootRef = FirebaseDatabase.instance.ref('Data');
+  // final User? user = FirebaseAuth.instance.currentUser;
 
   bool _success = false;
   bool _error = false;
@@ -37,6 +38,21 @@ class FirebaseHelper with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateToCustomPath(Map<String, Object?> map,
+      {String path = "Data"}) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref(path);
+    try {
+      _load();
+      log("upadating map to custom path");
+      await ref.update(map);
+      _success = true;
+    } on FirebaseException catch (_) {
+      _error = true;
+    }
+    _loading = false;
+    notifyListeners();
+  }
+
   Future<void> write(Map<String, Object?> map) async {
     try {
       _load();
@@ -50,12 +66,19 @@ class FirebaseHelper with ChangeNotifier {
     notifyListeners();
   }
 
-  DatabaseEvent? _event;
-  DatabaseEvent? get event => _event;
+  DatabaseEvent? _homeEvent;
+  DatabaseEvent? get home => _homeEvent;
+
+  DatabaseEvent? _rootEvent;
+  DatabaseEvent? get root => _rootEvent;
 
   void read() {
     userRef.onValue.listen((event) {
-      _event = event;
+      _homeEvent = event;
+      notifyListeners();
+    });
+    rootRef.onValue.listen((event) {
+      _rootEvent = event;
       notifyListeners();
     });
   }

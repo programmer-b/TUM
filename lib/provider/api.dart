@@ -24,10 +24,19 @@ class API with ChangeNotifier {
 
   Future<void> getContent(String url) async {
     try {
-      //_load();
+      log('loading home web content');
       final response = await http.get(Uri.parse(url));
-      _htmlContent = response.body.toString();
+      Map<String, Object?> map = {
+        "Home": {"Content": response.body}
+      };
+      helper.updateToCustomPath(map);
+    } on SocketException {
+      throw("socket exception");
     } catch (e) {
+      if (e is SocketException) {
+        log('socket error: ' + e.toString());
+      }
+      log('an error occurred: ' + e.toString());
       _error = e;
     }
 
