@@ -10,7 +10,7 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   void initState() {
-    context.read<FirebaseHelper>().readMenu();
+   
     super.initState();
   }
 

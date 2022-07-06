@@ -22,16 +22,33 @@ class API with ChangeNotifier {
     notifyListeners();
   }
 
+  List<Map<String, String>> urls = [
+    {"url": Urls.tumHome, "name": "Home"},
+    {"url": Urls.tumNoticeBoard, "name": "NoticeBoard"}
+  ];
+
+  int i = 0;
+
   Future<void> getContent(String url) async {
     try {
-      log('loading home web content');
-      final response = await http.get(Uri.parse(url));
-      Map<String, Object?> map = {
-        "Home": {"Content": response.body}
-      };
-      helper.updateToCustomPath(map);
+      while (i < urls.length) {
+        final response = await http.get(Uri.parse(urls[i]['url']!));
+        Map<String, Object?> map = {
+          urls[i]['name'] ?? "Null": {"Content": response.body}
+        };
+        log('url:  ${urls[i]['url']}\nname:  ${urls[i]['name']}');
+        helper.updateToCustomPath(map);
+
+        i++;
+      }
+      // log('loading home web content');
+      // final response = await http.get(Uri.parse(url));
+      // Map<String, Object?> map = {
+      //   "Home": {"Content": response.body}
+      // };
+      // helper.updateToCustomPath(map);
     } on SocketException {
-      throw("socket exception");
+      throw ("socket exception");
     } catch (e) {
       if (e is SocketException) {
         log('socket error: ' + e.toString());

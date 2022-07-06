@@ -10,6 +10,12 @@ class Dimens {
     );
   }
 
+  static Widget defaultMargin({double scale = 1.0}) {
+    return SizedBox(
+      height: 10 * scale,
+    );
+  }
+
   static Widget textFieldGap({double scale = 1.0}) {
     return SizedBox(
       height: 15 * scale,

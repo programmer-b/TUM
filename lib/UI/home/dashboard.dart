@@ -19,6 +19,7 @@ class _DashBoardState extends State<DashBoard> {
 
   void init() {
     context.read<FirebaseHelper>().read();
+    context.read<FirebaseHelper>().readMenu();
     context.read<API>().getContent(Urls.tumHome);
   }
 
@@ -47,6 +48,7 @@ class _DashBoardState extends State<DashBoard> {
   List<String?> urls = [];
 
   Applications applications = Applications();
+  EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 20);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,8 @@ class _DashBoardState extends State<DashBoard> {
       urls = operations.getImagesFromClass(
           provider.root!.snapshot.child('Home/Content/').value.toString());
     }
-    int itemCount = urls.length;
+    int imageCount = urls.length;
+
     // log(provider.root?.snapshot.child('Home/Content/').value.toString() ??
     //     "null");
     final apps = Provider.of<FirebaseHelper>(context).apps;
@@ -66,37 +69,25 @@ class _DashBoardState extends State<DashBoard> {
             drawer: const MyDrawer(),
             body: Column(
               children: [
-                buildCarousel(urls, itemCount),
-                const SizedBox(
-                  height: 12,
-                ),
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                //   width: double.infinity,
-                //   child: const Txt(
-                //     text: 'apps',
-                //     fullUpperCase: true,
-                //     textAlign: TextAlign.start,
-                //   ),
-                // ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, index) {
-                        return ApplicationIconButton(
-                          icon: getIconUsingPrefix(name: apps[index]['icon']),
-                          name: apps[index]['name'],
-                          onTap: () {},
-                        );
-                      },
-                      
-                      itemCount: apps.length),
-                )
-                //quickAccess(provider),
+                buildCarousel(urls, imageCount),
+                Dimens.titleBodyGap(scale: 0.6),
+                quickAccess(apps),
+                Dimens.defaultMargin(scale: 0.6),
+                title(text: 'notice board'),
               ],
             ));
+  }
+
+  Widget title({String? text}) {
+    return Container(
+      padding: padding,
+      width: double.infinity,
+      child: Txt(
+        text: text,
+        fullUpperCase: true,
+        textAlign: TextAlign.start,
+      ),
+    );
   }
 
   Widget buildCarousel(List<String?> urls, int itemCount) {
@@ -126,23 +117,20 @@ class _DashBoardState extends State<DashBoard> {
         ));
   }
 
-  Widget quickAccess(FirebaseHelper provider) {
-    log(provider.root!.snapshot.child('Applications').value.toString());
-    return Container(
-      padding: const EdgeInsets.all(8),
-      width: double.infinity,
-      child: Expanded(
-        child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (_, index) {
-              return const Center();
-            },
-            separatorBuilder: (_, __) {
-              return const Center();
-            },
-            itemCount: 0),
-      ),
+  Widget quickAccess(List<dynamic> apps) {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (_, index) {
+            return ApplicationIconButton(
+              icon: getIconUsingPrefix(name: apps[index]['icon']),
+              name: apps[index]['name'],
+              onTap: () {},
+            );
+          },
+          itemCount: apps.length),
     );
   }
 }

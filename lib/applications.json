@@ -40,8 +40,9 @@
         "url": ""
     },
     {
-        "name" : "about",
-        "icon" : "voteYea",
-        "url" : ""
+        "name": "about",
+        "icon": "voteYea",
+        "url": ""
     }
 ]
+

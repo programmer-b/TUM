@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Noticeboard</title>
+    <meta name="csrf-param" content="_tum">
+    <meta name="csrf-token"
+        content="LtlMPf8JWMZ573348iWLQqPTYVKJtjb_7VlIBaAtYt1YjTxMljoLhRWsRL6dULoDzJ0bP-jzVLiUPS5A6XgJsg==">
+    <link href="/assets/b9bbc6b7/css/bootstrap.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700"
+        rel="stylesheet">
+    <link href="/themes/smarty/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/themes/smarty/plugins/slider.revolution/css/extralayers.css" rel="stylesheet">
+    <link href="/themes/smarty/plugins/slider.revolution/css/settings.css" rel="stylesheet">
+    <link href="/themes/smarty/css/essentials.css" rel="stylesheet">
+    <link href="/themes/smarty/css/layout.css" rel="stylesheet">
+    <link href="/themes/smarty/css/thematics-education.css" rel="stylesheet">
+    <link href="/themes/smarty/css/header-1.css" rel="stylesheet">
+    <link type="text/css" id="color_scheme" href="/themes/smarty/css/color_scheme/green.css" rel="stylesheet">
+    <link href="/themes/smarty/css/custom.css" rel="stylesheet">
+    <style>
+        .icon-bar {
+            position: fixed;
+            z-index: 100;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .icon-bar a {
+            display: block;
+            text-align: center;
+            padding: 16px;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 20px;
+        }
+
+        .icon-bar a:hover {
+            background-color: #000;
+        }
+
+        .facebook {
+            background: #3B5998;
+            color: white;
+        }
+
+        .twitter {
+            background: #55ACEE;
+            color: white;
+        }
+
+        .google {
+            background: #282A35;
+            color: white;
+        }
+
+        .linkedin {
+            background: #007bb5;
+            color: white;
+        }
+
+        .youtube {
+            background: #bb0000;
+            color: white;
+        }
+
+        .content {
+            margin-left: 75px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body class="smoothscroll enable-animation">
+    <div class="icon-bar"> <a href="https://www.facebook.com/TechnicalUniversityOfMombasa" class="facebook"><i
+                class="fa fa-facebook"></i></a> <a href="https://twitter.com/Tum001Ke" class="twitter"><i
+                class="fa fa-twitter"></i></a> <a href="https://www.youtube.com/channel/UC9rzpcVNQZkFJ2AG6BO2VaQ"
+            class="youtube"><i class="fa fa-youtube"></i></a> <a href="https://www.tum.ac.ke/site/contact"
+            class="google"><i class="fa fa-envelope"></i></a> </div> <!-- wrapper -->
+    <div id="wrapper">
+        <!-- Top Bar -->
+        <div id="topBar">
+            <div class="container">
+                <!-- right -->
+                <ul class="top-links list-inline pull-right">
+                    <li><a href="https://library.tum.ac.ke">Library</a></li>
+                    <li><a href="/pri">RESEARCH</a></li>
+                    <li><a href="https://journals.tum.ac.ke">TUM Journal</a></li>
+                    <li><a href="/campus-life">CAMPUS LIFE</a></li>
+                    <li><a href="https://support.tum.ac.ke">icts Support</a></li>
+                    <li><a href="/faq">FAQs</a></li>
+                    <li><a href="/site/contact">GET IN TOUCH</a></li>
+                </ul>
+            </div>
+        </div> <!-- /Top Bar -->
+        <!-- 				AVAILABLE HEADER CLASSES				Default nav height: 96px				.header-md 		= 70px nav height				.header-sm 		= 60px nav height				.noborder 		= remove bottom border (only with transparent use)				.transparent	= transparent header				.translucent	= translucent header				.sticky			= sticky header				.static			= static header				.dark			= dark header				.bottom			= header on bottom								shadow-before-1 = shadow 1 header top				shadow-after-1 	= shadow 1 header bottom				shadow-before-2 = shadow 2 header top				shadow-after-2 	= shadow 2 header bottom				shadow-before-3 = shadow 3 header top				shadow-after-3 	= shadow 3 header bottom				.clearfix		= required for mobile menu, do not remove!				Example Usage:  class="clearfix sticky header-sm transparent noborder"			-->
+        <div id="header" class="sticky clearfix">
+            <!-- SEARCH HEADER -->
+            <div class="search-box over-header"> <a id="closeSearch" href="#" class="glyphicon glyphicon-remove"></a>
+                <form action="page-search-result-1.html" method="get"> <input type="text" class="form-control"
+                        placeholder="SEARCH" /> </form>
+            </div> <!-- /SEARCH HEADER -->
+            <!-- TOP NAV -->
+            <header id="topNav">
+                <div class="container">
+                    <!-- Mobile Menu Button --> <button class="btn btn-mobile" data-toggle="collapse"
+                        data-target=".nav-main-collapse"> <i class="fa fa-bars"></i> </button> <!-- BUTTONS -->
+                    <ul class="pull-right nav nav-pills nav-second-main">
+                        <!-- SEARCH -->
+                        <li class="search"> <a href="javascript:;"> <i class="fa fa-search"></i> </a> </li>
+                        <!-- /SEARCH -->
+                    </ul> <!-- /BUTTONS -->
+                    <!-- Logo --> <a class="logo pull-left" href="index.html"> <img src="/content/core/tum-logo.png"
+                            alt="" /> </a>
+                    <!-- 							Top Nav 														AVAILABLE CLASSES:							submenu-dark = dark sub menu						-->
+                    <div class="navbar-collapse pull-right nav-main-collapse collapse submenu-dark">
+                        <nav class="nav-main">
+                            <ul id="topMain" class="nav nav-pills nav-main">
+                                <li> <a href="/">HOME</a> </li>
+                                <li> <a href="/about">ABOUT US</a> </li>
+                                <li class="dropdown"> <a class="dropdown-toggle" href="#"> ACADEMICS </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/schools">SCHOOLS AND INSTITUTES</a></li>
+                                        <li><a href="/courses">OUR PROGRAMMES</a></li>
+                                        <li><a href="/academics">GRADUATE STUDIES</a></li>
+                                        <li><a href="/tvet">TVET</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <!-- BLOG --> <a class="dropdown-toggle" href="#"> PORTALS </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown"> <a class="dropdown-toggle" href="#"> STAFF PORTALS </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="https://eregistrar.tum.ac.ke">E-REGISTRAR PORTAL</a></li>
+                                                <li><a href="https://hr.tum.ac.ke">HUMAN RESOURCE PORTAL</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown"> <a class="dropdown-toggle" href="#"> STUDENT PORTALS </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="https://iap.tum.ac.ke">ATTACHMENT PORTAL</a></li>
+                                                <li><a href="https://eballot.tum.ac.ke">E-BALLOT PORTAL</a></li>
+                                                <li><a href="https://eregistrar.tum.ac.ke/Campuscura/?TenantID=tum">E-REGISTRAR
+                                                        PORTAL</a></li>
+                                                <li><a href="https://elearning.tum.ac.ke">E-LEARNING PORTAL</a></li>
+                                                <li><a href="https://clearance.tum.ac.ke/">ONLINE CLEARANCE</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"> <a class="dropdown-toggle" href="#"> MEDIA DESK </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/news">UNIVERSITY NEWS</a></li>
+                                        <li><a href="/noticeboard">UNIVERSITY NOTICE BOARD</a></li>
+                                        <li><a href="/events">EVENTS CALENDER</a></li>
+                                        <li><a href="/videos">VIDEO GALLERY</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"> <a class="dropdown-toggle" href="#"> PROCUREMENT </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/tenders">TENDERS</a></li>
+                                        <li><a href="https://hr.tum.ac.ke/contracts">CONTRACTS</a></li>
+                                        <li><a href="https://suppliers.tum.ac.ke">SUPPLIERS PORTAL</a></li>
+                                    </ul>
+                                </li>
+                                <li> <a href="/downloads/admission">DOWNLOADS</a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header> <!-- /Top Nav -->
+        </div>
+        <section class="page-header page-header-xs dark">
+            <div class="container">
+                <h1>Noticeboard</h1>
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Mediadesk</a></li>
+                    <li class="active">Noticeboard</li>
+                </ol><!-- /breadcrumbs -->
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div id="w0" class="grid-view">
+                    <div class="summary">Showing <b>1-25</b> of <b>138</b> items.</div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><a href="/noticeboard/index?sort=notice_title" data-sort="notice_title">Notice
+                                        Title</a></th>
+                                <th><a href="/noticeboard/index?sort=notice_title" data-sort="notice_title">Date</a>
+                                </th>
+                                <th class="action-column">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-key="138">
+                                <td>1</td>
+                                <td>FINAL AWARD LIST FOR THE 9TH GRADUATION CEREMONY</td>
+                                <td>30-Jun, 2022</td>
+                                <td><a href="/noticeboard/dl?id=7i5fu0tw0nz1hdx"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="137">
+                                <td>2</td>
+                                <td>ANNOUNCEMENT FOR 9TH GRADUATION CEREMONY</td>
+                                <td>22-Jun, 2022</td>
+                                <td><a href="/noticeboard/dl?id=el6a2vrh39y30"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="136">
+                                <td>3</td>
+                                <td>FINAL AWARD LIST FOR STUDENTS EXPECTED TO GRADUATE DURING THE UPCOMING 9TH
+                                    GRADUATION CEREMONY</td>
+                                <td>20-Jun, 2022</td>
+                                <td><a href="/noticeboard/dl?id=3si20foa2xaq91"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="135">
+                                <td>4</td>
+                                <td>SUBJECT: RELEASE OF APRIL 2022 SERIES END OF SEMESTER EXAMINATION RESULTS</td>
+                                <td>20-Jun, 2022</td>
+                                <td><a href="/noticeboard/dl?id=2u354f7jxwitdy4"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="134">
+                                <td>5</td>
+                                <td>EXTERNAL ADVERTISEMENT FOR REGISTRAR (AA) AND LEGAL OFFICER II</td>
+                                <td>24-May, 2022</td>
+                                <td><a href="/noticeboard/dl?id=5b4t6iz0xglned88y"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="133">
+                                <td>6</td>
+                                <td>Insuarance covers </td>
+                                <td>19-May, 2022</td>
+                                <td><a href="/noticeboard/dl?id=1hgxhi2ehp7312aj"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="132">
+                                <td>7</td>
+                                <td>PROVISIONAL AWARD LIST FOR SCHOOL OF HUMANITIES AND SOCIAL SCIENCES</td>
+                                <td>13-May, 2022</td>
+                                <td><a href="/noticeboard/dl?id=7ffct1yrzx5iei"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="131">
+                                <td>8</td>
+                                <td>FINAL YEAR STUDENTS EXPECTED TO GRADUATE DURING THE UPCOMING 9 TH GRADUATION
+                                    CEREMONY</td>
+                                <td>11-May, 2022</td>
+                                <td><a href="/noticeboard/dl?id=suusv3vqt96ltx7s"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="130">
+                                <td>9</td>
+                                <td>TUM MULTIDISCIPLINARY CONFERENCE &amp; INNOVATION DAY</td>
+                                <td>23-Feb, 2022</td>
+                                <td><a href="/noticeboard/dl?id=gc3ms55ezemobs"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="129">
+                                <td>10</td>
+                                <td>EXTERNAL JOB ADVERTISEMENT</td>
+                                <td>22-Feb, 2022</td>
+                                <td><a href="/noticeboard/dl?id=1tdlv6c1rkut2jqk7s"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="128">
+                                <td>11</td>
+                                <td>Insuarance covers for January-April 2022 semester - batch 5</td>
+                                <td>17-Feb, 2022</td>
+                                <td><a href="/noticeboard/dl?id=1a92bybmr9lsq583x"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="127">
+                                <td>12</td>
+                                <td>Insuarance covers for January-April 2022 semester - batch 4</td>
+                                <td>27-Jan, 2022</td>
+                                <td><a href="/noticeboard/dl?id=3cheshgszthh"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="126">
+                                <td>13</td>
+                                <td>Insuarance covers for January-April 2022 semester - batch 3</td>
+                                <td>27-Jan, 2022</td>
+                                <td><a href="/noticeboard/dl?id=174ipki2luk1y1zbm"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="125">
+                                <td>14</td>
+                                <td>Insuarance covers for January-April 2022 semester - batch 2</td>
+                                <td>27-Jan, 2022</td>
+                                <td><a href="/noticeboard/dl?id=83awia3v1zflo6"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="124">
+                                <td>15</td>
+                                <td>Insuarance covers for January-April 2022 semester - batch 1</td>
+                                <td>05-Jan, 2022</td>
+                                <td><a href="/noticeboard/dl?id=jtv0639enhks2ri1"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="123">
+                                <td>16</td>
+                                <td>NOW WE ARE FUNDING YOUNG PEOPLE</td>
+                                <td>17-Dec, 2021</td>
+                                <td><a href="/noticeboard/dl?id=7tgvwy3cdhyxcu"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="122">
+                                <td>17</td>
+                                <td>EXTERNAL ADVERTSEMENT FOR INTERNSHIP PROGRAM</td>
+                                <td>14-Dec, 2021</td>
+                                <td><a href="/noticeboard/dl?id=10pao5411ouftkn7nz"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="121">
+                                <td>18</td>
+                                <td>TUMEL Vacancies - Procurement Officer </td>
+                                <td>02-Dec, 2021</td>
+                                <td><a href="/noticeboard/dl?id=1u5fvspez5korxs"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="120">
+                                <td>19</td>
+                                <td>ROOM RESERVATION AND ONLINE BOOKING FOR SEMESTER BEGINNING JANUARY</td>
+                                <td>02-Dec, 2021</td>
+                                <td><a href="/noticeboard/dl?id=d6dc0bs8ls73nfg9"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="119">
+                                <td>20</td>
+                                <td>CAREER TALK</td>
+                                <td>23-Nov, 2021</td>
+                                <td><a href="/noticeboard/dl?id=3wsk9olld3o7bnn"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="118">
+                                <td>21</td>
+                                <td>TUMEL Job Vacancies</td>
+                                <td>17-Nov, 2021</td>
+                                <td><a href="/noticeboard/dl?id=3u28ic8zqsruls7b"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="117">
+                                <td>22</td>
+                                <td>Misuse of University Student Emails</td>
+                                <td>09-Nov, 2021</td>
+                                <td><a href="/noticeboard/dl?id=uvqlhfu4xby0n1qz"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="116">
+                                <td>23</td>
+                                <td>Verification of Student Voter Register</td>
+                                <td>22-Oct, 2021</td>
+                                <td><a href="/noticeboard/dl?id=agjonsic0vfilrvg"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="115">
+                                <td>24</td>
+                                <td>Student Data Verification</td>
+                                <td>06-Oct, 2021</td>
+                                <td><a href="/noticeboard/dl?id=1rmlbvh4ywlz7cqa"><span
+                                            class="btn btn-xs btn-success "><i class="fa fa-download"></i>
+                                            Download</span></a>&nbsp;</td>
+                            </tr>
+                            <tr data-key="114">
+                                <td>25</td>
+                                <td>List of Registered Suppliers for the Financial Year 2021-2023</td>
+                                <td>27-Sep, 2021</td>
+                                <td><a href="/noticeboard/dl?id=8ejbl2xovqykma"><span class="btn btn-xs btn-success "><i
+                                                class="fa fa-download"></i> Download</span></a>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="prev disabled"><span>&laquo;</span></li>
+                        <li class="active"><a href="/noticeboard/index?page=1&amp;per-page=25" data-page="0">1</a></li>
+                        <li><a href="/noticeboard/index?page=2&amp;per-page=25" data-page="1">2</a></li>
+                        <li><a href="/noticeboard/index?page=3&amp;per-page=25" data-page="2">3</a></li>
+                        <li><a href="/noticeboard/index?page=4&amp;per-page=25" data-page="3">4</a></li>
+                        <li><a href="/noticeboard/index?page=5&amp;per-page=25" data-page="4">5</a></li>
+                        <li><a href="/noticeboard/index?page=6&amp;per-page=25" data-page="5">6</a></li>
+                        <li class="next"><a href="/noticeboard/index?page=2&amp;per-page=25" data-page="1">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section> <!-- FOOTER -->
+        <footer id="footer">
+            <div class="container">
+                <div class="row margin-top-5 margin-bottom-2 size-13">
+                    <!-- col #1 -->
+                    <div class="col-md-4 col-sm-4">
+                        <h4 class="letter-spacing-1">CONTACT INFORMATION</h4>
+                        <ul class="list-unstyled footer-list half-paddings noborder">
+                            <li><i class="fa fa-map-marker"></i> Tom Mboya Street Tudor, Msa</li>
+                            <li><i class="fa fa-inbox"></i> P.O BOX. 90420-80100 MSA</li>
+                            <li><i class="fa fa-phone"></i> (+254) 020-8095365/68</li>
+                            <li><i class="fa fa-mobile-phone"></i> (+254) 733-955377</li>
+                            <!--<li><i class="fa fa-mobile-phone"></i> (+254) 724-955377</li>-->
+                            <li><a class="block" href="mailto:info@tum.ac.ke"><i class="fa fa-envelope"></i>
+                                    info@tum.ac.ke</a></li>
+                        </ul> <!-- Social Icons -->
+                        <div class="clearfix"> <a href="https://facebook.com"
+                                class="social-icon social-icon-sm social-icon-border social-facebook pull-left"
+                                data-toggle="tooltip" data-placement="top" title="Facebook"> <i
+                                    class="icon-facebook"></i> <i class="icon-facebook"></i> </a> <a
+                                href="https://twitter.com"
+                                class="social-icon social-icon-sm social-icon-border social-twitter pull-left"
+                                data-toggle="tooltip" data-placement="top" title="Twitter"> <i class="icon-twitter"></i>
+                                <i class="icon-twitter"></i> </a> <a href="https://youtube.com"
+                                class="social-icon social-icon-sm social-icon-border social-youtube pull-left"
+                                data-toggle="tooltip" data-placement="top" title="Youtube"> <i class="icon-youtube"></i>
+                                <i class="icon-youtube"></i> </a> <a href="https://instagram.com"
+                                class="social-icon social-icon-sm social-icon-border social-instagram pull-left"
+                                data-toggle="tooltip" data-placement="top" title="Instagram"> <i
+                                    class="icon-instagram"></i> <i class="icon-instagram"></i> </a> </div>
+                        <!-- /Social Icons -->
+                    </div> <!-- /col #1 -->
+                    <!-- col #2 -->
+                    <div class="col-md-8 col-sm-8">
+                        <div class="row">
+                            <div class="col-md-4 hidden-sm hidden-xs">
+                                <h4 class="letter-spacing-1">STAFF RESOURCES</h4>
+                                <ul class="list-unstyled footer-list half-paddings noborder">
+                                    <li><a class="block" href="https://mail.google.com/a/tum.ac.ke"><i
+                                                class="fa fa-angle-right"></i> Staff Mail</a></li>
+                                    <li><a class="block" href="https://hr.tum.ac.ke"><i class="fa fa-angle-right"></i>
+                                            Staff Portal</a></li>
+                                    <li><a class="block" href="https://staff.tum.ac.ke/"><i
+                                                class="fa fa-angle-right"></i> Staff Downloads</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 hidden-sm hidden-xs">
+                                <h4 class="letter-spacing-1">STUDENT RESOURCES</h4>
+                                <ul class="list-unstyled footer-list half-paddings noborder">
+                                    <li><a class="block" href="https://mail.google.com/a/students.tum.ac.ke"><i
+                                                class="fa fa-angle-right"></i> Student Mail</a></li>
+                                    <li><a class="block"
+                                            href="https://eregistrar.tum.ac.ke/Campuscura/?TenantID=tum#login;TenantID=tum;Apply=false"><i
+                                                class="fa fa-angle-right"></i> E-Registrar</a></li>
+                                    <li><a class="block" href="https://elearning.tum.ac.ke"><i
+                                                class="fa fa-angle-right"></i> E-Learning</a></li>
+                                    <li><a class="block" href="https://library.tum.ac.ke"><i
+                                                class="fa fa-angle-right"></i> Library Services</a></li>
+                                    <li><a class="block" href="https://www.tum.ac.ke/campus-life"><i
+                                                class="fa fa-angle-right"></i> Campus Life</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 hidden-sm hidden-xs">
+                                <h4 class="letter-spacing-1">IMPORTANT LINKS</h4>
+                                <ul class="list-unstyled footer-list half-paddings noborder">
+                                    <li><a class="block" href="https://www.tum.ac.ke/about/qps"><i
+                                                class="fa fa-angle-right"></i> ISO</a></li>
+                                    <li><a class="block" href="https://www.tum.ac.ke/about/charter"><i
+                                                class="fa fa-angle-right"></i> Citizen Service Delivery Charter</a></li>
+                                    <li><a class="block" href="https://jobs.tum.ac.ke"><i class="fa fa-angle-right"></i>
+                                            Jobs & Vaccancies</a></li>
+                                    <li><a class="block" href="https://www.tum.ac.ke/tenders"><i
+                                                class="fa fa-angle-right"></i> Tenders</a></li>
+                                    <li><a class="block" href="https://www.tum.ac.ke/downloads/admission"><i
+                                                class="fa fa-angle-right"></i> Downloads</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- /col #2 -->
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <ul class="pull-right nomargin list-inline mobile-block">
+                        <li><a href="#">Designed by TUM, ICTS </a></li>
+                    </ul> Copyright © 2022 Technical University of Mombasa. All Rights Reserved.
+                </div>
+            </div>
+        </footer> <!-- /FOOTER -->
+    </div> <!-- /wrapper -->
+    <!-- SCROLL TO TOP --> <a href="#" id="toTop"></a> <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="inner"> <span class="loader"></span> </div>
+    </div><!-- /PRELOADER -->
+    <div id="modalUI" class="modal-warning modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div id="modalHeader" class="modal-header"><button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button></div>
+                <div class="modal-body">
+                    <div id='modalContent'>
+                        <div style="text-align:center"><i class="fa fa-spinner fa-spin fa-4x"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">var plugin_path = '/themes/smarty/plugins/';</script>
+    <script src="/assets/d66df15e/jquery.js"></script>
+    <script src="/assets/31fabacb/yii.js"></script>
+    <script src="/assets/31fabacb/yii.gridView.js"></script>
+    <script src="/themes/smarty/plugins/jquery/jquery-2.1.4.min.js"></script>
+    <script src="/themes/smarty/js/scripts.js"></script>
+    <script src="/themes/smarty/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script src="/themes/smarty/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script src="/themes/smarty/js/view/demo.revolution_slider.js"></script>
+    <script src="/assets/b9bbc6b7/js/bootstrap.js"></script>
+    <script>jQuery(function ($) { jQuery('#w0').yiiGridView({ "filterUrl": "\/noticeboard", "filterSelector": "#w0-filters input, #w0-filters select", "filterOnFocusOut": true }); jQuery('#modalUI').modal({ "show": false, "backdrop": "static", "keyboard": false }); $(function () { $('.loadModal').click(function () { $('#modalUI').modal('show').find('#modalContent').load($(this).attr('value'))                    document.getElementById('modalHeader').innerHTML = '<button type="button" class="close" data-dismiss="modal">&times;</button><h4>' + $(this).attr('heading') + '</h4>'; $('.modal-dialog').addClass($(this).attr('size')); }); }); });</script>
+</body>
+
+</html>

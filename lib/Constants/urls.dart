@@ -5,4 +5,5 @@ class Urls {
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKPfgzu_mQU02o2kX5rn0hMGU8MQKpHsHdGQ&usqp=CAU";
 
   static const String tumHome = 'https://www.tum.ac.ke';
+  static const String tumNoticeBoard = tumHome +'/noticeboard';
 }
