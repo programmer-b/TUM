@@ -9,6 +9,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   List<String> urlImages = [];
+  List<NoticeBoardData> noticeBoardData = [];
 
   @override
   void initState() {
@@ -17,7 +18,7 @@ class _DashBoardState extends State<DashBoard> {
     // getWebSiteData();
   }
 
-  void init() {
+  void init() async {
     context.read<FirebaseHelper>().read();
     context.read<FirebaseHelper>().readMenu();
     context.read<API>().getContent(Urls.tumHome);
@@ -46,9 +47,12 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   List<String?> urls = [];
-
+  String noticeBoard = '';
   Applications applications = Applications();
+
   EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 20);
+
+  final API api = API();
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +60,43 @@ class _DashBoardState extends State<DashBoard> {
     if (provider.root != null) {
       urls = operations.getImagesFromClass(
           provider.root!.snapshot.child('Home/Content/').value.toString());
+      noticeBoard = provider.root!.snapshot
+          .child('NoticeBoard/Page_1/Content')
+          .value
+          .toString();
     }
     int imageCount = urls.length;
+    dom.Document noticeBoardHtml = dom.Document.html(noticeBoard);
 
+    final noticeMessages = noticeBoardHtml
+        .querySelectorAll('.table > tbody:nth-child(2) > tr > td:nth-child(1)')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+
+    final noticeDates = noticeBoardHtml
+        .querySelectorAll('.table > tbody:nth-child(2) > tr > td:nth-child(2)')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+
+    final noticeUrls = noticeBoardHtml
+        .querySelectorAll(
+            '.table > tbody:nth-child(2) > tr > td:nth-child(3) > a')
+        .map((element) => 'https://www.tum.ac.ke${element.attributes['href']}')
+        .toList();
+    // log('length: ${noticeMessages.length}');
+    // for (final notice in noticeMessages) {
+    //   log('notice: $notice');
+    // }
+
+    log(noticeUrls.toString() + '\n');
+
+    setState(() => noticeBoardData = List.generate(
+        noticeMessages.length,
+        (index) => NoticeBoardData(
+              date: noticeDates[index],
+              notice: noticeMessages[index],
+              url: noticeUrls[index],
+            )));
     // log(provider.root?.snapshot.child('Home/Content/').value.toString() ??
     //     "null");
     final apps = Provider.of<FirebaseHelper>(context).apps;
@@ -67,14 +105,24 @@ class _DashBoardState extends State<DashBoard> {
         : Scaffold(
             appBar: _appBar(context),
             drawer: const MyDrawer(),
-            body: Column(
-              children: [
-                buildCarousel(urls, imageCount),
-                Dimens.titleBodyGap(scale: 0.6),
-                quickAccess(apps),
-                Dimens.defaultMargin(scale: 0.6),
-                title(text: 'notice board'),
-              ],
+            body: RefreshIndicator(
+              onRefresh: () async {
+                await api.getContent(Urls.tumHome);
+                log('getting content from urls: ' + Urls.tumHome);
+              },
+              child: ScrollableWidget(
+                child: Column(
+                  children: [
+                    buildCarousel(urls, imageCount),
+                    Dimens.titleBodyGap(scale: 0.6),
+                    quickAccess(apps),
+                    Dimens.defaultMargin(scale: 0.6),
+                    //title(text: 'notice board'),
+                    //Dimens.defaultMargin(scale: 0.6),
+                    homeNoticeBoard(context)
+                  ],
+                ),
+              ),
             ));
   }
 
@@ -86,6 +134,97 @@ class _DashBoardState extends State<DashBoard> {
         text: text,
         fullUpperCase: true,
         textAlign: TextAlign.start,
+      ),
+    );
+  }
+
+  // Color titleColor(bool expanded) {
+  //   var color = Colorz.primaryGreen;
+  //   if (!expanded) {
+  //     color = Colors.black54;
+  //   }
+  //   if (context.read<ThemeProvider>().isDarkMode) {
+  //     color = Colors.white;
+  //   }
+
+  //   return color;
+  // }
+
+  Widget homeNoticeBoard(context) {
+    bool noticeIsExpanded = true;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    Widget noticeChild(int i) {
+      void onTap(context) {
+        openPDF(context, noticeBoardData[i].url!, noticeBoardData[i].notice!);
+      }
+
+      ;
+      return Column(
+        children: [
+          ListTile(
+            dense: true,
+            onTap: () async => onTap(context),
+            leading: Txt(text: i + 1),
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: Txt(
+                text: noticeBoardData[i].notice,
+                upperCaseFirst: true,
+                textAlign: TextAlign.start,
+                color: themeProvider.isDarkMode ? null : Colors.black,
+              ),
+            ),
+            horizontalTitleGap: 0,
+            subtitle: Txt(
+              text: noticeBoardData[i].date,
+              textAlign: TextAlign.start,
+              fullUpperCase: true,
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.chevron_right),
+              color: themeProvider.isDarkMode ? Colors.white70 : null,
+              onPressed: () async => onTap(context),
+            ),
+          ),
+          const Divider()
+        ],
+      );
+    }
+
+    // log('expanded: $noticeIsExpanded');
+    return Container(
+      padding: padding,
+      child: ListTileTheme(
+        dense: true,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: const Color.fromRGBO(196, 196, 196, 0.6),
+            unselectedWidgetColor: themeProvider.isDarkMode
+                ? Colors.white
+                : Colors.black54, // here for close state
+            colorScheme: ColorScheme.light(
+              primary:
+                  themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen,
+            ),
+          ), //
+          child: ExpansionTile(
+            initiallyExpanded: noticeIsExpanded,
+            onExpansionChanged: (expanded) {
+              setState(() {
+                log('expanded: $expanded');
+                noticeIsExpanded = expanded;
+                log('noticeIsExapanded:  $noticeIsExpanded');
+              });
+            },
+            title: const Txt(
+              text: 'notice board',
+              fullUpperCase: true,
+            ),
+            children: [
+              for (int i = 0; i < noticeBoardData.length; i++) noticeChild(i)
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -133,4 +272,8 @@ class _DashBoardState extends State<DashBoard> {
           itemCount: apps.length),
     );
   }
+
+  void openPDF(context, String url, String title) =>
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PDFScreen(url: url, title: title)));
 }

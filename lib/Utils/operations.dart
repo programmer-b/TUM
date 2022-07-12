@@ -23,12 +23,13 @@ class Operations {
   }
 
   bool validRegistrationNumber({required String val}) {
-    if (letterOccurrence(string: val.toLowerCase(), letter: '/') == 2 &&
-        val.length > 10 &&
-        isNumeric(val.lastChars(4))) {
-      return true;
-    }
-    return false;
+    // if (letterOccurrence(string: val.toLowerCase(), letter: '/') == 2 &&
+    //     val.length > 10 &&
+    //     isNumeric(val.lastChars(4))) {
+    //   return true;bin/cache/lockfile
+    // }
+    // return false;
+    return true;
   }
 
   static String getFirstWord(String inputString) {
@@ -81,4 +82,8 @@ class Operations {
     }).toList();
     return urls;
   }
+
+  // List<String> homeNoticeBoard(String body) {
+
+  // }
 }

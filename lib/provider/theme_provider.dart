@@ -39,13 +39,16 @@ class ThemeProvider extends ChangeNotifier {
     } else {
       return ThemeMode.system;
     }
-    
   }
 }
 
 class MyThemes {
   static final darkTheme = ThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+    ),
       appBarTheme: const AppBarTheme(
+        
         color: Colors.black54,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
@@ -58,6 +61,9 @@ class MyThemes {
       iconTheme: const IconThemeData(color: Colors.white));
 
   static final lightTheme = ThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colorz.primaryGreen,
+    ),
       appBarTheme: const AppBarTheme(
         color: Colorz.primaryGreen,
         elevation: 0,
@@ -66,10 +72,14 @@ class MyThemes {
           systemNavigationBarColor: Colors.blue,
         ),
       ),
+      colorSchemeSeed: Colorz.primaryGreen,
       fontFamily: 'Roboto',
       scaffoldBackgroundColor: Colors.grey[200],
-      primaryColor: Colors.white,
-      iconTheme: const IconThemeData(color: Colors.grey),
-      colorScheme:
-          const ColorScheme.light().copyWith(secondary: Colorz.primaryGreen));
+      // primaryColor: Colors.white,
+      listTileTheme: const ListTileThemeData(
+          selectedColor: Colorz.primaryGreen, textColor: Colors.black54),
+      iconTheme: const IconThemeData(color: Colors.grey));
+     
+  // colorScheme:
+  //     const ColorScheme.light().copyWith(secondary: Colorz.primaryGreen));
 }

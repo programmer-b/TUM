@@ -10,6 +10,12 @@ class API with ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
+  bool _hasError = false;
+  bool get hasError => _hasError;
+
+  bool _success = false;
+  bool get success => _success;
+
   void init() {
     _htmlContent = "";
     _loading = false;
@@ -22,14 +28,15 @@ class API with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Map<String, String>> urls = [
+  List<Map<String, dynamic>> urls = [
     {"url": Urls.tumHome, "name": "Home"},
-    {"url": Urls.tumNoticeBoard, "name": "NoticeBoard"}
+    {"url": Urls.tumNoticeBoard(1), "name": "NoticeBoard/Page_1"}
   ];
 
   int i = 0;
 
   Future<void> getContent(String url) async {
+    log('waiting for $url ...');
     try {
       while (i < urls.length) {
         final response = await http.get(Uri.parse(urls[i]['url']!));
@@ -37,7 +44,9 @@ class API with ChangeNotifier {
           urls[i]['name'] ?? "Null": {"Content": response.body}
         };
         log('url:  ${urls[i]['url']}\nname:  ${urls[i]['name']}');
-        helper.updateToCustomPath(map);
+        if(response.ok){
+          helper.updateToCustomPath(map);
+        }
 
         i++;
       }
@@ -59,5 +68,33 @@ class API with ChangeNotifier {
 
     _loading = false;
     notifyListeners();
+  }
+
+  Future<File> loadNetwork(String url) async {
+    try {
+      load();
+      final response = await http.get(Uri.parse(url));
+      final bytes = response.bodyBytes;
+      return _storeFiles(url, bytes);
+    } catch (exception) {
+      _error = exception;
+      _hasError = true;
+      rethrow;
+    }
+  }
+
+  Future<File> _storeFiles(String url, List<int> bytes) async {
+    final filename = basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
+}
+
+extension IsOk on http.Response {
+  bool get ok {
+    return (statusCode ~/ 100) == 2;
   }
 }

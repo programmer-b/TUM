@@ -33,5 +33,6 @@ part './Avatars/user_avatar.dart';
 part './Buttons/application_button.dart';
 part './scrollable_widget.dart';
 part './Buttons/application_icon_button.dart';
+part './Buttons/custom_icon_button.dart';
 
 final CounterStorage counterStorage = CounterStorage();
