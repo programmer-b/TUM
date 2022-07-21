@@ -8,4 +8,8 @@ class Urls {
   static String tumNoticeBoard(int page) {
     return tumHome + '/noticeboard/index?page=$page';
   }
+
+  static String tumNews(int page) {
+    return tumHome + '/news/index?page=$page';
+  }
 }

@@ -56,6 +56,7 @@ dependencies:
   flutter_pdfview: ^1.2.2
   path: ^1.8.0
   share_plus: ^4.0.10
+  shimmer: ^2.0.0
 
 
 dev_dependencies:

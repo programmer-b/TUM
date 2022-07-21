@@ -1,10 +1,8 @@
 
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:html/parser.dart' show parse;
+//import 'package:html/parser.dart' show parse;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,6 +19,7 @@ import 'package:tum/provider/provider.dart';
 import '../../Firebase/firebase.dart';
 
 part './dashboard.dart';
+part './news_page.dart';
 
 PreferredSizeWidget appBar(BuildContext context,
     {Color statusBarColor = Colors.transparent,

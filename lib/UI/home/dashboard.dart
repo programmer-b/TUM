@@ -10,6 +10,7 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   List<String> urlImages = [];
   List<NoticeBoardData> noticeBoardData = [];
+  List<NewsData> newsData = [];
 
   @override
   void initState() {
@@ -48,32 +49,65 @@ class _DashBoardState extends State<DashBoard> {
 
   List<String?> urls = [];
   String noticeBoard = '';
+  String news = '';
   Applications applications = Applications();
 
   EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 20);
 
   final API api = API();
 
+  int notifications = 3;
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context);
+
+    String _databaseWebContent(String path) {
+      return provider.root!.snapshot.child(path).value.toString();
+    }
+
+    dom.Document _dataHtml(String html) {
+      return dom.Document.html(html);
+    }
+
     if (provider.root != null) {
-      urls = operations.getImagesFromClass(
-          provider.root!.snapshot.child('Home/Content/').value.toString());
-      noticeBoard = provider.root!.snapshot
-          .child('NoticeBoard/Page_1/Content')
-          .value
-          .toString();
+      urls =
+          operations.getImagesFromClass(_databaseWebContent('Home/Content/'));
+      noticeBoard = _databaseWebContent('NoticeBoard/Page_1/Content');
+      news = _databaseWebContent('News/Page_1/Content');
     }
     int imageCount = urls.length;
-    dom.Document noticeBoardHtml = dom.Document.html(noticeBoard);
+
+    dom.Document noticeBoardHtml = _dataHtml(noticeBoard);
+    dom.Document newsHtml = _dataHtml(news);
+
+    final newsMessages = newsHtml
+        .querySelectorAll('#w0 > div > div > h2 > a')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+
+    final newsImages = newsHtml
+        .querySelectorAll('#w0 > div > div > figure > img')
+        .map((element) => 'https://www.tum.ac.ke${element.attributes['src']}')
+        .toList();
+
+    final newsDate = newsHtml
+        .querySelectorAll('#w0 > div > div > ul > li > a > span')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+    final newsLink = newsHtml
+        .querySelectorAll('#w0 > div > div > h2 > a')
+        .map((element) => 'https://www.tum.ac.ke${element.attributes['href']}')
+        .toList();
+
+    log('News; $newsMessages \n image: $newsImages \n date: $newsDate \n link: $newsLink');
 
     final noticeMessages = noticeBoardHtml
         .querySelectorAll('.table > tbody:nth-child(2) > tr > td:nth-child(1)')
         .map((element) => element.innerHtml.trim())
         .toList();
 
-    final noticeDates = noticeBoardHtml
+    final noticeDate = noticeBoardHtml
         .querySelectorAll('.table > tbody:nth-child(2) > tr > td:nth-child(2)')
         .map((element) => element.innerHtml.trim())
         .toList();
@@ -88,15 +122,23 @@ class _DashBoardState extends State<DashBoard> {
     //   log('notice: $notice');
     // }
 
-    log(noticeUrls.toString() + '\n');
-
-    setState(() => noticeBoardData = List.generate(
-        noticeMessages.length,
-        (index) => NoticeBoardData(
-              date: noticeDates[index],
-              notice: noticeMessages[index],
-              url: noticeUrls[index],
-            )));
+    setState(() {
+      noticeBoardData = List.generate(
+          noticeMessages.length,
+          (index) => NoticeBoardData(
+                date: noticeDate[index],
+                notice: noticeMessages[index],
+                url: noticeUrls[index],
+              ));
+      newsData = List.generate(
+          newsMessages.length,
+          (index) => NewsData(
+                date: newsDate[index],
+                news: newsMessages[index],
+                url: newsLink[index],
+                image: newsImages[index],
+              ));
+    });
     // log(provider.root?.snapshot.child('Home/Content/').value.toString() ??
     //     "null");
     final apps = Provider.of<FirebaseHelper>(context).apps;
@@ -119,7 +161,7 @@ class _DashBoardState extends State<DashBoard> {
                     Dimens.defaultMargin(scale: 0.6),
                     //title(text: 'notice board'),
                     //Dimens.defaultMargin(scale: 0.6),
-                    homeNoticeBoard(context)
+                    homeNoticeBoard(context), homeNewsBoard(context)
                   ],
                 ),
               ),
@@ -150,6 +192,124 @@ class _DashBoardState extends State<DashBoard> {
   //   return color;
   // }
 
+  // Widget homeNews(){
+
+  // }
+
+  Widget homeNewsBoard(context) {
+    bool newsIsExpanded = true;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    Widget newsChild(int i) {
+      void onTap(context) {
+        openNews(context, newsData[i].url!, newsData[i].news!, newsData[i].image!);
+      }
+
+      return Column(
+        children: [
+          ListTile(
+            dense: true,
+            onTap: () async => onTap(context),
+            leading: Txt(text: i + 1),
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildNewsImage(newsData[i].image!),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Txt(
+                    text: newsData[i].news,
+                    upperCaseFirst: true,
+                    textAlign: TextAlign.start,
+                    color: themeProvider.isDarkMode ? null : Colors.black,
+                  ),
+                ],
+              ),
+            ),
+            horizontalTitleGap: 0,
+            subtitle: Txt(
+              text: newsData[i].date,
+              textAlign: TextAlign.start,
+              fullUpperCase: true,
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.chevron_right),
+              color: themeProvider.isDarkMode ? Colors.white70 : null,
+              onPressed: () async => onTap(context),
+            ),
+          ),
+          const Divider()
+        ],
+      );
+    }
+
+    // log('expanded: $noticeIsExpanded');
+    return Container(
+      padding: padding,
+      child: ListTileTheme(
+        dense: true,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: const Color.fromRGBO(196, 196, 196, 0.6),
+            unselectedWidgetColor: themeProvider.isDarkMode
+                ? Colors.white
+                : Colors.black54, // here for close state
+            colorScheme: ColorScheme.light(
+              primary:
+                  themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen,
+            ),
+          ), //
+          child: ExpansionTile(
+            initiallyExpanded: newsIsExpanded,
+            onExpansionChanged: (expanded) {
+              setState(() {
+                log('expanded: $expanded');
+                newsIsExpanded = expanded;
+                log('noticeIsExapanded:  $newsIsExpanded');
+              });
+            },
+            title: const Txt(
+              text: ' tum news',
+              fullUpperCase: true,
+            ),
+            children: [
+              for (int i = 0; i < newsData.length; i++) newsChild(i),
+              TxtButton(
+                text: 'read more',
+                padding: const EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                onPressed: () =>
+                    setState(() => notifications == noticeBoardData.length),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildNewsImage(String url) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      child: CachedNetworkImage(
+        placeholder: (_, __) {
+          return const ShimmerWidget.circular(
+              shapeBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              width: double.infinity,
+              height: 100);
+        },
+        width: double.infinity,
+        height: 100,
+        key: UniqueKey(),
+        fit: BoxFit.cover,
+        imageUrl: url,
+      ),
+    );
+  }
+
   Widget homeNoticeBoard(context) {
     bool noticeIsExpanded = true;
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -158,7 +318,6 @@ class _DashBoardState extends State<DashBoard> {
         openPDF(context, noticeBoardData[i].url!, noticeBoardData[i].notice!);
       }
 
-      ;
       return Column(
         children: [
           ListTile(
@@ -221,7 +380,14 @@ class _DashBoardState extends State<DashBoard> {
               fullUpperCase: true,
             ),
             children: [
-              for (int i = 0; i < noticeBoardData.length; i++) noticeChild(i)
+              for (int i = 0; i < notifications; i++) noticeChild(i),
+              TxtButton(
+                text: 'read more',
+                padding: const EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                onPressed: () =>
+                    setState(() => notifications == noticeBoardData.length),
+              )
             ],
           ),
         ),
@@ -249,6 +415,12 @@ class _DashBoardState extends State<DashBoard> {
     return Container(
         color: Colors.grey,
         child: CachedNetworkImage(
+          placeholder: (_, __) {
+          return const ShimmerWidget.rectangular(
+              
+              width: double.infinity,
+              height: 200);
+        },
           key: UniqueKey(),
           width: double.infinity,
           fit: BoxFit.cover,
@@ -273,7 +445,10 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
-  void openPDF(context, String url, String title) =>
+  void openPDF(context, String url, String title,) =>
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PDFScreen(url: url, title: title)));
+
+          void openNews(context, String url, String title, String image) =>  Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => NewsPage(url: url, title: title,image: image)));
 }

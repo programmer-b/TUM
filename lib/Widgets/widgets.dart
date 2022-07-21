@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tum/Constants/constants.dart';
 import 'package:tum/Utils/utils.dart';
 
@@ -16,7 +17,7 @@ part 'Buttons/back_button.dart';
 part './my_text_field.dart';
 part './txt.dart';
 part './change_theme_button_widget.dart';
-part './text_button.dart';
+part 'Buttons/text_button.dart';
 part 'Buttons/my_button.dart.dart';
 part 'logo.dart';
 part './form_fields.dart';
@@ -34,5 +35,6 @@ part './Buttons/application_button.dart';
 part './scrollable_widget.dart';
 part './Buttons/application_icon_button.dart';
 part './Buttons/custom_icon_button.dart';
+part './shimmer_widget.dart';
 
 final CounterStorage counterStorage = CounterStorage();

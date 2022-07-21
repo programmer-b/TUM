@@ -30,7 +30,8 @@ class API with ChangeNotifier {
 
   List<Map<String, dynamic>> urls = [
     {"url": Urls.tumHome, "name": "Home"},
-    {"url": Urls.tumNoticeBoard(1), "name": "NoticeBoard/Page_1"}
+    {"url": Urls.tumNoticeBoard(1), "name": "NoticeBoard/Page_1"},
+    {"url": Urls.tumNews(1), "name": "News/Page_1"},
   ];
 
   int i = 0;
