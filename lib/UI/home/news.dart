@@ -26,6 +26,6 @@ class _NewsState extends State<News> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "News"));
   }
 }

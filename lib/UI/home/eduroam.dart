@@ -26,6 +26,6 @@ class _EduroamState extends State<Eduroam> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Eduroam"));
   }
 }

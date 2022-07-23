@@ -40,4 +40,22 @@ class TUMState with ChangeNotifier {
     _controller = controller;
     notifyListeners();
   }
+
+  List<String> _screenTitles = [];
+  List<String> get screenTitles => _screenTitles;
+
+  int _index = 0;
+  int get index => _index;
+
+  void updateScreenTitles(List<String> titles) {
+    _screenTitles = titles;
+    notifyListeners();
+  }
+
+  void navidateToScreen(context, String url, int index) {
+    _index = index;
+    log('updating to index: $index');
+    Navigator.pushNamed(context, url);
+    notifyListeners();
+  }
 }

@@ -26,6 +26,6 @@ class _CalenderState extends State<Calender> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Calender"));
   }
 }

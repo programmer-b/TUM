@@ -17,9 +17,10 @@ class API with ChangeNotifier {
   bool get success => _success;
 
   void init() {
+    _success = false;
+    _hasError = false;
     _htmlContent = "";
     _loading = false;
-    notifyListeners();
   }
 
   void load() {
@@ -36,6 +37,30 @@ class API with ChangeNotifier {
 
   int i = 0;
 
+  Future<void> getHtml(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.ok) {
+        _success = true;
+        _htmlContent = response.body;
+      }
+      _error = true;
+    } on SocketException {
+      _error = true;
+      throw ("socket exception");
+    } catch (e) {
+      _error = true;
+      if (e is SocketException) {
+        log('socket error: ' + e.toString());
+      }
+      log('an error occurred: ' + e.toString());
+      _error = e;
+    }
+
+    _loading = false;
+    notifyListeners();
+  }
+
   Future<void> getContent(String url) async {
     log('waiting for $url ...');
     try {
@@ -45,7 +70,7 @@ class API with ChangeNotifier {
           urls[i]['name'] ?? "Null": {"Content": response.body}
         };
         log('url:  ${urls[i]['url']}\nname:  ${urls[i]['name']}');
-        if(response.ok){
+        if (response.ok) {
           helper.updateToCustomPath(map);
         }
 

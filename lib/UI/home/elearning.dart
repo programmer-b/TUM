@@ -26,6 +26,6 @@ class _ElearningState extends State<Elearning> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Elearning"));
   }
 }

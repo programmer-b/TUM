@@ -40,12 +40,14 @@ class _MyDrawerState extends State<MyDrawer> {
                           i++)
                         ApplicationButton(
                             selected:
-                                updateIndex.currentScreen == index * 2 + i,
+                               context.read<TUMState>().index == index * 2 + i,
                             icon: getIconUsingPrefix(
                                 name: provider[index * 2 + i]['icon']),
                             text: provider[index * 2 + i]['name'],
-                            onTap: () =>
-                                updateIndex.updateIndex(index * 2 + i)),
+                            onTap: () {
+                             
+                              context.read<TUMState>().navidateToScreen(context, provider[index * 2 + i]['url'], index* 2 + i);
+                            }),
                     ],
                   ),
                 );

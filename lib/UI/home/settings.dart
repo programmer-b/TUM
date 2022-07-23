@@ -26,6 +26,6 @@ class _SettingsState extends State<Settings> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Settings"));
   }
 }

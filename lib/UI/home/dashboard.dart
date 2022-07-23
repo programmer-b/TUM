@@ -20,9 +20,11 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   void init() async {
-    context.read<FirebaseHelper>().read();
-    context.read<FirebaseHelper>().readMenu();
-    context.read<API>().getContent(Urls.tumHome);
+    Future.delayed(Duration.zero, () {
+      context.read<FirebaseHelper>().read();
+      context.read<FirebaseHelper>().readMenu();
+      context.read<API>().getContent(Urls.tumHome);
+    });
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -47,20 +49,10 @@ class _DashBoardState extends State<DashBoard> {
         title: const Txt(text: "Home"));
   }
 
-  List<String?> urls = [];
-  String noticeBoard = '';
-  String news = '';
-  Applications applications = Applications();
-
-  EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 20);
-
-  final API api = API();
-
-  int notifications = 3;
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context);
+    // final tumStateProvider = Provider.of<TUMState>(context);
 
     String _databaseWebContent(String path) {
       return provider.root!.snapshot.child(path).value.toString();
@@ -157,11 +149,13 @@ class _DashBoardState extends State<DashBoard> {
                   children: [
                     buildCarousel(urls, imageCount),
                     Dimens.titleBodyGap(scale: 0.6),
-                    quickAccess(apps),
+                    quickAccess(context, apps),
                     Dimens.defaultMargin(scale: 0.6),
                     //title(text: 'notice board'),
                     //Dimens.defaultMargin(scale: 0.6),
-                    homeNoticeBoard(context), homeNewsBoard(context)
+                    homeNoticeBoard(context,
+                        noticeBoardData: noticeBoardData, length: 3),
+                    homeNewsBoard(context, newsdata: newsData, length: 3)
                   ],
                 ),
               ),
@@ -180,221 +174,6 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
-  // Color titleColor(bool expanded) {
-  //   var color = Colorz.primaryGreen;
-  //   if (!expanded) {
-  //     color = Colors.black54;
-  //   }
-  //   if (context.read<ThemeProvider>().isDarkMode) {
-  //     color = Colors.white;
-  //   }
-
-  //   return color;
-  // }
-
-  // Widget homeNews(){
-
-  // }
-
-  Widget homeNewsBoard(context) {
-    bool newsIsExpanded = true;
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    Widget newsChild(int i) {
-      void onTap(context) {
-        openNews(context, newsData[i].url!, newsData[i].news!, newsData[i].image!);
-      }
-
-      return Column(
-        children: [
-          ListTile(
-            dense: true,
-            onTap: () async => onTap(context),
-            leading: Txt(text: i + 1),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildNewsImage(newsData[i].image!),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Txt(
-                    text: newsData[i].news,
-                    upperCaseFirst: true,
-                    textAlign: TextAlign.start,
-                    color: themeProvider.isDarkMode ? null : Colors.black,
-                  ),
-                ],
-              ),
-            ),
-            horizontalTitleGap: 0,
-            subtitle: Txt(
-              text: newsData[i].date,
-              textAlign: TextAlign.start,
-              fullUpperCase: true,
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.chevron_right),
-              color: themeProvider.isDarkMode ? Colors.white70 : null,
-              onPressed: () async => onTap(context),
-            ),
-          ),
-          const Divider()
-        ],
-      );
-    }
-
-    // log('expanded: $noticeIsExpanded');
-    return Container(
-      padding: padding,
-      child: ListTileTheme(
-        dense: true,
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            dividerColor: const Color.fromRGBO(196, 196, 196, 0.6),
-            unselectedWidgetColor: themeProvider.isDarkMode
-                ? Colors.white
-                : Colors.black54, // here for close state
-            colorScheme: ColorScheme.light(
-              primary:
-                  themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen,
-            ),
-          ), //
-          child: ExpansionTile(
-            initiallyExpanded: newsIsExpanded,
-            onExpansionChanged: (expanded) {
-              setState(() {
-                log('expanded: $expanded');
-                newsIsExpanded = expanded;
-                log('noticeIsExapanded:  $newsIsExpanded');
-              });
-            },
-            title: const Txt(
-              text: ' tum news',
-              fullUpperCase: true,
-            ),
-            children: [
-              for (int i = 0; i < newsData.length; i++) newsChild(i),
-              TxtButton(
-                text: 'read more',
-                padding: const EdgeInsets.only(left: 15),
-                alignment: Alignment.centerLeft,
-                onPressed: () =>
-                    setState(() => notifications == noticeBoardData.length),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildNewsImage(String url) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
-      child: CachedNetworkImage(
-        placeholder: (_, __) {
-          return const ShimmerWidget.circular(
-              shapeBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: double.infinity,
-              height: 100);
-        },
-        width: double.infinity,
-        height: 100,
-        key: UniqueKey(),
-        fit: BoxFit.cover,
-        imageUrl: url,
-      ),
-    );
-  }
-
-  Widget homeNoticeBoard(context) {
-    bool noticeIsExpanded = true;
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    Widget noticeChild(int i) {
-      void onTap(context) {
-        openPDF(context, noticeBoardData[i].url!, noticeBoardData[i].notice!);
-      }
-
-      return Column(
-        children: [
-          ListTile(
-            dense: true,
-            onTap: () async => onTap(context),
-            leading: Txt(text: i + 1),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: Txt(
-                text: noticeBoardData[i].notice,
-                upperCaseFirst: true,
-                textAlign: TextAlign.start,
-                color: themeProvider.isDarkMode ? null : Colors.black,
-              ),
-            ),
-            horizontalTitleGap: 0,
-            subtitle: Txt(
-              text: noticeBoardData[i].date,
-              textAlign: TextAlign.start,
-              fullUpperCase: true,
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.chevron_right),
-              color: themeProvider.isDarkMode ? Colors.white70 : null,
-              onPressed: () async => onTap(context),
-            ),
-          ),
-          const Divider()
-        ],
-      );
-    }
-
-    // log('expanded: $noticeIsExpanded');
-    return Container(
-      padding: padding,
-      child: ListTileTheme(
-        dense: true,
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            dividerColor: const Color.fromRGBO(196, 196, 196, 0.6),
-            unselectedWidgetColor: themeProvider.isDarkMode
-                ? Colors.white
-                : Colors.black54, // here for close state
-            colorScheme: ColorScheme.light(
-              primary:
-                  themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen,
-            ),
-          ), //
-          child: ExpansionTile(
-            initiallyExpanded: noticeIsExpanded,
-            onExpansionChanged: (expanded) {
-              setState(() {
-                log('expanded: $expanded');
-                noticeIsExpanded = expanded;
-                log('noticeIsExapanded:  $noticeIsExpanded');
-              });
-            },
-            title: const Txt(
-              text: 'notice board',
-              fullUpperCase: true,
-            ),
-            children: [
-              for (int i = 0; i < notifications; i++) noticeChild(i),
-              TxtButton(
-                text: 'read more',
-                padding: const EdgeInsets.only(left: 15),
-                alignment: Alignment.centerLeft,
-                onPressed: () =>
-                    setState(() => notifications == noticeBoardData.length),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget buildCarousel(List<String?> urls, int itemCount) {
     return CarouselSlider.builder(
       options: CarouselOptions(
@@ -405,50 +184,28 @@ class _DashBoardState extends State<DashBoard> {
       itemCount: itemCount,
       itemBuilder: (context, index, realIndex) {
         final urlImage = urls[index];
-        return buildImage(urlImage!, index);
+        return buildImage(Urls.tumHome + urlImage!);
       },
     );
   }
 
-  Widget buildImage(String urlImage, int index) {
-    final url = Urls.tumHome + urlImage;
-    return Container(
-        color: Colors.grey,
-        child: CachedNetworkImage(
-          placeholder: (_, __) {
-          return const ShimmerWidget.rectangular(
-              
-              width: double.infinity,
-              height: 200);
-        },
-          key: UniqueKey(),
-          width: double.infinity,
-          fit: BoxFit.cover,
-          imageUrl: url,
-        ));
-  }
-
-  Widget quickAccess(List<dynamic> apps) {
+  Widget quickAccess(BuildContext context, List<dynamic> apps) {
     return SizedBox(
       height: 100,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (_, index) {
-            return ApplicationIconButton(
-              icon: getIconUsingPrefix(name: apps[index]['icon']),
-              name: apps[index]['name'],
-              onTap: () {},
-            );
+            return index > 0
+                ? ApplicationIconButton(
+                    icon: getIconUsingPrefix(name: apps[index]['icon']),
+                    name: apps[index]['name'],
+                    onTap: () => context
+                        .read<TUMState>()
+                        .navidateToScreen(context, apps[index]['url'], index))
+                : const Center();
           },
           itemCount: apps.length),
     );
   }
-
-  void openPDF(context, String url, String title,) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PDFScreen(url: url, title: title)));
-
-          void openNews(context, String url, String title, String image) =>  Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NewsPage(url: url, title: title,image: image)));
 }

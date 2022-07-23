@@ -11,6 +11,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
+import 'package:tum/UI/home/home.dart';
+import 'package:tum/UI/home/pdf_viewer_page.dart';
 import '../Widgets/widgets.dart';
 
 part './dialogs.dart';
@@ -34,3 +36,15 @@ String pdfFileName(String url) {
   return name;
   // return url.substring(url.indexOf('=') + 1, url.length - 1);
 }
+void openPDF(
+    context,
+    String url,
+    String title,
+  ) =>
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PDFScreen(url: url, title: title)));
+
+  void openNews(context, String url, String title, String image) =>
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              NewsPage(url: url, title: title, image: image)));

@@ -26,6 +26,6 @@ class _DownloadsState extends State<Downloads> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Downloads"));
   }
 }

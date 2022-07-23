@@ -26,6 +26,6 @@ class _PastPapersState extends State<PastPapers> {
             toolTip: "More options",
           )
         ],
-        title: const Txt(text: "Home"));
+        title: const Txt(text: "Past papers"));
   }
 }
