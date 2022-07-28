@@ -10,9 +10,14 @@ class PastPapers extends StatefulWidget {
 class _PastPapersState extends State<PastPapers> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      drawer: const MyDrawer(),
+    return WillPopScope(
+      onWillPop: () async {
+        return await pushPage(context, const DashBoard());
+      },
+      child: Scaffold(
+        appBar: _appBar(context),
+        drawer: const MyDrawer(),
+      ),
     );
   }
 

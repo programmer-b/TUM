@@ -123,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           "email:$email password:$password");
                                       provider.init();
                                       await provider.signUp(
-                                          email.text, password.text);
+                                          email.text.trim(), password.text.trim());
                                       
 
                                       if (registerForm.currentState!
@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             text: 'Joined us before? Login',
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/login');
+                              Navigator.pushReplacementNamed(context, '/login');
                             },
                           ),
                         ],

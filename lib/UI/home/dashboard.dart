@@ -11,6 +11,7 @@ class _DashBoardState extends State<DashBoard> {
   List<String> urlImages = [];
   List<NoticeBoardData> noticeBoardData = [];
   List<NewsData> newsData = [];
+  List<DownloadsData> downloadsData = [];
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _DashBoardState extends State<DashBoard> {
       context.read<FirebaseHelper>().read();
       context.read<FirebaseHelper>().readMenu();
       context.read<API>().getContent(Urls.tumHome);
+      context.read<TUMState>().updateScreenIndex(0);
     });
   }
 
@@ -67,11 +69,24 @@ class _DashBoardState extends State<DashBoard> {
           operations.getImagesFromClass(_databaseWebContent('Home/Content/'));
       noticeBoard = _databaseWebContent('NoticeBoard/Page_1/Content');
       news = _databaseWebContent('News/Page_1/Content');
+      downloads = _databaseWebContent('Downloads/Page_1/Content');
     }
     int imageCount = urls.length;
 
     dom.Document noticeBoardHtml = _dataHtml(noticeBoard);
     dom.Document newsHtml = _dataHtml(news);
+    dom.Document downloadsHtml = _dataHtml(downloads);
+
+    final downloadsTitle = downloadsHtml
+        .querySelectorAll('.table > tbody > tr > td:nth-child(3)')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+
+    final downloadsUrl = downloadsHtml
+        .querySelectorAll('.table > tbody > tr > td > a')
+        .map((element) => 'https://www.tum.ac.ke${element.attributes['href']}')
+        .toList();
+    // log('downloadsTitle: $downloadsTitle \n downloadsUrl $downloadsUrl');
 
     final newsMessages = newsHtml
         .querySelectorAll('#w0 > div > div > h2 > a')
@@ -87,12 +102,13 @@ class _DashBoardState extends State<DashBoard> {
         .querySelectorAll('#w0 > div > div > ul > li > a > span')
         .map((element) => element.innerHtml.trim())
         .toList();
+
     final newsLink = newsHtml
         .querySelectorAll('#w0 > div > div > h2 > a')
         .map((element) => 'https://www.tum.ac.ke${element.attributes['href']}')
         .toList();
 
-    log('News; $newsMessages \n image: $newsImages \n date: $newsDate \n link: $newsLink');
+    // log('News; $newsMessages \n image: $newsImages \n date: $newsDate \n link: $newsLink');
 
     final noticeMessages = noticeBoardHtml
         .querySelectorAll('.table > tbody:nth-child(2) > tr > td:nth-child(1)')
@@ -130,6 +146,13 @@ class _DashBoardState extends State<DashBoard> {
                 url: newsLink[index],
                 image: newsImages[index],
               ));
+
+      downloadsData = List.generate(
+          downloadsTitle.length,
+          (index) => DownloadsData(
+                title: downloadsTitle[index],
+                url: downloadsUrl[index],
+              ));
     });
     // log(provider.root?.snapshot.child('Home/Content/').value.toString() ??
     //     "null");
@@ -155,7 +178,9 @@ class _DashBoardState extends State<DashBoard> {
                     //Dimens.defaultMargin(scale: 0.6),
                     homeNoticeBoard(context,
                         noticeBoardData: noticeBoardData, length: 3),
-                    homeNewsBoard(context, newsdata: newsData, length: 3)
+                    homeNewsBoard(context, newsdata: newsData, length: 3),
+                    homeDownloadsBoard(context,
+                        downloadsData: downloadsData, length: 3),
                   ],
                 ),
               ),

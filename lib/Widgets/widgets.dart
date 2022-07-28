@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,8 @@ part './scrollable_widget.dart';
 part './Buttons/application_icon_button.dart';
 part './Buttons/custom_icon_button.dart';
 part './shimmer_widget.dart';
+part './Browser/tum_web.dart';
+part 'AppBars/custom_page_appbar.dart';
 
 final CounterStorage counterStorage = CounterStorage();
 

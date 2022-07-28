@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             text: 'Forgot Password?',
                             alignment: Alignment.topRight,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/forgotPassword');
+                              Navigator.pushReplacementNamed(context, '/forgotPassword');
                             },
                           ),
                           Dimens.buttonButtonGap(),
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           "email:$email password:$password");
                                       provider.init();
                                       await provider.login(
-                                          email.text, password.text);
+                                          email.text.trim(), password.text.trim());
               
                                       if (provider.dataError) {
                                         loginForm.currentState!.validate();
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             text: 'New student? Register',
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.pushNamed(context, '/register');
+                              Navigator.pushReplacementNamed(context, '/register');
                             },
                           ),
                         ],

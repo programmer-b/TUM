@@ -48,8 +48,8 @@
 
 [
     {
-        "notice" : "",
-        "url":"",
+        "notice": "",
+        "url": "",
         "date": "",
         "index": 0
     }
@@ -57,10 +57,17 @@
 
 [
     {
-        "news" : "",
-        "image":"",
+        "news": "",
+        "image": "",
         "url": "",
         "date": "",
+        "index": 0
+    }
+]
+[
+    {
+        "title": "",
+        "url": "",
         "index": 0
     }
 ]

@@ -52,10 +52,20 @@ class TUMState with ChangeNotifier {
     notifyListeners();
   }
 
-  void navidateToScreen(context, String url, int index) {
+  void updateScreenIndex(index) {
+    _index = index;
+    notifyListeners();
+  }
+
+  void navidateToScreen(context, String url, int index,
+      {bool replace = false}) {
     _index = index;
     log('updating to index: $index');
-    Navigator.pushNamed(context, url);
+    if (replace) {
+      Navigator.pushNamedAndRemoveUntil(context, url, ModalRoute.withName('/'));
+    } else {
+      Navigator.pushNamed(context, url);
+    }
     notifyListeners();
   }
 }

@@ -12,4 +12,8 @@ class Urls {
   static String tumNews(int page) {
     return tumHome + '/news/index?page=$page';
   }
+
+  static String tumDownloads(int page) {
+    return tumHome + '/downloads/admission?page=$page';
+  }
 }

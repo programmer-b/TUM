@@ -21,8 +21,6 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
     provider.init();
     final snapshot = await ref.child(refPath).get();
 
-    
-
     Map<String, Object?> _map = {
       "profile": {
         "fullName": snapshot.child("fullName").value,
@@ -37,16 +35,14 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
       "elearning": {
         "username": "",
         "password": snapshot.child("elearningPassword").value,
+        "access": {"opened": false, "skipped": false}
       },
       "eregister": {
         "username": "",
-        "password": snapshot.child("eregisterPassword").value
+        "password": snapshot.child("eregisterPassword").value,
+        "access": {"opened": false, "skipped": false}
       },
-      "settings": {
-        "notification": true,
-        "language": "en",
-        "theme": "system"
-      }
+      "settings": {"notification": true, "language": "en", "theme": "system"}
     };
     log(jsonEncode(_map));
 

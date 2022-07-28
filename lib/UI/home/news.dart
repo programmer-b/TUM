@@ -10,9 +10,14 @@ class News extends StatefulWidget {
 class _NewsState extends State<News> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(context),
-      drawer: const MyDrawer(),
+    return WillPopScope(
+      onWillPop: () async {
+        return await pushPage(context, const DashBoard());
+      },
+      child: Scaffold(
+        appBar: _appBar(context),
+        drawer: const MyDrawer(),
+      ),
     );
   }
 

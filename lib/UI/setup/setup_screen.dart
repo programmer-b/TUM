@@ -209,8 +209,8 @@ class _SetupScreenState extends State<SetupScreen> {
                                     "name": "${userId()}.jpg",
                                   }
                                 },
-                                "elearning": {"username": "", "password": ""},
-                                "eregister": {"username": "", "password": ""},
+                                "elearning": {"username": "", "password": "", "access" : {"opened" : false, "skipped" : false}},
+                                "eregister": {"username": "", "password": "", "access" : {"opened" : false, "skipped" : false}},
                                 "settings": {
                                   "darkMode": false,
                                   "notification": true,

@@ -46,8 +46,11 @@ Widget normalCircularIndicator({Color? indicatorColor}) {
   );
 }
 
+final ThemeProvider provider = ThemeProvider();
+
 Widget scaffoldIndicator() {
-  return const Scaffold(
-    body: Center(child: MyProgressIndicator()),
+  return Scaffold(
+    appBar: customTransParentAppBar(),
+    body: const Center(child: MyProgressIndicator()),
   );
 }

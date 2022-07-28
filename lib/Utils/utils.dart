@@ -36,15 +36,21 @@ String pdfFileName(String url) {
   return name;
   // return url.substring(url.indexOf('=') + 1, url.length - 1);
 }
-void openPDF(
-    context,
-    String url,
-    String title,
-  ) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PDFScreen(url: url, title: title)));
 
-  void openNews(context, String url, String title, String image) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              NewsPage(url: url, title: title, image: image)));
+void openPDF(
+  context,
+  String url,
+  String title,
+) =>
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PDFScreen(url: url, title: title)));
+
+void openNews(context, String url, String title, String image) =>
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => NewsPage(url: url, title: title, image: image)));
+
+Future<T?> pushPage<T>(BuildContext context, Widget page) {
+  return Navigator.of(context)
+      .push<T>(MaterialPageRoute(builder: (context) => page));
+}
+

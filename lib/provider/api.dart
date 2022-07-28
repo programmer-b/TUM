@@ -33,6 +33,7 @@ class API with ChangeNotifier {
     {"url": Urls.tumHome, "name": "Home"},
     {"url": Urls.tumNoticeBoard(1), "name": "NoticeBoard/Page_1"},
     {"url": Urls.tumNews(1), "name": "News/Page_1"},
+    {"url": Urls.tumDownloads(1), "name": "Downloads/Page_1"},
   ];
 
   int i = 0;

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:html/dom.dart' as dom;
 //import 'package:html/parser.dart' show parse;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -28,6 +29,7 @@ part './news.dart';
 part './settings.dart';
 part './pastpapers.dart';
 part './downloads.dart';
+part './portal_welcome_screen.dart';
 
 dom.Document _dataHtml(String html) {
   return dom.Document.html(html);
@@ -56,11 +58,14 @@ PreferredSizeWidget appBar(BuildContext context,
 final Operations operations = Operations();
 final Messenger messanger = Messenger();
 
+final PageDialog dialog = PageDialog();
+
 DatabaseReference dataRef = FirebaseDatabase.instance.ref('Data');
 
 List<String?> urls = [];
 String noticeBoard = '';
 String news = '';
+String downloads = '';
 Applications applications = Applications();
 
 EdgeInsetsGeometry? padding = const EdgeInsets.symmetric(horizontal: 20);
@@ -135,6 +140,85 @@ Widget homeNoticeBoard(context,
           onExpansionChanged: (expanded) {},
           title: const Txt(
             text: 'notice board',
+            fullUpperCase: true,
+          ),
+          children: [
+            for (int i = 0; i < length; i++) noticeChild(i),
+            TxtButton(
+              text: 'read more',
+              padding: const EdgeInsets.only(left: 15),
+              alignment: Alignment.centerLeft,
+              onPressed: () {},
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget homeDownloadsBoard(context,
+    {required List<DownloadsData> downloadsData, required int length}) {
+  bool noticeIsExpanded = true;
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  Widget noticeChild(int i) {
+    void onTap(context) {
+      openPDF(context, downloadsData[i].url!, downloadsData[i].title!);
+    }
+
+    return Column(
+      children: [
+        ListTile(
+          dense: true,
+          onTap: () async => onTap(context),
+          leading: Txt(text: i + 1),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Txt(
+              text: downloadsData[i].title,
+              upperCaseFirst: true,
+              textAlign: TextAlign.start,
+              color: themeProvider.isDarkMode ? null : Colors.black,
+            ),
+          ),
+          horizontalTitleGap: 0,
+          // subtitle: Txt(
+          //   text: noticeBoardData[i].date,
+          //   textAlign: TextAlign.start,
+          //   fullUpperCase: true,
+          // ),
+          trailing: IconButton(
+            icon: const Icon(Icons.chevron_right),
+            color: themeProvider.isDarkMode ? Colors.white70 : null,
+            onPressed: () async => onTap(context),
+          ),
+        ),
+        const Divider()
+      ],
+    );
+  }
+
+  // log('expanded: $noticeIsExpanded');
+  return Container(
+    padding: padding,
+    child: ListTileTheme(
+      dense: true,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: const Color.fromRGBO(196, 196, 196, 0.6),
+          unselectedWidgetColor: themeProvider.isDarkMode
+              ? Colors.white
+              : Colors.black54, // here for close state
+          colorScheme: ColorScheme.light(
+            primary:
+                themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen,
+          ),
+        ), //
+        child: ExpansionTile(
+          initiallyExpanded: noticeIsExpanded,
+          onExpansionChanged: (expanded) {},
+          title: const Txt(
+            text: 'tum downloads',
             fullUpperCase: true,
           ),
           children: [
