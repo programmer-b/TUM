@@ -111,9 +111,9 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    final _fullName = TextEditingController();
-    final _regNo = TextEditingController();
-    final _phoneNo = TextEditingController();
+    final fullName = TextEditingController();
+    final regNo = TextEditingController();
+    final phoneNo = TextEditingController();
 
     final provider = Provider.of<FirebaseHelper>(context);
 
@@ -141,7 +141,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.titleBodyGap(scale: 3),
                         MyTextField(
-                          controller: _fullName,
+                          controller: fullName,
                           textCapitalization: TextCapitalization.characters,
                           validator: (val) {
                             if (val == '') {
@@ -157,7 +157,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.textFieldGap(),
                         MyTextField(
-                          controller: _regNo,
+                          controller: regNo,
                           textCapitalization: TextCapitalization.characters,
                           validator: (val) {
                             if (val == '') {
@@ -174,7 +174,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.textFieldGap(),
                         MyTextField(
-                          controller: _phoneNo,
+                          controller: phoneNo,
                           keyboardType: TextInputType.number,
                           validator: (val) {
                             if (val == '') {
@@ -199,9 +199,9 @@ class _SetupScreenState extends State<SetupScreen> {
                               provider.init();
                               await provider.update({
                                 "profile": {
-                                  "fullName": _fullName.text,
-                                  "registrationNumber": _regNo.text,
-                                  "phoneNumber": _phoneNo.text,
+                                  "fullName": fullName.text,
+                                  "registrationNumber": regNo.text,
+                                  "phoneNumber": phoneNo.text,
                                   "profileImage": {
                                     "url": urlDownload,
                                     "timeStamp":
@@ -220,11 +220,13 @@ class _SetupScreenState extends State<SetupScreen> {
                               });
                               setState(() => loading = false);
                               if (provider.error) {
+                                if (!mounted) return;
                                 dialog.alert(context,
                                     'Oops! Something went wrong. Please try again',
                                     type: ArtSweetAlertType.danger);
                               }
                               if (provider.success) {
+                                if (!mounted) return;
                                 Navigator.pushReplacementNamed(
                                     context, '/dashboard');
                               }

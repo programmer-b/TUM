@@ -165,7 +165,7 @@ class _DashBoardState extends State<DashBoard> {
             body: RefreshIndicator(
               onRefresh: () async {
                 await api.getContent(Urls.tumHome);
-                log('getting content from urls: ' + Urls.tumHome);
+                log('getting content from urls: ${Urls.tumHome}');
               },
               child: ScrollableWidget(
                 child: Column(

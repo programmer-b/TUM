@@ -4,11 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/UI/setup/setup.dart';
 import 'package:tum/Utils/utils.dart';
 import 'package:tum/provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../Widgets/widgets.dart';
 
 CounterStorage storage = CounterStorage();
@@ -22,11 +22,12 @@ class PDFScreen extends StatefulWidget {
   final String url;
   final String title;
   @override
+  // ignore: library_private_types_in_public_api
   _PDFScreenState createState() => _PDFScreenState();
 }
 
 class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
-  Future<File> pdfFile(context,String url) async {
+  Future<File> pdfFile(context, String url) async {
     String name = pdfFileName(url);
     final bool pdfDownloaded = await storage.directoryExists(name);
 
@@ -49,7 +50,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    file = pdfFile(context,widget.url);
+    file = pdfFile(context, widget.url);
     context.read<TUMState>().pdfInit();
   }
 
@@ -109,7 +110,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                       defaultPage: currentPage!,
                       preventLinkNavigation:
                           false, // if set to true the link is handled in flutter
-                      onRender: (_pages) => provider.pagesFunc(_pages ?? 0),
+                      onRender: (pages) => provider.pagesFunc(pages ?? 0),
                       onError: (error) {
                         setState(() {
                           errorMessage = error.toString();
@@ -148,7 +149,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
         floatingActionButton: FloatingActionButton(
           tooltip: 'Share',
           onPressed: () async {
-            await Share.share(widget.url);
+            await FlutterShare.share(title: 'PDF link', text: widget.url);
           },
           child: const Icon(Icons.share),
         ));

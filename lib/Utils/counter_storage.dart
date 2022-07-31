@@ -24,7 +24,7 @@ class CounterStorage with ChangeNotifier {
   Future<bool> directoryExists(String name) async {
     String path = await localPath();
 
-    bool fileExists = await File(path + "/" + name).exists();
+    bool fileExists = await File("$path/$name").exists();
     bool exists = fileExists;
     return exists;
   }

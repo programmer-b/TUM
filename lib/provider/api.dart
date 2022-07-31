@@ -52,9 +52,9 @@ class API with ChangeNotifier {
     } catch (e) {
       _error = true;
       if (e is SocketException) {
-        log('socket error: ' + e.toString());
+        log('socket error: $e');
       }
-      log('an error occurred: ' + e.toString());
+      log('an error occurred: $e');
       _error = e;
     }
 
@@ -87,9 +87,9 @@ class API with ChangeNotifier {
       throw ("socket exception");
     } catch (e) {
       if (e is SocketException) {
-        log('socket error: ' + e.toString());
+        log('socket error: $e');
       }
-      log('an error occurred: ' + e.toString());
+      log('an error occurred: $e');
       _error = e;
     }
 

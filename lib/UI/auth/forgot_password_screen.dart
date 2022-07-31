@@ -71,6 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           .resetPassword(email.text.trim());
                                       if (formKey.currentState!.validate()) {
                                         if (provider.success) {
+                                          if (!mounted) return;
                                           Navigator.pushReplacementNamed(
                                               context, '/login');
                                           dialog.alert(context,
@@ -79,6 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                         }
                                       }
                                       if (provider.catchError) {
+                                        if (!mounted) return;
                                         dialog.alert(
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);

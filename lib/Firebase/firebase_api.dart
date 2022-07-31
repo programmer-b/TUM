@@ -34,7 +34,7 @@ class FirebaseApi with ChangeNotifier {
   Future<void> downloadFile(Reference ref, String pathName) async {
     debugPrint('Downloading file ...');
     final path = await getApplicationDocumentsDirectory();
-    final filePath = path.path + '/$pathName';
+    final filePath = '${path.path}/$pathName';
     final file = File(filePath);
     debugPrint('Downloading file to ${path.absolute}/$pathName');
     debugPrint('${ref.getDownloadURL()}');

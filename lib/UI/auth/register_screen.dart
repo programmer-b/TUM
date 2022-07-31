@@ -129,6 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       if (registerForm.currentState!
                                           .validate()) {
                                         if (provider.success) {
+                                          if (!mounted) return;
                                           debugPrint('success registration');
                                           Navigator.pushNamedAndRemoveUntil(
                                             context,
@@ -138,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         }
                                       }
                                       if (provider.catchError) {
+                                        if (!mounted) return;
                                         dialog.alert(
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);

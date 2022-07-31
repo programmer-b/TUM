@@ -16,7 +16,6 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseHelper>(context).apps;
-    final updateIndex = Provider.of<TUMState>(context);
     return Drawer(
         child: Scaffold(
       body: Column(

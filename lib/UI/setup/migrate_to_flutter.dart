@@ -21,7 +21,7 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
     provider.init();
     final snapshot = await ref.child(refPath).get();
 
-    Map<String, Object?> _map = {
+    Map<String, Object?> map = {
       "profile": {
         "fullName": snapshot.child("fullName").value,
         "registrationNumber": snapshot.child("regNo").value,
@@ -44,11 +44,12 @@ class _MigrateToFlutterState extends State<MigrateToFlutter> {
       },
       "settings": {"notification": true, "language": "en", "theme": "system"}
     };
-    log(jsonEncode(_map));
+    log(jsonEncode(map));
 
-    await provider.write(_map);
+    await provider.write(map);
 
     if (provider.success) {
+      // ignore: use_build_context_synchronously
       _goToDashboard(context);
     }
   }

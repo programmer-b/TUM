@@ -39,7 +39,7 @@ class UserAvatar extends StatelessWidget {
                   if (exists.data!) {
                     return _avatar(
                       backgroundImage: Image.file(
-                        File(path.data! + '/${userId()}.jpg'),
+                        File('${path.data!}/${userId()}.jpg'),
                       ).image,
                     );
                   } else {

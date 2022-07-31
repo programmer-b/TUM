@@ -44,7 +44,7 @@ class Operations {
   static String getLastWord(String inputString) {
     List<String> wordList = inputString.split(' ');
     if (wordList.isNotEmpty) {
-      log(wordList.toString() + " " + wordList.length.toString());
+      log("$wordList ${wordList.length}");
       return wordList.last;
     } else {
       return ' ';
@@ -54,7 +54,7 @@ class Operations {
   static String firstAndLastName(String inputString) {
     inputString = getWithoutSpaces(inputString);
     log('Input String : $inputString');
-    return getFirstWord(inputString) + ' ' + getLastWord(inputString);
+    return '${getFirstWord(inputString)} ${getLastWord(inputString)}';
   }
 
   static String getWithoutSpaces(String s) {

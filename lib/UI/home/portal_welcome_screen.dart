@@ -31,9 +31,11 @@ class _PortalWelcomeScreenState extends State<PortalWelcomeScreen> {
       provider.init();
       await provider.update(map);
       if (provider.success) {
+        if (!mounted) return;
         Navigator.pushReplacementNamed(context, '/${widget.title}');
       }
       if (provider.error) {
+        if (!mounted) return;
         dialog.alert(context, 'Oops... Something went wrong',
             type: ArtSweetAlertType.danger);
       }

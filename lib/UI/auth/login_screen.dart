@@ -112,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
               
                                       if (provider.catchError) {
+                                        if (!mounted) return;
                                         dialog.alert(
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);

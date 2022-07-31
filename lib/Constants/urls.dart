@@ -6,14 +6,14 @@ class Urls {
 
   static const String tumHome = 'https://www.tum.ac.ke';
   static String tumNoticeBoard(int page) {
-    return tumHome + '/noticeboard/index?page=$page';
+    return '$tumHome/noticeboard/index?page=$page';
   }
 
   static String tumNews(int page) {
-    return tumHome + '/news/index?page=$page';
+    return '$tumHome/news/index?page=$page';
   }
 
   static String tumDownloads(int page) {
-    return tumHome + '/downloads/admission?page=$page';
+    return '$tumHome/downloads/admission?page=$page';
   }
 }
