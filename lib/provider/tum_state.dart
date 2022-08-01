@@ -68,4 +68,49 @@ class TUMState with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  InAppWebViewController? _webViewController;
+  InAppWebViewController? get webViewController => _webViewController;
+
+  bool _browserIsLoading = false;
+  bool get browserIsLoading => _browserIsLoading;
+
+ 
+  void browserState() {}
+
+  void setBrowserController(InAppWebViewController? controller) {
+    _webViewController = controller;
+    notifyListeners();
+  }
+
+  void onPageStarted() {
+    _browserIsLoading = true;
+    notifyListeners();
+  }
+
+  void onPageFinished() {
+    _browserIsLoading = false;
+
+    notifyListeners();
+  }
+
+  bool _sslError = false;
+  bool get sslError => _sslError;
+
+  bool _sslProceed = false;
+  bool get sslProceed => _sslProceed;
+
+  void onReceivedSSLError({required bool proceed}) {
+    _sslError = true;
+    _sslProceed = proceed;
+    notifyListeners();
+  }
+
+  double _progress = 0;
+  double get progress => _progress;
+
+  void webProgress(int progress) {
+    _progress = progress / 100;
+    notifyListeners();
+  }
 }

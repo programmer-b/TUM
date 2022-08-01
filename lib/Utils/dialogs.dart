@@ -32,4 +32,34 @@ class PageDialog {
           title: message,
         ));
   }
+
+  Future<void> showMyDialog(context,
+      {String? title,
+      String? message1,
+      String? message2,
+      String? positiveAction,
+      String? negativeAction,
+      dynamic Function()? onPressed}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Txt(text: title),
+          content: Txt(
+            text: message1 ?? '',
+          ),
+          actions: <Widget>[
+            TxtButton(
+              text: negativeAction!,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TxtButton(text: positiveAction!, onPressed: onPressed),
+          ],
+        );
+      },
+    );
+  }
 }

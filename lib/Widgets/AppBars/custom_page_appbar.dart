@@ -8,3 +8,9 @@ PreferredSizeWidget customTransParentAppBar() {
           statusBarIconBrightness:
               provider.isDarkMode ? Brightness.light : Brightness.dark));
 }
+
+PreferredSizeWidget browserAppBar(BuildContext context, String name) {
+    return appBar(context,
+        actions: [const NavigationControls()],
+        title: Txt(text: name));
+  }

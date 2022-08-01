@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/dom.dart' as dom;
 //import 'package:html/parser.dart' show parse;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -15,6 +17,7 @@ import 'package:tum/Models/models.dart';
 import 'package:tum/Utils/utils.dart';
 import 'package:tum/Widgets/widgets.dart';
 import 'package:tum/provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../Firebase/firebase.dart';
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
@@ -5,15 +6,17 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tum/Constants/constants.dart';
 import 'package:tum/Utils/utils.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../Firebase/firebase.dart';
+import '../UI/home/home.dart';
 import '../provider/provider.dart';
 
 part 'Buttons/back_button.dart';
@@ -41,45 +44,47 @@ part './Buttons/custom_icon_button.dart';
 part './shimmer_widget.dart';
 part './Browser/tum_web.dart';
 part 'AppBars/custom_page_appbar.dart';
+part './Browser/web_navigation.dart';
 
 final CounterStorage counterStorage = CounterStorage();
 
- Widget downloadProgress() =>
-      const ShimmerWidget.rectangular(width: double.infinity, height: 200);
-  Widget imageDownloadError() => const Center(
-        child: Txt(text: 'Something went wrong'),
-      );
+Widget downloadProgress() =>
+    const ShimmerWidget.rectangular(width: double.infinity, height: 200);
+Widget imageDownloadError() => const Center(
+      child: Txt(text: 'Something went wrong'),
+    );
+final dialog = PageDialog();
 
-  Widget buildImage(String urlImage) {
-    final url = urlImage;
-    const double height = 200;
-    return CachedNetworkImage(
-      //placeholder: (_, __) => downloadProgress(),
-      progressIndicatorBuilder: (_, __, ___) => downloadProgress(),
-      key: UniqueKey(),
+Widget buildImage(String urlImage) {
+  final url = urlImage;
+  const double height = 200;
+  return CachedNetworkImage(
+    //placeholder: (_, __) => downloadProgress(),
+    progressIndicatorBuilder: (_, __, ___) => downloadProgress(),
+    key: UniqueKey(),
+    width: double.infinity,
+    fit: BoxFit.cover,
+    height: height,
+    imageUrl: url,
+  );
+}
+
+Widget buildNewsImage(String url) {
+  return ClipRRect(
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
+    child: CachedNetworkImage(
+      placeholder: (_, __) {
+        return const ShimmerWidget.circular(
+            shapeBorder: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            width: double.infinity,
+            height: 100);
+      },
       width: double.infinity,
+      height: 100,
+      key: UniqueKey(),
       fit: BoxFit.cover,
-      height: height,
       imageUrl: url,
-    );
-  }
-
-   Widget buildNewsImage(String url) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
-      child: CachedNetworkImage(
-        placeholder: (_, __) {
-          return const ShimmerWidget.circular(
-              shapeBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: double.infinity,
-              height: 100);
-        },
-        width: double.infinity,
-        height: 100,
-        key: UniqueKey(),
-        fit: BoxFit.cover,
-        imageUrl: url,
-      ),
-    );
-  }
+    ),
+  );
+}

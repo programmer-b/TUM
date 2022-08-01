@@ -43,9 +43,16 @@ class _MyDrawerState extends State<MyDrawer> {
                                 name: provider[index * 2 + i]['icon']),
                             text: provider[index * 2 + i]['name'],
                             onTap: () {
-                              context.read<TUMState>().navidateToScreen(context,
-                                  provider[index * 2 + i]['url'], index * 2 + i,
-                                  replace: true);
+                              if (index * 2 + i ==
+                                  context.read<TUMState>().index) {
+                                Navigator.of(context).pop();
+                              } else {
+                                context.read<TUMState>().navidateToScreen(
+                                    context,
+                                    provider[index * 2 + i]['url'],
+                                    index * 2 + i,
+                                    replace: true);
+                              }
                             }),
                     ],
                   ),

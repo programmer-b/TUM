@@ -58,6 +58,7 @@ dependencies:
   path: ^1.8.0
   shimmer: ^2.0.0
   flutter_share: ^2.0.0
+  flutter_inappwebview: ^5.4.3+7
 
 dev_dependencies:
   flutter_test:
