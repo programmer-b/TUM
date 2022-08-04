@@ -59,6 +59,12 @@ dependencies:
   shimmer: ^2.0.0
   flutter_share: ^2.0.0
   flutter_inappwebview: ^5.4.3+7
+  permission_handler: ^10.0.0
+  dio: ^4.0.6
+  flutter_downloader: ^1.8.1
+  open_file: ^3.2.1
+  flutter_local_notifications: ^9.7.0
+  lecle_downloads_path_provider: ^0.0.2+7
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +91,7 @@ flutter:
   assets:
     - assets/images/
     - assets/certificates/lets-encrypt-r3.pem
+    - assets/certificates/ca/lets-encrypt-r3.pem
 
   # To add assets to your application, add an assets section, like this:
   # assets:

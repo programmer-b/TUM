@@ -49,6 +49,8 @@ class _PortalWelcomeScreenState extends State<PortalWelcomeScreen> {
           child: Center(
             child: ScrollableWidget(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:tum/UI/setup/setup.dart';
 import 'package:tum/Utils/utils.dart';
 import 'package:tum/provider/provider.dart';
 import '../../Widgets/widgets.dart';
@@ -17,10 +18,15 @@ final API api = API();
 final TUMState tumState = TUMState();
 
 class PDFScreen extends StatefulWidget {
-  const PDFScreen({Key? key, required this.url, required this.title})
+  const PDFScreen(
+      {Key? key,
+      required this.url,
+      required this.title,
+      this.requireDownload = false})
       : super(key: key);
   final String url;
   final String title;
+  final bool requireDownload;
   @override
   // ignore: library_private_types_in_public_api
   _PDFScreenState createState() => _PDFScreenState();
@@ -31,10 +37,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     String name = pdfFileName(url);
     final bool pdfDownloaded = await storage.directoryExists(name);
 
-    if (pdfDownloaded) {
+    if (pdfDownloaded && !widget.requireDownload) {
       return storage.localFile(name);
     } else {
-      messenger.showSnackBar(context, 'Downloading. Please wait...');
+      log('downloading pdf file $name');
       final file = await api.loadNetwork(url);
       return file;
     }
@@ -61,6 +67,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TUMState>(context);
+    final api = Provider.of<API>(context);
     PDFViewController? controller = provider.controller;
     int? pages = provider.pages;
     int? indexPage = provider.indexPage;
@@ -141,17 +148,58 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                         child: MyProgressIndicator(),
                       )
                     : Container()
-                : Center(
-                    child: Text(errorMessage),
+                : TUMBrowser(
+                    title: widget.title,
+                    url: widget.url,
                   )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Share',
-          onPressed: () async {
-            await FlutterShare.share(title: 'PDF link', text: widget.url);
-          },
-          child: const Icon(Icons.share),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: 'Download',
+              tooltip: 'Download',
+              onPressed: () async {
+                api.init();
+                await api.download(widget.url, widget.title);
+                if (api.hasError && mounted) {
+                  messenger.showSnackBar(context,'something went wrong');
+                }
+                // var dir = await getExternalStorageDirectory();
+                // if (mounted) {
+                //   final currentFile = await pdfFile(context, widget.url);
+                //   if (await requestPermission(Permission.storage)) {
+                //     storage.moveFile(currentFile, dir!.path);
+                //   }
+                // }
+                // await FlutterDownloader.enqueue(
+                //   url: widget.url,
+                //   fileName: widget.title,
+                //   saveInPublicStorage: true,
+                //   savedDir: (await getExternalStorageDirectory())!.path,
+                //   showNotification:
+                //       true, // show download progress in status bar (for Android)
+                //   openFileFromNotification:
+                //       true, // click on notification to open downloaded file (for Android)
+                // );
+              },
+              child: api.downloading
+                  ? Txt(
+                      text: api.progress,
+                    )
+                  : const Icon(Icons.download),
+            ),
+            const SizedBox(height: 13),
+            FloatingActionButton(
+              heroTag: 'Share',
+              tooltip: 'Share',
+              onPressed: () async {
+                await FlutterShare.share(title: 'PDF link', text: widget.url);
+              },
+              child: const Icon(Icons.share),
+            ),
+          ],
         ));
   }
 }

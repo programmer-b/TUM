@@ -49,7 +49,6 @@ class _EregisterState extends State<Eregister> {
     final studentUsername = _homeData("eregister/username");
     final studentPassword = _homeData("eregister/password");
 
-
     if (_homeData('eregister/access/opened') != 'true') {
       Future.delayed(
           Duration.zero,
@@ -60,7 +59,11 @@ class _EregisterState extends State<Eregister> {
                     title: 'eregister',
                   ))));
     }
-    if (!provider.browserIsLoading && provider.webViewController != null) {
+    InAppWebViewController? controller;
+    if (!provider.browserIsLoading &&
+        provider.webViewController != null &&
+        _homeData('eregister/access/skipped') != 'true') {
+      controller = provider.webViewController!;
       log('evaluateJavascript ...');
       Future.delayed(const Duration(seconds: 3), () {
         provider.webViewController!.evaluateJavascript(source: """
@@ -72,9 +75,15 @@ class _EregisterState extends State<Eregister> {
                   """);
       });
     }
+
     return WillPopScope(
       onWillPop: () async {
-        return await pushPage(context, const DashBoard());
+        if (await controller!.canGoBack()) {
+          await provider.webViewController!.goBack();
+          return false;
+        } else {
+          return await pushPage(context, const DashBoard());
+        }
       },
       child: Scaffold(
         appBar: browserAppBar(context, "Eregister"),

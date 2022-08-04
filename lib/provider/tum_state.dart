@@ -64,7 +64,7 @@ class TUMState with ChangeNotifier {
     if (replace) {
       Navigator.pushNamedAndRemoveUntil(context, url, ModalRoute.withName('/'));
     } else {
-      Navigator.pushNamed(context, url);
+      Navigator.pushNamedAndRemoveUntil(context, url, ModalRoute.withName('/'));
     }
     notifyListeners();
   }
@@ -75,7 +75,9 @@ class TUMState with ChangeNotifier {
   bool _browserIsLoading = false;
   bool get browserIsLoading => _browserIsLoading;
 
- 
+  bool _loadingError = false;
+  bool get loadingError => _loadingError;
+
   void browserState() {}
 
   void setBrowserController(InAppWebViewController? controller) {
@@ -83,14 +85,30 @@ class TUMState with ChangeNotifier {
     notifyListeners();
   }
 
+  void browserInit() {
+    _progress = 0;
+    _loadingError = false;
+    _browserIsLoading = false;
+    _browserFinishedLoading = false;
+
+    notifyListeners();
+  }
+
   void onPageStarted() {
+    _loadingError = false;
     _browserIsLoading = true;
     notifyListeners();
   }
 
   void onPageFinished() {
+    _browserFinishedLoading = true;
     _browserIsLoading = false;
+    notifyListeners();
+  }
 
+  void onPageLoadError() {
+    _browserFinishedLoading = false;
+    _loadingError = true;
     notifyListeners();
   }
 
@@ -99,6 +117,9 @@ class TUMState with ChangeNotifier {
 
   bool _sslProceed = false;
   bool get sslProceed => _sslProceed;
+
+  bool _browserFinishedLoading = false;
+  bool get browserFinishedLoading => _browserFinishedLoading;
 
   void onReceivedSSLError({required bool proceed}) {
     _sslError = true;
@@ -109,8 +130,24 @@ class TUMState with ChangeNotifier {
   double _progress = 0;
   double get progress => _progress;
 
-  void webProgress(int progress) {
+  void onProgressChanged(int progress) {
     _progress = progress / 100;
     notifyListeners();
   }
+
+  String _currentSearchItem = '';
+  String get currentSearchItem => _currentSearchItem;
+
+  void searchItem(String text) {
+    _currentSearchItem = text;
+    notifyListeners();
+  }
+
+  // int _newsIndex = 0;
+  // int get newsIndex => _newsIndex;
+
+  // void setNewsIndex(index) {
+  //   _newsIndex = _newsIndex;
+  //   notifyListeners();
+  // }
 }

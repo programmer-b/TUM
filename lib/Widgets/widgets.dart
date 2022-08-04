@@ -6,14 +6,16 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tum/Constants/constants.dart';
+import 'package:tum/UI/home/pdf_viewer_page.dart';
 import 'package:tum/Utils/utils.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../Firebase/firebase.dart';
 import '../UI/home/home.dart';
@@ -45,6 +47,7 @@ part './shimmer_widget.dart';
 part './Browser/tum_web.dart';
 part 'AppBars/custom_page_appbar.dart';
 part './Browser/web_navigation.dart';
+part './Browser/browser_search_bar.dart';
 
 final CounterStorage counterStorage = CounterStorage();
 
@@ -79,6 +82,18 @@ Widget buildNewsImage(String url) {
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             width: double.infinity,
             height: 100);
+      },
+      errorWidget: (_, __, ___) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              Icon(Icons.error, color: Colors.red),
+              SizedBox(height: 10),
+              Txt(text: 'Internet error')
+            ],
+          ),
+        );
       },
       width: double.infinity,
       height: 100,

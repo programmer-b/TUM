@@ -1,8 +1,11 @@
+// ignore_for_file: implementation_imports
+
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:art_sweetalert/art_sweetalert.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_inappwebview/src/in_app_webview/in_app_webview_controller.dart';
 import 'package:html/dom.dart' as dom;
 //import 'package:html/parser.dart' show parse;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -27,16 +30,19 @@ part './calender.dart';
 part './eduroam.dart';
 part './elearning.dart';
 part './eregister.dart';
-part './news.dart';
+part 'news/news.dart';
 part './settings.dart';
 part './pastpapers.dart';
 part './downloads.dart';
 part './portal_welcome_screen.dart';
+part './news/news_content.dart';
+part './news/notice_board.dart';
 
 dom.Document _dataHtml(String html) {
   return dom.Document.html(html);
 }
 
+final messenger = Messenger();
 PreferredSizeWidget appBar(BuildContext context,
     {Color statusBarColor = Colors.transparent,
     Color? backgroundColor,
@@ -44,8 +50,10 @@ PreferredSizeWidget appBar(BuildContext context,
     bool automaticallyImplyLeading = true,
     Widget? title,
     bool? centerTitle,
+    PreferredSizeWidget? bottom,
     List<Widget>? actions}) {
   return AppBar(
+      bottom: bottom,
       centerTitle: centerTitle,
       title: title,
       actions: actions,
@@ -78,10 +86,12 @@ int notifications = 3;
 
 List<String> urlImages = [];
 List<NoticeBoardData> noticeBoardData = [];
-List<NewsData> newsdata = [];
+List<NewsData> newsData = [];
 
 Widget homeNoticeBoard(context,
-    {required List<NoticeBoardData> noticeBoardData, required int length}) {
+    {required List<NoticeBoardData> noticeBoardData,
+    required int length,
+    bool readmore = true}) {
   bool noticeIsExpanded = true;
   final themeProvider = Provider.of<ThemeProvider>(context);
   Widget noticeChild(int i) {
@@ -146,12 +156,13 @@ Widget homeNoticeBoard(context,
           ),
           children: [
             for (int i = 0; i < length; i++) noticeChild(i),
-            TxtButton(
-              text: 'read more',
-              padding: const EdgeInsets.only(left: 15),
-              alignment: Alignment.centerLeft,
-              onPressed: () {},
-            )
+            if (readmore)
+              TxtButton(
+                text: 'read more',
+                padding: const EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const News(initialIndex: 0,))),
+              )
           ],
         ),
       ),
@@ -160,7 +171,9 @@ Widget homeNoticeBoard(context,
 }
 
 Widget homeDownloadsBoard(context,
-    {required List<DownloadsData> downloadsData, required int length}) {
+    {required List<DownloadsData> downloadsData,
+    required int length,
+    bool readmore = true}) {
   bool noticeIsExpanded = true;
   final themeProvider = Provider.of<ThemeProvider>(context);
   Widget noticeChild(int i) {
@@ -225,12 +238,13 @@ Widget homeDownloadsBoard(context,
           ),
           children: [
             for (int i = 0; i < length; i++) noticeChild(i),
-            TxtButton(
-              text: 'read more',
-              padding: const EdgeInsets.only(left: 15),
-              alignment: Alignment.centerLeft,
-              onPressed: () {},
-            )
+            if (readmore)
+              TxtButton(
+                text: 'read more',
+                padding: const EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                onPressed: () {},
+              )
           ],
         ),
       ),
@@ -239,7 +253,9 @@ Widget homeDownloadsBoard(context,
 }
 
 Widget homeNewsBoard(context,
-    {required List<NewsData> newsdata, required int length}) {
+    {required List<NewsData> newsdata,
+    required int length,
+    bool readmore = true}) {
   bool newsIsExpanded = true;
   final themeProvider = Provider.of<ThemeProvider>(context);
   Widget newsChild(int i) {
@@ -314,12 +330,13 @@ Widget homeNewsBoard(context,
           ),
           children: [
             for (int i = 0; i < length; i++) newsChild(i),
-            TxtButton(
-              text: 'read more',
-              padding: const EdgeInsets.only(left: 15),
-              alignment: Alignment.centerLeft,
-              onPressed: () {},
-            )
+            if (readmore)
+              TxtButton(
+                text: 'read more',
+                padding: const EdgeInsets.only(left: 15),
+                alignment: Alignment.centerLeft,
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const News(initialIndex: 1,))),
+              )
           ],
         ),
       ),

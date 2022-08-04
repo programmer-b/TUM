@@ -16,6 +16,9 @@ class API with ChangeNotifier {
   bool _success = false;
   bool get success => _success;
 
+  String _progress = "0";
+  String get progress => _progress;
+
   void init() {
     _success = false;
     _hasError = false;
@@ -117,6 +120,59 @@ class API with ChangeNotifier {
     final file = File('${dir.path}/$filename');
     await file.writeAsBytes(bytes, flush: true);
     return file;
+  }
+
+  Future startDownload(String savePath, String url, String fileName) async {
+    Map<String, dynamic> result = {
+      "isSuccess": false,
+      "filePath": null,
+      "fileName": fileName,
+      "error": null
+    };
+    final Dio dio = Dio();
+    try {
+      final response = await dio.download(
+        url,
+        savePath,
+        onReceiveProgress: (count, total) {
+          if (total != -1) {
+            _progress = "${(count / total * 100).toStringAsFixed(0)}%";
+            notifyListeners();
+          }
+        },
+      );
+
+      result['isSuccess'] = response.statusCode == 200;
+      result['filePath'] = savePath;
+
+      if (response.statusCode == 200) {
+        _success = true;
+      }
+    } catch (e) {
+      _hasError = true;
+      log("$e");
+      result['error'] = e.toString();
+    } finally {
+      await notify.showDownloadNotification(result);
+    }
+    notifyListeners();
+  }
+
+  bool _downloading = false;
+  bool get downloading => _downloading;
+
+  Future download(String url, String fileName) async {
+    _downloading = true;
+    final dir = await storage.getDownloadsDirectory();
+    if (await requestPermission(Permission.storage)) {
+      final savePath = path.join(dir!.path, fileName);
+      await startDownload(savePath, url, fileName);
+    } else {
+      messenger
+          .showToast('Please give permission in order to download the file');
+    }
+    _downloading = false;
+    notifyListeners();
   }
 }
 
