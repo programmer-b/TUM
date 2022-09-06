@@ -18,6 +18,12 @@ class _SetupScreenState extends State<SetupScreen> {
     _imageFile = value;
   }
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<TUMState>().setupLostData();
+  }
+
   void showImagePicker(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -44,12 +50,17 @@ class _SetupScreenState extends State<SetupScreen> {
   }
 
   Future pickImage(ImageSource source) async {
+    Navigator.of(context).pop();
     debugPrint('Picking file...');
     try {
       final image = await ImagePicker().pickImage(
         source: source,
       );
       if (image == null) return;
+      if (mounted) {
+        Provider.of<TUMState>(context, listen: false).setupLostData();
+      }
+      // context.read<TUMState>().setupLostData();
 
       // final bytes = File(image.path).readAsBytesSync();
       // setState((() => _base64Image = base64Encode(bytes)));
@@ -111,23 +122,76 @@ class _SetupScreenState extends State<SetupScreen> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    final fullName = TextEditingController();
-    final regNo = TextEditingController();
-    final phoneNo = TextEditingController();
-
-    final provider = Provider.of<FirebaseHelper>(context);
+    final myProvider = Provider.of<FirebaseHelper>(context);
 
     // DateTime now = DateTime.now();
     // DateTime dateOnly = now.getDateOnly();
 
-    return FutureBuilder(
-        future: retrieveLostData(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          return Scaffold(
-            appBar: appBar(context),
-            extendBodyBehindAppBar: true,
-            body: Center(
-              child: SingleChildScrollView(
+    return Consumer<TUMState>(builder: (context, provider, child) {
+      final fullName = TextEditingController(text: provider.fullName);
+      final regNo = TextEditingController(text: provider.registrationNumber);
+      final phoneNo = TextEditingController(text: provider.phoneNumber);
+
+      Future updateInfo() async {
+        String? email = FirebaseAuth.instance.currentUser!.email;
+        await myProvider.update({
+          "profile": {
+            "fullName": fullName.text,
+            "registrationNumber": regNo.text,
+            "phoneNumber": phoneNo.text,
+            "profileImage": {
+              "url": urlDownload,
+              "timeStamp": _imageFile != null
+                  ? DateTime.now().millisecondsSinceEpoch
+                  : "",
+              "name": "${userId()}.jpg",
+            },
+            "email": email,
+          },
+          "elearning": {
+            "username": "",
+            "password": "",
+            "access": {"opened": false, "skipped": false}
+          },
+          "eregister": {
+            "username": "",
+            "password": "",
+            "access": {"opened": false, "skipped": false}
+          },
+          "settings": {
+            "darkMode": false,
+            "notification": true,
+            "language": "en",
+            "theme": "system"
+          }
+        });
+
+        if (myProvider.error) {
+          if (!mounted) return;
+          dialog.alert(context, 'Oops! Something went wrong. Please try again',
+              type: ArtSweetAlertType.danger);
+        }
+        if (myProvider.success) {
+          if (!mounted) return;
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      }
+
+      return FutureBuilder(
+          future: retrieveLostData(),
+          builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+            return Scaffold(
+              appBar: AppBar(
+                  title: const Txt(text: 'Personal details'),
+                  actions: [
+                    TextButton(
+                        onPressed: () async => await updateInfo(),
+                        child: const Txt(text: "SKIP", color: Colors.white))
+                  ],
+                  systemOverlayStyle: const SystemUiOverlayStyle(
+                      statusBarIconBrightness: Brightness.light)),
+              //extendBodyBehindAppBar: true,
+              body: SingleChildScrollView(
                 child: Form(
                   key: formKey,
                   child: Padding(
@@ -141,53 +205,56 @@ class _SetupScreenState extends State<SetupScreen> {
                         ),
                         Dimens.titleBodyGap(scale: 3),
                         MyTextField(
-                          controller: fullName,
-                          textCapitalization: TextCapitalization.characters,
-                          validator: (val) {
-                            if (val == '') {
-                              return 'Full name cannot be blank.';
-                            } else if (operations.countWords(val!) < 2) {
-                              return 'Please enter your full name';
-                            }
-                            return null;
-                          },
-                          hint: 'Your full name',
-                          prefixIcon: FontAwesomeIcons.user,
-                          label: 'Full name',
-                        ),
+                            controller: fullName,
+                            textCapitalization: TextCapitalization.characters,
+                            validator: (val) {
+                              if (val == '') {
+                                return 'Full name cannot be blank.';
+                              } else if (operations.countWords(val!) < 2) {
+                                return 'Please enter your full name';
+                              }
+                              return null;
+                            },
+                            hint: 'Your full name',
+                            prefixIcon: FontAwesomeIcons.user,
+                            label: 'Full name',
+                            onChanged: (val) =>
+                                storage.writeData(val, 'fullName')),
                         Dimens.textFieldGap(),
                         MyTextField(
-                          controller: regNo,
-                          textCapitalization: TextCapitalization.characters,
-                          validator: (val) {
-                            if (val == '') {
-                              return 'Registration number cannot be blank.';
-                            } else if (!operations.validRegistrationNumber(
-                                val: val!)) {
-                              return 'Please enter a valid registration number';
-                            }
-                            return null;
-                          },
-                          hint: 'Your registration number',
-                          prefixIcon: Icons.app_registration,
-                          label: 'Registration number',
-                        ),
+                            controller: regNo,
+                            textCapitalization: TextCapitalization.characters,
+                            validator: (val) {
+                              if (val == '') {
+                                return 'Registration number cannot be blank.';
+                              } else if (!operations.validRegistrationNumber(
+                                  val: val!)) {
+                                return 'Please enter a valid registration number';
+                              }
+                              return null;
+                            },
+                            hint: 'Your registration number',
+                            prefixIcon: Icons.app_registration,
+                            label: 'Registration number',
+                            onChanged: (val) =>
+                                storage.writeData(val, 'registrationNumber')),
                         Dimens.textFieldGap(),
                         MyTextField(
-                          controller: phoneNo,
-                          keyboardType: TextInputType.number,
-                          validator: (val) {
-                            if (val == '') {
-                              return 'Phone number cannot be blank.';
-                            } else if (!operations.isPhoneNoValid(val)) {
-                              return 'Please enter a valid phone number';
-                            }
-                            return null;
-                          },
-                          hint: 'Your phone number',
-                          prefixIcon: Icons.phone_enabled_outlined,
-                          label: 'Phone number',
-                        ),
+                            controller: phoneNo,
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val == '') {
+                                return 'Phone number cannot be blank.';
+                              } else if (!operations.isPhoneNoValid(val)) {
+                                return 'Please enter a valid phone number';
+                              }
+                              return null;
+                            },
+                            hint: 'Your phone number',
+                            prefixIcon: Icons.phone_enabled_outlined,
+                            label: 'Phone number',
+                            onChanged: (val) =>
+                                storage.writeData(val, 'phoneNumber')),
                         Dimens.textFieldButtonGap(scale: 2),
                         MyButton(
                           loading: loading,
@@ -195,43 +262,15 @@ class _SetupScreenState extends State<SetupScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               setState(() => loading = true);
-                              if(_imageFile != null){
+                              if (_imageFile != null) {
                                 await uploadFile();
                               }
-                              provider.init();
-                              await provider.update({
-                                "profile": {
-                                  "fullName": fullName.text,
-                                  "registrationNumber": regNo.text,
-                                  "phoneNumber": phoneNo.text,
-                                  "profileImage": {
-                                    "url": urlDownload,
-                                    "timeStamp":
-                                        DateTime.now().millisecondsSinceEpoch,
-                                    "name": "${userId()}.jpg",
-                                  }
-                                },
-                                "elearning": {"username": "", "password": "", "access" : {"opened" : false, "skipped" : false}},
-                                "eregister": {"username": "", "password": "", "access" : {"opened" : false, "skipped" : false}},
-                                "settings": {
-                                  "darkMode": false,
-                                  "notification": true,
-                                  "language": "en",
-                                  "theme": "system"
-                                }
-                              });
-                              setState(() => loading = false);
-                              if (provider.error) {
-                                if (!mounted) return;
-                                dialog.alert(context,
-                                    'Oops! Something went wrong. Please try again',
-                                    type: ArtSweetAlertType.danger);
-                              }
-                              if (provider.success) {
-                                if (!mounted) return;
-                                Navigator.pushReplacementNamed(
-                                    context, '/dashboard');
-                              }
+                              myProvider.init();
+
+                              await updateInfo();
+
+                              // setState(() => loading = false);
+
                             }
                           },
                         )
@@ -240,8 +279,8 @@ class _SetupScreenState extends State<SetupScreen> {
                   ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          });
+    });
   }
 }

@@ -27,8 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           appBar: appBar(context),
           extendBodyBehindAppBar: true,
           body: Padding(
-            padding: const EdgeInsets.only(
-                top: 40, left: 15, right: 15, bottom: 20),
+            padding:
+                const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Txt(
-                            text: 'Sign up'
+                            text: 'Register'
                                 '',
                             upperCaseFirst: true,
                             fontSize: 30,
@@ -113,40 +113,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               confirm: true),
                           Dimens.textFieldButtonGap(),
                           MyButton(
-                              text: 'Register',
-                              onPressed: validEmail &&
-                                      validPassword &&
-                                      validConfirmPassword
-                                  ? () async {
-                                      
-                                      debugPrint(
-                                          "email:$email password:$password");
-                                      provider.init();
-                                      await provider.signUp(
-                                          email.text.trim(), password.text.trim());
-                                      
+                            text: 'Register',
+                            onPressed: validEmail &&
+                                    validPassword &&
+                                    validConfirmPassword
+                                ? () async {
+                                    debugPrint(
+                                        "email:$email password:$password");
+                                    provider.init();
 
-                                      if (registerForm.currentState!
-                                          .validate()) {
-                                        if (provider.success) {
-                                          if (!mounted) return;
-                                          debugPrint('success registration');
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            '/setup',
-                                            ModalRoute.withName('/')
-                                          );
-                                        }
-                                      }
-                                      if (provider.catchError) {
+                                    await provider.signUp(email.text.trim(),
+                                        password.text.trim());
+
+                                    if (registerForm.currentState!.validate()) {
+                                      if (provider.success) {
                                         if (!mounted) return;
-                                        dialog.alert(
-                                            context, provider.errorMessage,
-                                            type: ArtSweetAlertType.danger);
+                                        debugPrint('success registration');
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                '/setup',
+                                                (Route<dynamic> route) =>
+                                                    false);
                                       }
                                     }
-                                  : null,
-                              width: MediaQuery.of(context).size.width),
+                                    if (provider.catchError) {
+                                      if (!mounted) return;
+                                      dialog.alert(
+                                          context, provider.errorMessage,
+                                          type: ArtSweetAlertType.danger);
+                                    }
+                                  }
+                                : null,
+                            width: MediaQuery.of(context).size.width,
+                          ),
                           Dimens.buttonButtonGap(),
                           TxtButton(
                             text: 'Joined us before? Login',

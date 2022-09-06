@@ -9,14 +9,26 @@ class Elearning extends StatefulWidget {
 
 class _ElearningState extends State<Elearning> {
   late String url;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
+
     url = _rootData('Portals/elearning/initialUrl');
     log(url);
 
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
   }
 
   String _homeData(path) {
@@ -52,18 +64,6 @@ class _ElearningState extends State<Elearning> {
 
     //log("registrationNumber: $registrationNumber \n email: $email\n password: $password \n submit: $submit\n studentUsername: $studentUsername \n studentPassword: $studentPassword\n");
 
-    if (_homeData('elearning/access/opened') != 'true') {
-      Future.delayed(
-          Duration.zero,
-          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => PortalWelcomeScreen(
-                    password:
-                        registrationNumber.toLowerCase().replaceAll('/', ''),
-                    username:
-                        registrationNumber.toLowerCase().replaceAll('/', ''),
-                    title: 'elearning',
-                  ))));
-    }
     InAppWebViewController? controller;
     if (!provider.browserIsLoading &&
         provider.webViewController != null &&
@@ -81,20 +81,34 @@ class _ElearningState extends State<Elearning> {
                            ''');
       });
     }
-    return WillPopScope(
-      onWillPop: () async {
-        if (await controller!.canGoBack()) {
-          await provider.webViewController!.goBack();
-          return false;
-        } else {
-          return await pushPage(context, const DashBoard());
-        }
-      },
-      child: Scaffold(
-        appBar: browserAppBar(context, "Elearning"),
-        drawer: const MyDrawer(),
-        body: TUMBrowser(url: url, title: "Elearning"),
-      ),
-    );
+    if (_homeData('elearning/access/opened') != 'true') {
+      return PortalWelcomeScreen(
+        password: registrationNumber.toLowerCase().replaceAll('/', ''),
+        username: registrationNumber.toLowerCase().replaceAll('/', ''),
+        title: 'elearning',
+      );
+    } else {
+      return WillPopScope(
+        onWillPop: () async {
+          if (await controller!.canGoBack()) {
+            await provider.webViewController!.goBack();
+            return false;
+          } else {
+            return await pushPage(context, const DashBoard());
+          }
+        },
+        child: Scaffold(
+          bottomNavigationBar: _bannerAd == null
+              ? null
+              : Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  height: 52,
+                  child: AdWidget(ad: _bannerAd!)),
+          appBar: browserAppBar(context, "Elearning"),
+          drawer: const MyDrawer(),
+          body: TUMBrowser(url: url, title: "Elearning"),
+        ),
+      );
+    }
   }
 }

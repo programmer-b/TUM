@@ -25,14 +25,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.read<ThemeProvider>();
+    themeProvider.isPreDarkMode ? log("is Dark Mode") : log("is Light Mode");
     return Consumer<FirebaseAuthProvider>(
       builder: (context, provider, child) {
         return Scaffold(
           appBar: appBar(context),
           extendBodyBehindAppBar: true,
           body: Padding(
-            padding: const EdgeInsets.only(
-                top: 40, left: 15, right: 15, bottom: 20),
+            padding:
+                const EdgeInsets.only(top: 40, left: 15, right: 15, bottom: 20),
             child: Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -92,7 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             text: 'Forgot Password?',
                             alignment: Alignment.topRight,
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/forgotPassword');
+                              Navigator.pushReplacementNamed(
+                                  context, '/forgotPassword');
                             },
                           ),
                           Dimens.buttonButtonGap(),
@@ -100,33 +103,41 @@ class _LoginScreenState extends State<LoginScreen> {
                               text: 'Login',
                               onPressed: validEmail && validPassword
                                   ? () async {
-                                      
                                       debugPrint(
                                           "email:$email password:$password");
                                       provider.init();
-                                      await provider.login(
-                                          email.text.trim(), password.text.trim());
-              
+                                      await provider.login(email.text.trim(),
+                                          password.text.trim());
+
                                       if (provider.dataError) {
                                         loginForm.currentState!.validate();
+                                        return;
                                       }
-              
+
                                       if (provider.catchError) {
                                         if (!mounted) return;
                                         dialog.alert(
                                             context, provider.errorMessage,
                                             type: ArtSweetAlertType.danger);
+                                        return;
                                       }
-                                      
+
+                                      if (mounted) {
+                                        const DashBoard().launch(context,
+                                            isNewTask: true,
+                                            pageRouteAnimation:
+                                                PageRouteAnimation.Scale);
+                                      }
                                     }
                                   : null,
                               width: MediaQuery.of(context).size.width),
                           Dimens.buttonButtonGap(),
                           TxtButton(
-                            text: 'New student? Register',
+                            text: 'New to this app? Register',
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/register');
+                              Navigator.pushReplacementNamed(
+                                  context, '/register');
                             },
                           ),
                         ],

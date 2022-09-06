@@ -4,6 +4,8 @@ class FirebaseHelper with ChangeNotifier {
   static DatabaseReference userRef =
       FirebaseDatabase.instance.ref('Users/Students/${userId()}');
   static DatabaseReference rootRef = FirebaseDatabase.instance.ref('Data');
+
+  static String? email = FirebaseAuth.instance.currentUser!.email;
   // final User? user = FirebaseAuth.instance.currentUser;
 
   bool _success = false;

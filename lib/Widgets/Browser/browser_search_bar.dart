@@ -7,8 +7,9 @@ class BrowserSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController();
+    // final controller = TextEditingController();
     final provider = Provider.of<TUMState>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -33,6 +34,7 @@ class BrowserSearchBar extends StatelessWidget {
           width: 10,
         ),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: themeProvider.isDarkMode ? Colors.white : Colorz.primaryGreen),
             onPressed: () => provider.webViewController != null
                 ? provider.webViewController!
                     .loadUrl(urlRequest: URLRequest(url: Uri.parse("$url/discover?query=${provider.currentSearchItem.trim().replaceAll(' ', '+')}")))

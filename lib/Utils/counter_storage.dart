@@ -11,6 +11,27 @@ class CounterStorage with ChangeNotifier {
     return File('$path/$name');
   }
 
+  Future<File> writeData(String data, String name) async {
+    final file = await localFile(name);
+
+    // Write the file
+    return file.writeAsString(data);
+  }
+
+  Future<String> readData(String name) async {
+    try {
+      final file = await localFile(name);
+
+      // Read the file
+      final contents = await file.readAsString();
+
+      return contents;
+    } catch (e) {
+      // If encountering an error, return 0
+      return '';
+    }
+  }
+
   Future<Uint8List?> readFile(String name) async {
     try {
       final file = await localFile(name);

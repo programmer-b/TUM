@@ -13,8 +13,20 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  BannerAd? _bannerAd;
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
+
   @override
   void initState() {
+    _createBannerAd();
     context.read<API>().init();
     context.read<API>().getHtml(widget.url);
     super.initState();
@@ -50,6 +62,12 @@ class _NewsPageState extends State<NewsPage> {
 
       log('newsMessages: $newsMessages');
       return Scaffold(
+        bottomNavigationBar: _bannerAd == null
+            ? null
+            : Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                height: 52,
+                child: AdWidget(ad: _bannerAd!)),
         appBar: AppBar(
           title: Txt(
             text: widget.title,

@@ -143,6 +143,23 @@ class TUMState with ChangeNotifier {
     notifyListeners();
   }
 
+  String _fullName = '';
+  String get fullName => _fullName;
+
+  String _registrationNumber = '';
+  String get registrationNumber => _registrationNumber;
+
+  String _phoneNumber = '';
+  String get phoneNumber => _phoneNumber;
+
+  Future setupLostData() async {
+    _fullName = await storage.readData('fullName');
+    _registrationNumber = await storage.readData('registrationNumber');
+    _phoneNumber = await storage.readData('phoneNumber');
+
+    notifyListeners();
+  }
+
   // int _newsIndex = 0;
   // int get newsIndex => _newsIndex;
 

@@ -8,7 +8,7 @@ class MyDrawerHeader extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final provider = Provider.of<FirebaseHelper>(context);
 
-    String value(String path) {
+    String? value(String path) {
       return provider.home!.snapshot.child(path).value.toString();
     }
 
@@ -21,22 +21,29 @@ class MyDrawerHeader extends StatelessWidget {
         width: double.infinity,
         height: 160,
         decoration: BoxDecoration(
-          color: themeProvider.isDarkMode
-              ? Colors.black54
-              : Colorz.primaryGreen,
+          color:
+              themeProvider.isDarkMode ? Colors.black54 : Colorz.primaryGreen,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const <Widget>[UserAvatar(), ChangeThemeButtonWidget()],
+              children: <Widget>[
+                InkWell(
+                    child: const UserAvatar(),
+                    onTap: () => const AccountSettings().launch(context,
+                        pageRouteAnimation: PageRouteAnimation.Scale)),
+                const ChangeThemeButtonWidget()
+              ],
             ),
             SizedBox(
               height: Dimens.defaultPadding,
             ),
             Txt(
-              text: Operations.firstAndLastName(value('profile/fullName')),
+              text: value('profile/fullName') != ""
+                  ? Operations.firstAndLastName(value('profile/fullName')!)
+                  : value('profile/email')!,
               fontWeight: FontWeight.w800,
               color: Colors.white,
             ),

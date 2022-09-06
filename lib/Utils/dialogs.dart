@@ -1,6 +1,39 @@
 part of 'package:tum/Utils/utils.dart';
 
 class PageDialog {
+  static Future yesOrNoDialog(BuildContext context, String title, String body,
+      {final Function()? onPressed}) async {
+    final action = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(title),
+          content: Text(body),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: onPressed,
+              child: const Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    return (action != null) ? action : 'Cancel';
+  }
+
   void progress(BuildContext context, String title, String subTitle,
       {bool dismissable = false}) {
     FocusScope.of(context).unfocus();
@@ -51,12 +84,9 @@ class PageDialog {
           ),
           actions: <Widget>[
             TxtButton(
-              text: negativeAction!,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TxtButton(text: positiveAction!, onPressed: onPressed),
+                textColor: Colorz.primaryGreen,
+                text: positiveAction!,
+                onPressed: onPressed),
           ],
         );
       },

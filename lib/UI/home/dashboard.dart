@@ -1,5 +1,7 @@
 part of 'package:tum/UI/home/home.dart';
 
+enum TUMMenuItem { item1, item2, item3 }
+
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
 
@@ -8,7 +10,11 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  BannerAd? _bannerAd;
+  InterstitialAd? _interstitialAd;
+
   List<String> urlImages = [];
+  List<String> dashboardImagesData = [];
   List<NoticeBoardData> noticeBoardData = [];
   List<NewsData> newsData = [];
   List<DownloadsData> downloadsData = [];
@@ -16,17 +22,63 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     super.initState();
+
+    _createBannerAd();
+    _createInterstitialAd();
+
+    DailyNotificationsApi.init();
+    DailyNotificationsApi.showScheduledNotification();
+    listenNotifications();
     init();
     // getWebSiteData();
   }
 
-  void init() async {
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
+
+  Future<void> init() async {
     Future.delayed(Duration.zero, () {
       context.read<FirebaseHelper>().read();
       context.read<FirebaseHelper>().readMenu();
       context.read<API>().getContent(Urls.tumHome);
       context.read<TUMState>().updateScreenIndex(0);
     });
+
+    await 120.seconds.delay;
+
+    _showInterstitialAd();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: AdMobService.interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) => _interstitialAd = ad,
+          onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null,
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback =
+          FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+        ad.dispose();
+        _createInterstitialAd();
+      }, onAdFailedToShowFullScreenContent: (ad, error) {
+        log('$error');
+        ad.dispose();
+        _createInterstitialAd();
+      });
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -34,19 +86,65 @@ class _DashBoardState extends State<DashBoard> {
         actions: [
           MyIconButton(
             icon: Icons.search,
-            onPressed: () {},
+            onPressed: () =>
+                showSearch(context: context, delegate: MySearchDelegate()),
             toolTip: "Search",
           ),
           MyIconButton(
             icon: Icons.notifications_outlined,
-            onPressed: () {},
+            onPressed: () => context
+                .read<TUMState>()
+                .navidateToScreen(context, '/notifications', 5),
             toolTip: "Notifications",
           ),
-          MyIconButton(
-            icon: Icons.more_vert,
-            onPressed: () {},
-            toolTip: "More options",
-          )
+          PopupMenuButton<TUMMenuItem>(
+              onSelected: (value) async {
+                switch (value) {
+                  case TUMMenuItem.item1:
+                    const AccountSettings().launch(context,
+                        pageRouteAnimation: PageRouteAnimation.Scale);
+                    break;
+                  case TUMMenuItem.item2:
+                    context
+                        .read<TUMState>()
+                        .navidateToScreen(context, '/settings', 7);
+                    break;
+                  case TUMMenuItem.item3:
+                    await PageDialog.yesOrNoDialog(context, 'Logout',
+                        'Do you wish to logout this account?',
+                        onPressed: () async {
+                      if (!mounted) return;
+                      Navigator.pop(context);
+
+                      toast('Logged out successfully');
+
+                      await context.read<FirebaseAuthProvider>().logOut();
+                      if (!mounted) return;
+                      Phoenix.rebirth(context);
+                    });
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: TUMMenuItem.item1,
+                      child: Txt(
+                        text: 'Profile',
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: TUMMenuItem.item2,
+                      child: Txt(
+                        text: 'Settings',
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: TUMMenuItem.item3,
+                      child: Txt(
+                        text: 'Logout',
+                      ),
+                    )
+                  ])
         ],
         title: const Txt(text: "Home"));
   }
@@ -56,26 +154,34 @@ class _DashBoardState extends State<DashBoard> {
     final provider = Provider.of<FirebaseHelper>(context);
     // final tumStateProvider = Provider.of<TUMState>(context);
 
-    String _databaseWebContent(String path) {
+    String databaseWebContent(String path) {
       return provider.root!.snapshot.child(path).value.toString();
     }
 
-    dom.Document _dataHtml(String html) {
+    dom.Document dataHtml(String html) {
       return dom.Document.html(html);
     }
 
     if (provider.root != null) {
-      urls =
-          operations.getImagesFromClass(_databaseWebContent('Home/Content/'));
-      noticeBoard = _databaseWebContent('NoticeBoard/Page_1/Content');
-      news = _databaseWebContent('News/Page_1/Content');
-      downloads = _databaseWebContent('Downloads/Page_1/Content');
+      urls = operations.getImagesFromClass(databaseWebContent('Home/Content'));
+      dashboardImages = databaseWebContent('Home/Content');
+      noticeBoard = databaseWebContent('NoticeBoard/Page_1/Content');
+      news = databaseWebContent('News/Page_1/Content');
+      downloads = databaseWebContent('Downloads/Page_1/Content');
     }
     int imageCount = urls.length;
 
-    dom.Document noticeBoardHtml = _dataHtml(noticeBoard);
-    dom.Document newsHtml = _dataHtml(news);
-    dom.Document downloadsHtml = _dataHtml(downloads);
+    dom.Document dashboardHtml = dataHtml(dashboardImages);
+    dom.Document noticeBoardHtml = dataHtml(noticeBoard);
+    dom.Document newsHtml = dataHtml(news);
+    dom.Document downloadsHtml = dataHtml(downloads);
+
+    final dashBoardImagesUrl = dashboardHtml
+        .querySelectorAll('li.tp-revslider-slidesli > div > div')
+        .map((element) => element.innerHtml.trim())
+        .toList();
+
+    log(' images url : $dashBoardImagesUrl');
 
     final downloadsTitle = downloadsHtml
         .querySelectorAll('.table > tbody > tr > td:nth-child(3)')
@@ -160,6 +266,12 @@ class _DashBoardState extends State<DashBoard> {
     return provider.home == null || provider.root == null
         ? scaffoldIndicator()
         : Scaffold(
+            bottomNavigationBar: _bannerAd == null
+                ? null
+                : Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    height: 52,
+                    child: AdWidget(ad: _bannerAd!)),
             appBar: _appBar(context),
             drawer: const MyDrawer(),
             body: RefreshIndicator(
@@ -232,5 +344,117 @@ class _DashBoardState extends State<DashBoard> {
           },
           itemCount: apps.length),
     );
+  }
+
+  void listenNotifications() => DailyNotificationsApi.onNotifications.stream
+      .listen(onClickedNotifications);
+
+  void onClickedNotifications(String? json) {
+    final obj = jsonDecode(json!);
+    if (obj['isSuccess']) {
+      OpenFile.open(obj['filePath']);
+    }
+  }
+}
+
+class MySearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () => query.isEmpty ? close(context, null) : query = '',
+        icon: const Icon(
+          Icons.clear,
+        ),
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+      onPressed: () => close(context, null),
+      icon: const Icon(Icons.arrow_back));
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const Center();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestions = [
+      'Dashboard',
+      'Eregister',
+      'Elearning',
+      'Past papers',
+      'News',
+      'Notifications',
+      'Downloads',
+      'Settings',
+      'Eregister settings',
+      'Elearning settings',
+      'Profile',
+      'Account settings'
+    ];
+
+    return ListView.builder(
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) {
+          final suggestion = suggestions[index];
+          final provider = Provider.of<TUMState>(context);
+          return ListTile(
+            title: Txt(text: suggestion),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              query = suggestion;
+              showResults(context);
+              switch (index) {
+                case 0:
+                  provider.navidateToScreen(context, '/home', index);
+                  break;
+                case 1:
+                  provider.navidateToScreen(context, '/eregister', index);
+                  break;
+                case 2:
+                  provider.navidateToScreen(context, '/elearning', index);
+                  break;
+                case 3:
+                  provider.navidateToScreen(context, '/pastpapers', index);
+                  break;
+                case 4:
+                  provider.navidateToScreen(context, '/news', index);
+                  break;
+                case 5:
+                  provider.navidateToScreen(context, '/notifications', index);
+                  break;
+                case 6:
+                  provider.navidateToScreen(context, '/downloads', index);
+                  break;
+                case 7:
+                  provider.navidateToScreen(context, '/settings', index);
+                  break;
+                case 8:
+                  const EregisterSettings().launch(context,
+                      pageRouteAnimation: PageRouteAnimation.Scale);
+                  break;
+                case 9:
+                  const ElearningSettings().launch(context,
+                      pageRouteAnimation: PageRouteAnimation.Scale);
+                  break;
+                case 10:
+                  const AccountSettings().launch(context,
+                      pageRouteAnimation: PageRouteAnimation.Scale);
+                  break;
+                case 11:
+                  const AccountSettings().launch(context,
+                      pageRouteAnimation: PageRouteAnimation.Scale);
+                  break;
+                default:
+                  provider.navidateToScreen(context, '/home', index);
+                  break;
+              }
+            },
+          );
+        });
   }
 }

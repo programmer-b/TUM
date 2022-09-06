@@ -2,42 +2,43 @@
     {
         "name": "home",
         "icon": "home",
-        "url": ""
-    },
-    {
-        "name": "news",
-        "icon": "newspaper",
-        "url": ""
+        "url": "/home"
     },
     {
         "name": "eregister",
         "icon": "school_rounded",
-        "url": ""
+        "url": "/eregister"
     },
     {
         "name": "elearning",
         "icon": "laptop_chromebook",
-        "url": ""
+        "url": "/elearning"
     },
     {
-        "name": "exam papers",
+        "name": "Past papers",
         "icon": "article",
-        "url": ""
+        "url": "/pastpapers"
     },
     {
-        "name": "calender",
-        "icon": "calendar_month",
-        "url": ""
+        "name": "news",
+        "icon": "newspaper",
+        "url": "/news"
     },
+    {
+        "name": "notifications",
+        "icon": "newspaper",
+        "url": "/notifications"
+    },
+   
     {
         "name": "Downloads",
         "icon": "cloud_download",
-        "url": ""
+        "url": "/downloads"
     },
     {
         "name": "Settings",
         "icon": "settings",
-        "url": ""
+        "url": "/settings"
     },
     {
         "name": "about",

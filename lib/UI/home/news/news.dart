@@ -11,8 +11,20 @@ class News extends StatefulWidget {
 class _NewsState extends State<News> with SingleTickerProviderStateMixin {
   late TabController controller;
 
+  BannerAd? _bannerAd;
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
+
   @override
   void initState() {
+    _createBannerAd();
     init();
     super.initState();
   }
@@ -101,6 +113,12 @@ class _NewsState extends State<News> with SingleTickerProviderStateMixin {
         initialIndex: 1,
         length: 2,
         child: Scaffold(
+          bottomNavigationBar: _bannerAd == null
+              ? null
+              : Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  height: 52,
+                  child: AdWidget(ad: _bannerAd!)),
           appBar: _appBar(context),
           drawer: const MyDrawer(),
           body: TabBarView(
@@ -122,13 +140,13 @@ class _NewsState extends State<News> with SingleTickerProviderStateMixin {
             )
           ],
         ),
-        actions: [
-          MyIconButton(
-            icon: Icons.more_vert,
-            onPressed: () {},
-            toolTip: "More options",
-          )
-        ],
+        // actions: [
+        //   MyIconButton(
+        //     icon: Icons.more_vert,
+        //     onPressed: () {},
+        //     toolTip: "More options",
+        //   )
+        // ],
         title: const Txt(text: "News"));
   }
 }

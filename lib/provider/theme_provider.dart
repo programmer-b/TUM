@@ -12,6 +12,11 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
+  bool get isPreDarkMode {
+     final brightness = SchedulerBinding.instance.window.platformBrightness;
+      return brightness == Brightness.dark;
+  }
+
   // void toggleTheme({required bool isDarkMode}) {
   //   themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
@@ -54,11 +59,14 @@ class MyThemes {
         iconTheme: IconThemeData(color: Colors.white),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      fontFamily: 'Roboto',
+      // fontFamily: 'Roboto',
       scaffoldBackgroundColor: Colors.grey.shade900,
-      primaryColor: Colors.black,
+      // colorSchemeSeed: Colors.white,
+       listTileTheme: const ListTileThemeData(
+          selectedColor: Colorz.primaryGreen, textColor: Colors.white),
       colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.white),
       iconTheme: const IconThemeData(color: Colors.white));
+      
 
   static final lightTheme = ThemeData(
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -73,7 +81,7 @@ class MyThemes {
         ),
       ),
       colorSchemeSeed: Colorz.primaryGreen,
-      fontFamily: 'Roboto',
+      // fontFamily: 'Roboto',
       scaffoldBackgroundColor: Colors.grey[200],
       // primaryColor: Colors.white,
       listTileTheme: const ListTileThemeData(

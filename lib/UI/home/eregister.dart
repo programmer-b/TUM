@@ -10,12 +10,23 @@ class Eregister extends StatefulWidget {
 class _EregisterState extends State<Eregister> {
   late String url;
 
+  BannerAd? _bannerAd;
+
   @override
   void initState() {
     super.initState();
     url = _rootData('Portals/eregister/initialUrl');
-
+    _createBannerAd();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
   }
 
   String _homeData(path) {
@@ -76,20 +87,43 @@ class _EregisterState extends State<Eregister> {
       });
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (await controller!.canGoBack()) {
-          await provider.webViewController!.goBack();
-          return false;
-        } else {
-          return await pushPage(context, const DashBoard());
-        }
-      },
-      child: Scaffold(
-        appBar: browserAppBar(context, "Eregister"),
-        drawer: const MyDrawer(),
-        body: TUMBrowser(url: url, title: "Eregister"),
-      ),
-    );
+    if (_homeData('eregister/access/opened') != 'true') {
+      // Future.delayed(
+      //     Duration.zero,
+      //     () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //         builder: (context) => PortalWelcomeScreen(
+      //               password: registrationNumber.toUpperCase(),
+      //               username: registrationNumber.toUpperCase(),
+      //               title: 'eregister',
+      //             ))));
+
+      return PortalWelcomeScreen(
+        password: registrationNumber.toUpperCase(),
+        username: registrationNumber.toUpperCase(),
+        title: 'eregister',
+      );
+    } else {
+      return WillPopScope(
+        onWillPop: () async {
+          if (await controller!.canGoBack()) {
+            await provider.webViewController!.goBack();
+            return false;
+          } else {
+            return await pushPage(context, const DashBoard());
+          }
+        },
+        child: Scaffold(
+          bottomNavigationBar: _bannerAd == null
+              ? null
+              : Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  height: 52,
+                  child: AdWidget(ad: _bannerAd!)),
+          appBar: browserAppBar(context, "Eregister"),
+          drawer: const MyDrawer(),
+          body: TUMBrowser(url: url, title: "Eregister"),
+        ),
+      );
+    }
   }
 }

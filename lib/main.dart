@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_file/open_file.dart';
 
 import 'package:tum/tum.dart';
@@ -18,10 +19,11 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ByteData data = await PlatformAssetBundle()
-      .load('assets/certificates/ca/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext
-      .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  MobileAds.instance.initialize();
+  // ByteData data = await PlatformAssetBundle()
+  //     .load('assets/certificates/ca/lets-encrypt-r3.pem');
+  // SecurityContext.defaultContext
+  //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
   // ByteData data = await PlatformAssetBundle()
   //     .load('assets/certificates/lets-encrypt-r3.pem');
   // SecurityContext.defaultContext

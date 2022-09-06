@@ -10,6 +10,7 @@ class ApplicationIconButton extends StatelessWidget {
       this.name,
       this.iconSize = 35,
       this.width = 80,
+      this.height = 90,
       this.textSize = 12,
       this.fullUpperCase = false,
       this.upperCaseFirst = true})
@@ -21,6 +22,7 @@ class ApplicationIconButton extends StatelessWidget {
   final String? name;
   final double iconSize;
   final double width;
+  final double height;
   final double textSize;
   final bool fullUpperCase;
   final bool upperCaseFirst;
@@ -29,7 +31,7 @@ class ApplicationIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: 90,
+      height: height,
       child: InkWell(
           onTap: onTap,
           child: Center(

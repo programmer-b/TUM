@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Image.asset(
-      themeProvider.isDarkMode ? Assets.logoDark : Assets.logoLight,
+      themeProvider.isPreDarkMode ? Assets.logoDark : Assets.logoLight,
       width: 200,
     );
   }

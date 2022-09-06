@@ -1,12 +1,14 @@
 import 'dart:async';
-import 'dart:developer';
+// import 'dart:convert';
+// import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:nb_utils/nb_utils.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/Utils/utils.dart';
 import 'package:tum/provider/provider.dart';
@@ -19,13 +21,10 @@ final TUMState tumState = TUMState();
 
 class PDFScreen extends StatefulWidget {
   const PDFScreen(
-      {Key? key,
-      required this.url,
-      required this.title,
-      this.requireDownload = false})
+      {Key? key, required this.url, this.title, this.requireDownload = false})
       : super(key: key);
   final String url;
-  final String title;
+  final String? title;
   final bool requireDownload;
   @override
   // ignore: library_private_types_in_public_api
@@ -53,9 +52,49 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
   late Future<File> file;
 
+  BannerAd? _bannerAd;
+  InterstitialAd? _interstitialAd;
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: AdMobService.interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) => _interstitialAd = ad,
+          onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null,
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback =
+          FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+        ad.dispose();
+        _createInterstitialAd();
+      }, onAdFailedToShowFullScreenContent: (ad, error) {
+        log('$error');
+        ad.dispose();
+        _createInterstitialAd();
+      });
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
+    _createInterstitialAd();
     file = pdfFile(context, widget.url);
     context.read<TUMState>().pdfInit();
   }
@@ -75,9 +114,15 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     final text = '${indexPage + 1} of $pages';
 
     return Scaffold(
+        bottomNavigationBar: _bannerAd == null
+            ? null
+            : Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                height: 52,
+                child: AdWidget(ad: _bannerAd!)),
         appBar: AppBar(
           title: Txt(
-            text: widget.title,
+            text: widget.title ?? 'NOTICE',
             upperCaseFirst: true,
           ),
           actions: pages >= 2
@@ -149,7 +194,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                       )
                     : Container()
                 : TUMBrowser(
-                    title: widget.title,
+                    title: widget.title ?? 'NOTICE',
                     url: widget.url,
                   )
           ],
@@ -162,9 +207,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
               tooltip: 'Download',
               onPressed: () async {
                 api.init();
-                await api.download(widget.url, widget.title);
+                await api.download(widget.url, widget.title ?? 'NOTICE');
+                _showInterstitialAd();
                 if (api.hasError && mounted) {
-                  messenger.showSnackBar(context,'something went wrong');
+                  messenger.showSnackBar(context, 'something went wrong');
                 }
                 // var dir = await getExternalStorageDirectory();
                 // if (mounted) {

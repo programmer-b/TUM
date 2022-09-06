@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ import 'package:tum/Constants/constants.dart';
 import '../../Widgets/widgets.dart';
 import 'package:tum/Firebase/firebase.dart';
 
+import '../../provider/provider.dart';
+
 part './setup_screen.dart';
 part './migrate_to_flutter.dart';
 
@@ -23,8 +26,4 @@ final Messenger messenger = Messenger();
 final Operations operations = Operations();
 final PageDialog dialog = PageDialog();
 final FirebaseHelper helper = FirebaseHelper();
-
-
-
-
-
+final storage = CounterStorage();

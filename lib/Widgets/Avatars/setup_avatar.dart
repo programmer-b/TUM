@@ -1,10 +1,13 @@
 part of 'package:tum/Widgets/widgets.dart';
 
 class SetupAvatar extends StatelessWidget {
-  const SetupAvatar({Key? key, this.onPressed, this.image, this.radius = 80}) : super(key: key);
+  const SetupAvatar(
+      {Key? key, this.onPressed, this.image, this.radius = 80, this.imageFile})
+      : super(key: key);
 
   final Function()? onPressed;
   final XFile? image;
+  final File? imageFile;
   final double radius;
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,12 @@ class SetupAvatar extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: radius,
-              backgroundImage:
-                  image == null ? null : FileImage(File(image!.path)),
-              child: image == null
+              backgroundImage: image == null
+                  ? imageFile == null
+                      ? null
+                      : Image.file(imageFile!).image
+                  : FileImage(File(image!.path)),
+              child: image == null && imageFile == null
                   ? CircleAvatar(
                       radius: radius,
                       backgroundImage: const AssetImage(Assets.defaultAvatar))

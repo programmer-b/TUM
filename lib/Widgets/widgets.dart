@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
+// import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -48,8 +49,30 @@ part './Browser/tum_web.dart';
 part 'AppBars/custom_page_appbar.dart';
 part './Browser/web_navigation.dart';
 part './Browser/browser_search_bar.dart';
+part './Buttons/application_icon_widget.dart';
 
 final CounterStorage counterStorage = CounterStorage();
+
+Widget buildAutologin(String title, FirebaseHelper provider) {
+  
+String? databaseValue(String path) {
+    return provider.home!.snapshot.child(path).value.toString();
+  }
+  return ListTile(
+      onTap: () {},
+      trailing: Switch(
+          value: databaseValue('$title/access/skipped') == 'false',
+          onChanged: (value) {
+            if (value) {
+              provider.update({"$title/access/skipped": !value});
+            } else {
+              provider.update({"$title/access/skipped": !value});
+            }
+          }),
+      title: const Txt(text: 'Enable auto Login'),
+      leading: const ApplicationIconWidget(
+          color: Color.fromARGB(255, 175, 90, 19), icon: Icons.login));
+}
 
 Widget downloadProgress() =>
     const ShimmerWidget.rectangular(width: double.infinity, height: 200);

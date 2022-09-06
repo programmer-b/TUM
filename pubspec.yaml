@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+5
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.18.0 <3.3.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -65,6 +65,15 @@ dependencies:
   open_file: ^3.2.1
   flutter_local_notifications: ^9.7.0
   lecle_downloads_path_provider: ^0.0.2+7
+  flutter_settings_screens: ^0.3.3-null-safety+2
+  nb_utils: ^4.6.20
+  in_app_update: ^3.0.0
+  flutter_phoenix: ^1.1.0
+  rxdart: ^0.27.5
+  google_mobile_ads: ^2.0.1
+  rename: ^2.0.1
+  # upgrader: ^4.6.1
+  # flutter_settings_screens: ^0.2.2+1
 
 dev_dependencies:
   flutter_test:
@@ -90,8 +99,8 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/certificates/lets-encrypt-r3.pem
-    - assets/certificates/ca/lets-encrypt-r3.pem
+  #  - assets/certificates/lets-encrypt-r3.pem
+  #  - assets/certificates/ca/lets-encrypt-r3.pem
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -114,31 +123,31 @@ flutter:
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
 
-  fonts:
-    - family: MontSerrat
-      fonts:
-        - asset: assets/fonts/MontSerrat/Montserrat-Regular.ttf
-    - family: Raleway
-      fonts:
-        - asset: assets/fonts/Raleway/Raleway-Regular.ttf
-    - family: Gothic
-      fonts:
-        - asset: assets/fonts/gothic/LeagueGothic-Regular-VariableFont_wdth.ttf
-    - family: Roboto
-      fonts: 
-        - asset: assets/fonts/Roboto/Roboto-Black.ttf
-        - asset: assets/fonts/Roboto/Roboto-BlackItalic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-        - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Light.ttf
-        - asset: assets/fonts/Roboto/Roboto-LightItalic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
-        - asset: assets/fonts/Roboto/Roboto-MediumItalic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
-        - asset: assets/fonts/Roboto/Roboto-ThinItalic.ttf
-          weight: 400
+  # fonts:
+  #   - family: MontSerrat
+  #     fonts:
+  #       - asset: assets/fonts/MontSerrat/Montserrat-Regular.ttf
+  #   - family: Raleway
+  #     fonts:
+  #       - asset: assets/fonts/Raleway/Raleway-Regular.ttf
+  #   - family: Gothic
+  #     fonts:
+  #       - asset: assets/fonts/gothic/LeagueGothic-Regular-VariableFont_wdth.ttf
+  #   - family: Roboto
+  #     fonts: 
+  #       - asset: assets/fonts/Roboto/Roboto-Black.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-BlackItalic.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Light.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-LightItalic.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-MediumItalic.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+  #       - asset: assets/fonts/Roboto/Roboto-ThinItalic.ttf
+  #         weight: 400
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

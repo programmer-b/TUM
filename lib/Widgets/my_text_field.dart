@@ -18,6 +18,7 @@ class MyTextField extends StatelessWidget {
     this.onChanged,
     this.textCapitalization = TextCapitalization.none,
     this.keyboardType = TextInputType.text,
+    this.initialText,
   }) : super(key: key);
   final bool isPassword;
   final bool enableSuggestions;
@@ -34,11 +35,13 @@ class MyTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final TextInputType keyboardType;
+  final String? initialText;
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return TextFormField(
+        initialValue: initialText,
         onChanged: onChanged,
         keyboardType: keyboardType,
         textCapitalization: textCapitalization,
@@ -48,13 +51,13 @@ class MyTextField extends StatelessWidget {
         onSaved: onSaved,
         controller: controller,
         obscureText: obscureText,
-        cursorColor: themeProvider.isDarkMode ? Colors.white : Colors.black,
+        cursorColor: themeProvider.isPreDarkMode ? Colors.white : Colors.black,
         decoration: InputDecoration(
             hintText: hint,
             suffixIcon: suffixIcon,
             prefixIcon: Icon(prefixIcon,
                 color:
-                    themeProvider.isDarkMode ? Colors.white70 : Colors.black54),
+                    themeProvider.isPreDarkMode ? Colors.white70 : Colors.black54),
             label: Txt(text: label),
             focusColor: Colorz.primaryGreen,
             border: const OutlineInputBorder(borderSide: BorderSide(width: 2)),
@@ -63,9 +66,9 @@ class MyTextField extends StatelessWidget {
             fillColor: fillColor,
             hintStyle: TextStyle(
                 color:
-                    themeProvider.isDarkMode ? Colors.white70 : Colors.black54),
+                    themeProvider.isPreDarkMode ? Colors.white70 : Colors.black54),
             labelStyle: TextStyle(
-                color: themeProvider.isDarkMode
+                color: themeProvider.isPreDarkMode
                     ? Colors.white70
                     : Colors.black54)));
   }

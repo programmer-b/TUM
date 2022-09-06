@@ -8,8 +8,8 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FirebaseApi>(context);
-    if (provider.fileDownloaded) return _imageBuilder(provider);
-    return _imageBuilder(provider);
+    if (provider.fileDownloaded) return _imageBuilder(context, provider);
+    return _imageBuilder(context, provider);
   }
 
   Widget _avatar({
@@ -25,37 +25,50 @@ class UserAvatar extends StatelessWidget {
     );
   }
 
-  Widget _imageBuilder(FirebaseApi provider) {
-    return FutureBuilder(
-      future: counterStorage.localPath(),
-      builder: (BuildContext _, AsyncSnapshot<String> path) {
-        debugPrint('path: ${path.data}');
-        if (path.connectionState == ConnectionState.done) {
-          return FutureBuilder(
-              future: counterStorage.directoryExists('${userId()}.jpg'),
-              builder: (BuildContext _, AsyncSnapshot<bool> exists) {
-                debugPrint('Exists: ${exists.data}');
-                if (exists.connectionState == ConnectionState.done) {
-                  if (exists.data!) {
-                    return _avatar(
-                      backgroundImage: Image.file(
-                        File('${path.data!}/${userId()}.jpg'),
-                      ).image,
-                    );
+  Widget _imageBuilder(context, FirebaseApi provider) {
+    final myProvider = Provider.of<FirebaseHelper>(context);
+
+    String? value(String path) {
+      return myProvider.home!.snapshot.child(path).value.toString();
+    }
+
+    final url = value('profile/profileImage/url');
+    final timeStamp = value('profile/profileImage/timeStamp');
+    if (url != "") {
+      log('url for image is not null :$url');
+      return FutureBuilder(
+        future: counterStorage.localPath(),
+        builder: (BuildContext _, AsyncSnapshot<String> path) {
+          debugPrint('path: ${path.data}');
+          if (path.connectionState == ConnectionState.done) {
+            return FutureBuilder<bool>(
+                future: counterStorage.directoryExists('$timeStamp.jpg'),
+                builder: (BuildContext _, AsyncSnapshot<bool> exists) {
+                  debugPrint('Exists: ${exists.data}');
+                  if (exists.connectionState == ConnectionState.done) {
+                    if (exists.data!) {
+                      return _avatar(
+                        backgroundImage: Image.file(
+                          File('${path.data!}/$timeStamp.jpg'),
+                        ).image,
+                      );
+                    } else {
+                      debugPrint('File not found  :: Initializing download');
+                      provider.downloadFile(
+                          storageRef.child('profileImages/${userId()}.jpg'),
+                          '$timeStamp.jpg');
+                      return _avatar();
+                    }
                   } else {
-                    debugPrint('File not found  :: Initializing download');
-                    provider.downloadFile(
-                        storageRef.child('profileImages/${userId()}.jpg'),
-                        '${userId()}.jpg');
                     return _avatar();
                   }
-                } else {
-                  return _avatar();
-                }
-              });
-        }
-        return _avatar();
-      },
-    );
+                });
+          }
+          return _avatar();
+        },
+      );
+    } else {
+      return _avatar();
+    }
   }
 }

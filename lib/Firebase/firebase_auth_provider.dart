@@ -53,7 +53,8 @@ class FirebaseAuthProvider extends ChangeNotifier {
   Future<void> login(String email, String password) async {
     _load();
     try {
-      await Auth.instance.signIn(email: email.trim(), password: password.trim());
+      await Auth.instance
+          .signIn(email: email.trim(), password: password.trim());
       _success = true;
     } on FirebaseAuthException catch (exception) {
       debugPrint(exception.toString());
@@ -72,10 +73,24 @@ class FirebaseAuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> logOut() async {
+    _load();
+    try {
+      await Auth.instance.signOut();
+      _success = true;
+    } on FirebaseAuthException catch (exception) {
+      debugPrint(exception.toString());
+      _dataError = true;
+
+      _determineError(exception);
+    }
+  }
+
   Future<void> signUp(String email, String password) async {
     _load();
     try {
-      await Auth.instance.signUp(email: email.trim(), password: password.trim());
+      await Auth.instance
+          .signUp(email: email.trim(), password: password.trim());
 
       _success = true;
     } on FirebaseAuthException catch (exception) {
@@ -85,7 +100,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
     } on PlatformException catch (exception) {
       log(exception.toString());
       _catchError = true;
-    }catch (exception) {
+    } catch (exception) {
       _catchError = true;
     }
     _loading = false;

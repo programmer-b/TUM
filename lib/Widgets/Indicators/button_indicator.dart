@@ -6,7 +6,8 @@ class MyIndicator extends StatelessWidget {
       this.indicatorColor = Colors.white,
       this.indicatorWidth = 50,
       this.transformScale = 0.4,
-      this.text = 'Please wait ...', this.textColor = Colors.white})
+      this.text = 'Please wait ...',
+      this.textColor = Colors.white})
       : super(key: key);
   final Color indicatorColor;
   final double indicatorWidth;
@@ -31,6 +32,17 @@ class MyIndicator extends StatelessWidget {
           fontSize: textSize,
         )
       ],
+    );
+  }
+}
+
+class MyCircularIndicatpr extends StatelessWidget {
+  const MyCircularIndicatpr({Key? key, this.valueColor = Colors.white }) : super(key: key);
+  final Color valueColor;
+  @override
+  Widget build(BuildContext context) {
+    return CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(valueColor),
     );
   }
 }

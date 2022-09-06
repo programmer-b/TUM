@@ -51,8 +51,7 @@ class _CheckEmailState extends State<CheckEmail> {
                 ),
                 MyButton(
                   text: 'Open email app',
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                   width: 200,
                 ),
                 const SizedBox(
@@ -87,7 +86,7 @@ class _CheckEmailState extends State<CheckEmail> {
                   TextButton(
                     child: Txt(
                       text: 'try another email address',
-                      color: themeProvider.isDarkMode
+                      color: themeProvider.isPreDarkMode
                           ? Colors.white70
                           : Colorz.primaryGreen,
                     ),
@@ -102,5 +101,4 @@ class _CheckEmailState extends State<CheckEmail> {
           ),
         ));
   }
-
 }

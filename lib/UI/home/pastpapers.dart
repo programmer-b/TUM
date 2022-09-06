@@ -19,10 +19,58 @@ class _PastPapersState extends State<PastPapers> {
         .toString();
   }
 
+  BannerAd? _bannerAd;
+  InterstitialAd? _interstitialAd;
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: AdMobService.interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) => _interstitialAd = ad,
+          onAdFailedToLoad: (LoadAdError error) => _interstitialAd = null,
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback =
+          FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+        ad.dispose();
+        _createInterstitialAd();
+      }, onAdFailedToShowFullScreenContent: (ad, error) {
+        log('$error');
+        ad.dispose();
+        _createInterstitialAd();
+      });
+      _interstitialAd!.show();
+      _interstitialAd = null;
+    }
+  }
+
+  void _createBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobService.bannerAdUnitId,
+        listener: AdMobService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
+
   @override
   void initState() {
     super.initState();
+    _createBannerAd();
+    _createInterstitialAd();
     url = _rootData('PastPapers/initialUrl');
+
+    init();
+  }
+
+  Future init() async {
+    await 120.seconds.delay;
+
+    _showInterstitialAd();
   }
 
   @override
@@ -32,12 +80,16 @@ class _PastPapersState extends State<PastPapers> {
         return await pushPage(context, const DashBoard());
       },
       child: Scaffold(
+        bottomNavigationBar: _bannerAd == null
+            ? null
+            : Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                height: 52,
+                child: AdWidget(ad: _bannerAd!)),
         appBar: browserAppBar(context, "Past papers"),
         drawer: const MyDrawer(),
         body: TUMBrowser(url: url, title: "Past papers"),
       ),
     );
   }
-
- 
 }

@@ -5,10 +5,11 @@ class NoticeBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return  ScrollableWidget(
+    return ScrollableWidget(
       child: homeNoticeBoard(context,
-                          noticeBoardData: noticeBoardData, length: noticeBoardData.length, readmore: false),
+          noticeBoardData: noticeBoardData,
+          length: noticeBoardData.length,
+          readmore: false),
     );
   }
 }
