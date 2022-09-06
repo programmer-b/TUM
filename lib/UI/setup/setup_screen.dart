@@ -195,7 +195,9 @@ class _SetupScreenState extends State<SetupScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               setState(() => loading = true);
-                              await uploadFile();
+                              if(_imageFile != null){
+                                await uploadFile();
+                              }
                               provider.init();
                               await provider.update({
                                 "profile": {
