@@ -60,10 +60,10 @@ package="com.tum.app">
                 android:exported="false"
                 android:grantUriPermissions="true"
                 tools:replace="android:authorities">
-            <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/filepaths"
-                    tools:replace="android:resource" />
+                <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@null"
+                tools:replace="android:resource" />
         </provider>
         <provider
     android:name="androidx.startup.InitializationProvider"
