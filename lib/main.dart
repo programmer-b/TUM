@@ -11,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:open_file/open_file.dart';
 
 import 'package:tum/tum.dart';
 
@@ -78,7 +77,7 @@ class MyHttpOverrides extends HttpOverrides {
 void onSelectedDownloadNotification(String? json) async {
   final obj = jsonDecode(json!);
   if (obj['isSuccess']) {
-    OpenFile.open(obj['filePath']);
+    // OpenFile.open(obj['filePath']);
   }
 }
 

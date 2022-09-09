@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:nb_utils/nb_utils.dart';
 // import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:tum/Constants/constants.dart';
@@ -85,16 +86,16 @@ class _TUMState extends State<TUM> {
                 '/notifications': (context) => const NotificationData()
               },
               home: FutureBuilder(
-                  future: null, //_checkForUpdate(),
+                  future: _checkForUpdate(),
                   builder: (context, snapshot) {
-                    // if (snapshot.connectionState == ConnectionState.done) {
-                    //   if (_updateInfo?.updateAvailability ==
-                    //       UpdateAvailability.updateAvailable) {
-                    //     InAppUpdate.startFlexibleUpdate().catchError((e) {
-                    //       toast(e.toString());
-                    //     });
-                    //   }
-                    // }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (_updateInfo?.updateAvailability ==
+                          UpdateAvailability.updateAvailable) {
+                        InAppUpdate.startFlexibleUpdate().catchError((e) {
+                          log(e.toString());
+                        });
+                      }
+                    }
                     return AnnotatedRegion<SystemUiOverlayStyle>(
                       value: Styles.value(themeProvider),
                       child: StreamBuilder<User?>(

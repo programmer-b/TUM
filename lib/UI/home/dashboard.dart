@@ -352,7 +352,7 @@ class _DashBoardState extends State<DashBoard> {
   void onClickedNotifications(String? json) {
     final obj = jsonDecode(json!);
     if (obj['isSuccess']) {
-      OpenFile.open(obj['filePath']);
+      // OpenFile.open(obj['filePath']);
     }
   }
 }

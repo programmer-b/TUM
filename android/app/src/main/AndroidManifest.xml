@@ -6,7 +6,7 @@ package="com.tum.app">
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> -->
     <application
         android:label="TUM"
         android:name="${applicationName}"
@@ -51,6 +51,7 @@ package="com.tum.app">
         <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
            android:value="ca-app-pub-5988017258715205~6449720368"/>
+           <!-- ca-app-pub-5988017258715205~6449720368 -->
 
               
         <provider
