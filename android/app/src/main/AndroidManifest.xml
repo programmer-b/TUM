@@ -13,16 +13,16 @@ package="com.tum.app">
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:name=".MainActivity"
+            android:exported="true"
             android:showWhenLocked="true"
             android:usesCleartextTraffic="true"
             android:turnScreenOn="true"
-            android:name=".MainActivity"
-            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-             android:requestLegacyExternalStorage="true"
+            android:requestLegacyExternalStorage="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -34,13 +34,14 @@ package="com.tum.app">
               tools:replace="android:resource"
 
               />
-              <meta-data
+       <meta-data
         tools:replace="android:value"
         android:name="android.support.VERSION"
         android:value="25.3.1" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
@@ -54,7 +55,7 @@ package="com.tum.app">
            <!-- ca-app-pub-5988017258715205~6449720368 -->
 
               
-        <provider
+        <!-- <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="${applicationId}.fileProvider"
                 android:exported="false"
@@ -64,7 +65,7 @@ package="com.tum.app">
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@null"
                 tools:replace="android:resource" />
-        </provider>
+        </provider> -->
         <provider
     android:name="androidx.startup.InitializationProvider"
     android:authorities="${applicationId}.androidx-startup"
