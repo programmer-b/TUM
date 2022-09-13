@@ -1,4 +1,4 @@
-package com.tum.app
+package com.dantech.tum
 
 import io.flutter.embedding.android.FlutterActivity
 
