@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 part of 'package:tum/UI/home/home.dart';
 
 class PastPapers extends StatefulWidget {
@@ -80,12 +82,7 @@ class _PastPapersState extends State<PastPapers> {
         return await pushPage(context, const DashBoard());
       },
       child: Scaffold(
-        bottomNavigationBar: _bannerAd == null
-            ? null
-            : Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                height: 52,
-                child: AdWidget(ad: _bannerAd!)),
+        bottomNavigationBar: null,
         appBar: browserAppBar(context, "Past papers"),
         drawer: const MyDrawer(),
         body: TUMBrowser(url: url, title: "Past papers"),

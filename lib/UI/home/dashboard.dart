@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, unused_field
+
 part of 'package:tum/UI/home/home.dart';
 
 enum TUMMenuItem { item1, item2, item3 }
@@ -12,6 +14,7 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   BannerAd? _bannerAd;
   InterstitialAd? _interstitialAd;
+  AppOpenAd? openAd;
 
   List<String> urlImages = [];
   List<String> dashboardImagesData = [];
@@ -43,6 +46,7 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   Future<void> init() async {
+    await loadAd();
     Future.delayed(Duration.zero, () {
       context.read<FirebaseHelper>().read();
       context.read<FirebaseHelper>().readMenu();
@@ -50,9 +54,9 @@ class _DashBoardState extends State<DashBoard> {
       context.read<TUMState>().updateScreenIndex(0);
     });
 
-    await 120.seconds.delay;
+    // await 120.seconds.delay;
 
-    _showInterstitialAd();
+    // _showInterstitialAd();
   }
 
   void _createInterstitialAd() {
@@ -79,6 +83,22 @@ class _DashBoardState extends State<DashBoard> {
       _interstitialAd!.show();
       _interstitialAd = null;
     }
+  }
+
+  Future<void> loadAd() async {
+    await AppOpenAd.load(
+        adLoadCallback: AppOpenAdLoadCallback(
+            onAdLoaded: (ad) {
+              log('$ad');
+              openAd = ad;
+              ad.show();
+              openAd!.show;
+            },
+            onAdFailedToLoad: (error) => log('$error')),
+        // ca-app-pub-5988017258715205/5600361489
+        adUnitId: AdMobService.AppOpenAdUnitId,
+        orientation: AppOpenAd.orientationPortrait,
+        request: const AdRequest());
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -266,12 +286,7 @@ class _DashBoardState extends State<DashBoard> {
     return provider.home == null || provider.root == null
         ? scaffoldIndicator()
         : Scaffold(
-            bottomNavigationBar: _bannerAd == null
-                ? null
-                : Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    height: 52,
-                    child: AdWidget(ad: _bannerAd!)),
+            bottomNavigationBar: null,
             appBar: _appBar(context),
             drawer: const MyDrawer(),
             body: RefreshIndicator(

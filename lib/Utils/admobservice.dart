@@ -31,6 +31,16 @@ class AdMobService {
     }
   }
 
+    static String get AppOpenAdUnitId {
+    if (Platform.isAndroid) {
+      return 'ca-app-pub-5988017258715205/4684334244';
+    } else if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544/7552160883';
+    } else {
+      throw UnsupportedError('Unsupported platform');
+    }
+  }
+
   static final BannerAdListener bannerListener = BannerAdListener(
     onAdLoaded: (ad) => log('Ad loaded'),
     onAdFailedToLoad: (ad,error) => log('Ad failed to load $error'),

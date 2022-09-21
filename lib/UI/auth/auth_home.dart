@@ -1,10 +1,9 @@
 part of 'package:tum/UI/auth/auth.dart';
 
-
 class AuthHome extends StatefulWidget {
-  const AuthHome({Key? key, })
-      : super(key: key);
-  
+  const AuthHome({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AuthHome> createState() => _AuthHomeState();
@@ -31,6 +30,7 @@ class _AuthHomeState extends State<AuthHome> {
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             systemOverlayStyle: const SystemUiOverlayStyle(
+                systemNavigationBarColor: Colorz.primaryGreen,
                 statusBarIconBrightness: Brightness.light)),
         backgroundColor: Colorz.loginBg,
         body: Container(

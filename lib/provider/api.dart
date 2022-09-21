@@ -164,7 +164,9 @@ class API with ChangeNotifier {
   Future download(String url, String fileName) async {
     _downloading = true;
     final dir = await storage.getDownloadsDirectory();
-    if (await requestPermission(Permission.storage) && await requestPermission(Permission.manageExternalStorage)) {
+    if (await requestPermission(Permission
+            .storage) // && await requestPermission(Permission.manageExternalStorage)
+        ) {
       final savePath = path.join(dir!.path, fileName);
       await startDownload(savePath, url, fileName);
     } else {

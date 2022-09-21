@@ -16,12 +16,12 @@ class PageDialog {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('CANCEL'),
             ),
             TextButton(
               onPressed: onPressed,
               child: const Text(
-                'Ok',
+                'CONFIRM',
                 style: TextStyle(
                   color: Colors.blueAccent,
                 ),

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 part of 'package:tum/UI/home/home.dart';
 
 class Eregister extends StatefulWidget {
@@ -113,12 +115,7 @@ class _EregisterState extends State<Eregister> {
           }
         },
         child: Scaffold(
-          bottomNavigationBar: _bannerAd == null
-              ? null
-              : Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  height: 52,
-                  child: AdWidget(ad: _bannerAd!)),
+          bottomNavigationBar: null,
           appBar: browserAppBar(context, "Eregister"),
           drawer: const MyDrawer(),
           body: TUMBrowser(url: url, title: "Eregister"),
